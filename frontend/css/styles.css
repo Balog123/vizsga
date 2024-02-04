@@ -1,0 +1,199 @@
+/* Betűtípos */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+/* Alap reset */
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --white: #fff;
+    /* --black: #222; */
+    --green: #6ebe02;
+    --grey1: #f0f0f0;
+    --grey2: #e9d7d3;
+
+    --main-color: #4D5061;
+    --black:#13131a;
+    --bg:#CCCCCC;
+    --border:.1rem solid rgba(255,255,255.3);
+    --orange: orange;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.6rem;
+    background-color: var(--bg);
+    color: var(--black);
+    font-weight: 400;
+    font-style: normal;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+li {
+    list-style: none;
+}
+
+.container {
+    max-width: 114rem;
+    margin: 0 auto;
+    padding: 0 3rem;
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+}
+
+/* Header */
+.header {
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.top-nav {
+    background-color: var(--main-color);
+    font-size: 1.3rem;
+    color: var(--white);
+}
+
+.top-nav div {
+    justify-content: space-between;
+    height: 4.5rem;
+}
+
+.top-nav a {
+    padding: 0 0.5rem;
+    color: var(--white);
+}
+
+/* Navigation */
+.navigation {
+    height: 6rem;
+    line-height: 6rem;
+}
+
+.nav-center {
+    justify-content: space-between;
+}
+
+/* .nav-list .icons{
+
+} */
+
+.nav-center .nav-item:not(:last-child) {
+    margin-right: 0.5rem;
+}
+
+.nav-center .nav-link {
+    font-size: 1.8rem;
+    padding: 1rem;
+}
+
+.nav-center .nav-link:hover {
+    color: var(--orange);
+}
+
+/* Icons */
+.icon {
+    cursor: pointer;
+    font-size: 2.5rem;
+    padding: 0 1rem;
+    color: #555;
+    position: relative;
+}
+
+.icon:not(:last-child) {
+    margin-right: 0.5rem;
+}
+
+.icon span {
+    position: absolute;
+    top: 3px;
+    right: -3px;
+    background-color: var(--orange);
+    color: white;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    height: 2rem;
+    width: 2rem;
+    justify-content: center;
+}
+
+.nav-list .icons {
+    display: none;
+}
+
+.nav-center .hamburger {
+    display: none;
+    font-size: 2.3rem;
+    color: var(--black);
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .nav-list {
+        position: fixed;
+        top: 12%;
+        left: -100%;
+        flex-direction: column;
+        align-items: flex-start;
+        box-shadow: 5px 5px 10p rgba(0, 0, 0, 0.2);
+        background-color: white;
+        height: 100%;
+        max-width: 35rem;
+        width: 0;
+        z-index: 100;
+        transition: all 300ms ease-in-out;
+    }
+
+    .nav-list.open {
+        left: 0;
+        width: 100%;
+    }
+
+    .nav-list .nav-item {
+        margin: 0 0 1rem 0;
+        width: 100%;
+    }
+
+    .nav-list .nav-link {
+        font-size: 2rem;
+        color: var(--black);
+    }
+
+    .nav-center .hamburger {
+        display: block;
+        font-size: 3rem;
+    }
+
+    .icons {
+        display: none;
+    }
+
+    .nav-list .icons {
+        display: flex;
+    }
+
+    .top-nav ul {
+        display: none;
+    }
+
+    .top-nav div {
+        justify-content: center;
+        height: 3rem;
+    }
+}
