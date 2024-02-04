@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 const path = require('path');
 const dbService = require('./db-config')
+const jwt = require('jsonwebtoken')
 
 const app = express()
 app.use(cors())
@@ -26,5 +27,19 @@ app.post('/regisztracio', (request, response) => {
     .catch(err => console.log(err))
 })
 
+app.post('/bejelentkezes', (request, response) => {
+    const { email, jelszo } = request.body
+    const db = dbService.getDbServiceInstance()
+
+    const result = db.felhasznaloBejelentkezes(email, jelszo)
+
+    const token = jwt.sign({ email: email }, process.env.JWT_SECRET, {
+        expiresIn: '1d',
+    })
+    
+    response.cookie('token', token, { httpOnly: true })
+    result
+    .then(data => response.json({ success: true, data }))
+})
 
 app.listen(process.env.PORT, () => console.log('Fut az app'))

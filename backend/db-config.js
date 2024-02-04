@@ -55,4 +55,36 @@ class DbService {
             console.log(error)
         }
     }
+
+    async felhasznaloBejelentkezes(email, jelszo) {
+        try {
+            const felhasznalo = await new Promise((resolve, reject) => {
+                const query = "SELECT * FROM felhasznalo WHERE felhasznalo_email = ?"
+
+                connection.query(query, [email], (err, result) => {
+                    if (err) reject(new Error(err.message))
+                    resolve(result[0])
+                })
+            })
+
+            if (!felhasznalo) throw new Error('Rossz email vagy jelszó')
+
+            const helyesJelszo = await bcrypt.compare(jelszo, felhasznalo.felhasznalo_jelszo)
+
+            if (!helyesJelszo) throw new Error('Rossz jelszó')
+            else {
+                console.log('Sikeres bejelentkezes')
+            }
+
+            return {
+                keresztnev: felhasznalo.felhasznalo_keresztnev,
+                vezeteknev: felhasznalo.felhasznalo_vezeteknev,
+                email: email
+            }
+
+        } catch (error) { 
+            console.log(error)
+            throw new Error('Sikertelen bejelentkezes')
+        }
+    }
 }
