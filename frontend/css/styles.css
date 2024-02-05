@@ -201,84 +201,130 @@ li {
 /* Hero */
 /* .hero,
 .hero .glide__slides {
-    background-color: var(--grey2);
-    position: relative;
-    height: calc(100vh - 6rem);
-    margin: 0 4rem;
-    overflow: hidden;
+  background-color: var(--grey2);
+  position: relative;
+  height: calc(100vh - 6rem);
+  margin: 0 4rem;
+  overflow: hidden;
 }
 
 .hero .center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 100%;
-    padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100%;
+  padding-top: 3rem;
 }
 
 .hero .left {
-    position: absolute;
-    top: 0%;
-    left: 25rem;
-    opacity: 0;
-    transition: all 1000ms ease-in-out;
+  position: absolute;
+  top: 0%;
+  left: 25rem;
+  opacity: 0;
+  transition: all 1000ms ease-in-out;
 }
 
 .hero .left h1 {
-    font-size: 5rem;
-    margin: 1rem 0;
+  font-size: 5rem;
+  margin: 1rem 0;
 }
 
 .hero .left p {
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
 }
 
 .hero .left .hero-btn {
-    display: inline-block;
-    padding: 1rem 3rem;
-    font-size: 1.6rem;
-    margin-top: 1rem;
-    background-color: var(--green);
-    color: white;
+  display: inline-block;
+  padding: 1rem 3rem;
+  font-size: 1.6rem;
+  margin-top: 1rem;
+  background-color: var(--green);
+  color: white;
 }
 
 .hero .right {
-    flex: 0 0 50%;
-    height: 100%;
-    position: relative;
-    text-align: center;
+  flex: 0 0 50%;
+  height: 100%;
+  position: relative;
+  text-align: center;
 }
 
 .hero .right img {
-    position: absolute;
-    width: 55rem;
-    opacity: 0;
-    transition: all 1000ms ease-in-out;
+  position: absolute;
+  width: 55rem;
+  opacity: 0;
+  transition: all 1000ms ease-in-out;
 }
 
-.hero .right img.img1{
-    width: 85%;
-    right: -25%;
-    bottom: -50%;
+.center .right img.img1 {
+  width: 85%;
+  right: -25%;
+  bottom: -50%;
 }
 
-.hero .right img.img2{
-    width: 90%;
-    right: -40%;
-    bottom: -40%;
+.center .right img.img2 {
+  width: 90%;
+  right: -40%;
+  bottom: -40%;
 }
 
 .glide__slide--active .center .right img {
-    bottom: -3%;
-    opacity: 1;
+  bottom: -3%;
+  opacity: 1;
+}
+
+.glide__slide--active .left {
+  opacity: 1;
+  top: 35%;
+}
+@media only screen and (max-width: 1500px) {
+  .hero .left {
+    left: 0;
   }
-  
+}
+@media only screen and (max-width: 999px) {
   .glide__slide--active .left {
-    opacity: 1;
-    top: 35%;
-  } */
+    top: 15%;
+  }
+
+  .center .right img.img1 {
+    width: 90%;
+  }
+
+  .center .right img.img2 {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 567px) {
+  .center .right img.img1 {
+    width: 30rem;
+  }
+
+  .center .right img.img2 {
+    width: 33rem;
+  }
+
+  .hero,
+  .hero .glide__slides {
+    margin: 0;
+    padding: 0 3rem;
+  }
+
+  .hero .left h1 {
+    font-size: 3rem;
+  }
+
+  .hero .left span {
+    font-size: 1.4rem;
+  }
+  .hero .left p {
+    font-size: 1.5rem;
+    width: 80%;
+  }
+} */
 
 .home {
     min-height: 100vh;
@@ -338,4 +384,62 @@ li {
 }
 .btn:hover{
     letter-spacing: .2rem;
+}
+
+/* Login Form */
+.login-form {
+    padding: 5rem 0;
+    max-width: 50rem;
+    margin: 5rem auto;
+}
+
+.login-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form form h1 {
+    margin-bottom: 1rem;
+}
+
+.login-form form p {
+    margin-bottom: 2rem;
+}
+
+.login-form form label {
+    margin-bottom: 1rem;
+}
+
+.login-form form input {
+    border: 1px solid var(--main-color);
+    outline: none;
+    padding: 1.5rem 0;
+    text-indent: 1rem;
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+}
+
+.login-form form input::placeholder {
+    font-size: 1.6rem;
+    color: #222;
+}
+
+.login-form form .buttons {
+    margin-top: 1rem;
+}
+
+.login-form form button {
+    outline: none;
+    border: none;
+    font-size: 1.6rem;
+    padding: 1rem 3rem;
+    margin-right: 1.5rem;
+    background-color: var(--white);
+    color: var(--black);
+    cursor: pointer;
+}
+
+.login-form form p a {
+    color: dodgerblue;
 }
