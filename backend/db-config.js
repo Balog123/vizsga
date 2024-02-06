@@ -87,4 +87,80 @@ class DbService {
             throw new Error('Sikertelen bejelentkezes')
         }
     }
+
+    async admin_felhasznaloFelvetel(keresztnev, vezeteknev, email, jelszo) {
+        try {
+            const hashJelszo = await bcrypt.hash(jelszo, 8)
+            await new Promise((resolve, reject) => {
+                const emailEllenorzes = "SELECT felhasznalo_email FROM felhasznalo WHERE felhasznalo_email = ?"
+
+                connection.query(emailEllenorzes, [email], (error, result) => {
+                    if (result[0]) console.log('Ez az email már foglalt')
+                    else {
+                        const query = "INSERT INTO felhasznalo (felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_email, felhasznalo_jelszo) VALUES (?,?,?,?)"
+
+                        connection.query(query, [keresztnev, vezeteknev, email, hashJelszo], (err, res) => {
+                            if (err) reject(new Error(err.message))
+                        })
+                    }
+
+                })
+
+            })
+            return {
+                keresztnev: keresztnev,
+                vezeteknev: vezeteknev,
+                email: email,
+                jelszo: hashJelszo
+            } 
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async admin_felhasznaloTorles(keresztnev, vezeteknev, email, jelszo) {
+        try {
+            await new Promise((resolve, reject) => {
+                const query = "DELETE FROM felhasznalo WHERE felhasznalo_keresztnev = ? AND felhasznalo_vezeteknev = ? AND felhasznalo_email = ? AND felhasznalo_jelszo = ?"
+                connection.query(query, [keresztnev, vezeteknev, email, jelszo], (error, result) => {
+                    if (error) {
+                        reject(new Error(error.message))
+                    } else {
+                        if (result.affectedRows === 0) {
+                            console.log("Nincs olyan felhasználó az adatbázisban, akinek ezek a paraméterek megfelelnének.")
+                        } else {
+                            console.log("Felhasználó sikeresen törölve.")
+                            resolve()
+                        }
+                    }
+                })
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async admin_felhasznaloModosit(keresztnev, vezeteknev, email, jelszo) {
+        try {
+            const hashJelszo = await bcrypt.hash(jelszo, 8)
+
+            await new Promise((resolve, reject) => {
+            const query = "UPDATE felhasznalo SET felhasznalo_keresztnev = ?, felhasznalo_vezeteknev = ?, felhasznalo_jelszo = ? WHERE felhasznalo_email = ?"
+            connection.query(query, [keresztnev, vezeteknev, hashJelszo, email], (error, result) => {
+                if (error) {
+                    reject(new Error(error.message))
+                } else {
+                    if (result.affectedRows === 0) {
+                        console.log("Nincs olyan felhasználó az adatbázisban, akinek ezek a paraméterek megfelelnének.")
+                    } else {
+                        console.log("Felhasználó sikeresen módosítva.")
+                        resolve()
+                    }
+                }
+            })
+        })
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
