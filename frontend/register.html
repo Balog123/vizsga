@@ -94,19 +94,20 @@
                     <a href="login.html">Jelentkezzen be</a>
                 </p>
 
+                <label for="email">Keresztnév</label>
+                <input type="text" placeholder="Keresztnév" name="firstname" id="registerFirstName" required />
+
+                <label for="email">Vezetéknév</label>
+                <input type="text" placeholder="Vezetéknév" name="lastname" id="registerLastName" required />
+
                 <label for="email">Email cím</label>
-                <input type="text" placeholder="Enter cím" name="email" required />
+                <input type="text" placeholder="Email cím" name="email" id="registerEmail" required />
 
                 <label for="psw">Jelszó</label>
-                <input type="password" placeholder="Jelszó" name="psw" required />
+                <input type="password" placeholder="Jelszó" name="psw" id="registerPsw" required />
 
                 <label for="psw-repeat">Jelszó ismét</label>
-                <input type="password" placeholder="Jelszó ismét" name="psw-repeat" required />
-
-                <label>
-                    <input type="checkbox" checked="checked" name="remember" style="margin-bottom: 15px" />
-                    Emlékezz rám
-                </label>
+                <input type="password" placeholder="Jelszó ismét" name="pswRepeat" id="registerPswRepeat" required />
 
                 <p>
                     Fiókja létrehozásával elfogadja
@@ -114,8 +115,8 @@
                 </p>
 
                 <div class="buttons">
-                    <button type="button" class="cancelbtn">Mégsem</button>
-                    <button type="submit" class="signupbtn">Regisztráció</button>
+                    <button type="button" class="cancelbtn" id="cancelbtn">Mégsem</button>
+                    <button type="submit" class="signupbtn" id="registerbtn">Regisztráció</button>
                 </div>
             </form>
         </div>
