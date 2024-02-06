@@ -135,6 +135,12 @@ class DbService {
                     }
                 })
             })
+            return {
+                keresztnev: keresztnev,
+                vezeteknev: vezeteknev,
+                email: email,
+                jelszo: hashJelszo
+            } 
         } catch (error) {
             console.log(error)
         }
@@ -159,8 +165,32 @@ class DbService {
                 }
             })
         })
+        return {
+            keresztnev: keresztnev,
+            vezeteknev: vezeteknev,
+            email: email,
+            jelszo: hashJelszo
+        } 
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    async admin_felhasznaloOlv() {
+        try {
+            const query = "SELECT felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_email FROM felhasznalo";
+            connection.query(query, (error, results) => {
+                if (error) {
+                    throw error;
+                } else {
+                    console.log("Felhasználók:");
+                    results.forEach(row => {
+                        console.log(`${row.felhasznalo_keresztnev} ${row.felhasznalo_vezeteknev} (${row.felhasznalo_email})`);
+                    });
+                }
+            });
+        } catch (error) {
+            console.error("Hiba történt a felhasználók lekérdezése közben:", error);
         }
     }
 }

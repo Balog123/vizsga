@@ -42,4 +42,48 @@ app.post('/bejelentkezes', (request, response) => {
     .then(data => response.json({ success: true, data }))
 })
 
+app.post('/admin-felhasznaloreg', (request, response) => {
+    const { keresztnev, vezeteknev, email, jelszo } = request.body
+    const db = dbService.getDbServiceInstance()
+
+    const result = db.admin_felhasznaloFelvetel(keresztnev, vezeteknev, email, jelszo)
+
+    result
+    .then(data => response.json({ data: data }))
+    .catch(err => console.log(err))
+})
+
+app.delete('/admin-felhasznalotorles', (request, response) => {
+    const { keresztnev, vezeteknev, email, jelszo } = request.body
+    const db = dbService.getDbServiceInstance()
+
+    const result = db.admin_felhasznaloTorles(keresztnev, vezeteknev, email, jelszo)
+
+    result
+    .then(data => response.json({ data: data }))
+    .catch(err => console.log(err))
+})
+
+app.put('/admin-felhasznalomodosit', (request, response) => {
+    const { keresztnev, vezeteknev, email, jelszo } = request.body
+    const db = dbService.getDbServiceInstance()
+
+    const result = db.admin_felhasznaloModosit(keresztnev, vezeteknev, email, jelszo)
+
+    result
+    .then(data => response.json({ data: data }))
+    .catch(err => console.log(err))
+})
+
+app.get('/admin-felhasznaloolvas', (request, response) => {
+    const db = dbService.getDbServiceInstance()
+    const result = db.admin_felhasznaloOlv()
+
+    result
+    .then(data => response.json({ data: data }))
+    .catch(err => console.log(err))
+})
+
+
+
 app.listen(process.env.PORT, () => console.log('Fut az app'))
