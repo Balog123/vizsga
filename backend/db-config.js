@@ -23,7 +23,7 @@ connection.connect((err) => {
 
 class DbService {
     static getDbServiceInstance() {
-        return instance ? instance : new DbService();
+        return instance ? instance : new DbService()
     }
 
     async felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo) {
@@ -164,3 +164,5 @@ class DbService {
         }
     }
 }
+
+module.exports = DbService

@@ -6,3 +6,5 @@ if(hamburger) {
         navList.classList.toggle("open");
     });
 }
+
+
