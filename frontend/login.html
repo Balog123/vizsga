@@ -87,36 +87,38 @@
     <!-- Login -->
     <div class="container">
         <div class="login-form">
-            <form action="">
+            <form action="/bejelentkezes" method="POST">
                 <h1>Bejelentkezés</h1>
                 <p>
                     Bejelentkezéshez adja meg adatait, ha még nincs fiókja
                     <a href="register.html">Regisztráljon be</a>
                 </p>
 
-                <label for="email">Email cím</label>
-                <input type="text" placeholder="Enter cím" name="email" required />
+                <label for="loginEmail">Email cím</label>
+                <input type="email" placeholder="Email cím" name="email" id="loginEmail" required />
 
-                <label for="psw">Jelszó</label>
-                <input type="password" placeholder="Jelszó" name="psw" required />
+                <label for="loginPsw">Jelszó</label>
+                <input type="password" placeholder="Jelszó" name="psw" id="loginPsw" required />
 
-                <label for="psw-repeat">Jelszó ismét</label>
-                <input type="password" placeholder="Jelszó ismét" name="psw-repeat" required />
+                <label for="loginPswRepeat">Jelszó ismét</label>
+                <input type="password" placeholder="Jelszó ismét" name="loginPswRepeat" id="loginPswRepeat" required />
 
                 <label>
                     <input type="checkbox" checked="checked" name="remember" style="margin-bottom: 15px" />
                     Emlékezz rám
                 </label>
 
-                <div class="buttons">
-                    <button type="button" class="cancelbtn">Mégsem</button>
-                    <button type="submit" class="signupbtn">Regisztráció</button>
+                <h1 id="sikeres-bejelentkezes-uzenet"></h1>
+                <div class= "buttons">
+                    <button type="button" class="cancelbtn" id="cancelbtn">Mégsem</button>
+                    <button type="button" class="signupbtn" id="loginbtn">Bejelentkezés</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- indexjs -->
+    <script src="./js/login.js"></script>
+
     <script src="./js/script.js"></script>
 
 </body>

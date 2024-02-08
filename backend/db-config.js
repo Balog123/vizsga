@@ -23,7 +23,7 @@ connection.connect((err) => {
 
 class DbService {
     static getDbServiceInstance() {
-        return instance ? instance : new DbService();
+        return instance ? instance : new DbService()
     }
 
     async felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo) {
@@ -87,4 +87,112 @@ class DbService {
             throw new Error('Sikertelen bejelentkezes')
         }
     }
+
+    async admin_felhasznaloFelvetel(keresztnev, vezeteknev, email, jelszo) {
+        try {
+            const hashJelszo = await bcrypt.hash(jelszo, 8)
+            await new Promise((resolve, reject) => {
+                const emailEllenorzes = "SELECT felhasznalo_email FROM felhasznalo WHERE felhasznalo_email = ?"
+
+                connection.query(emailEllenorzes, [email], (error, result) => {
+                    if (result[0]) console.log('Ez az email már foglalt')
+                    else {
+                        const query = "INSERT INTO felhasznalo (felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_email, felhasznalo_jelszo) VALUES (?,?,?,?)"
+
+                        connection.query(query, [keresztnev, vezeteknev, email, hashJelszo], (err, res) => {
+                            if (err) reject(new Error(err.message))
+                        })
+                    }
+
+                })
+
+            })
+            return {
+                keresztnev: keresztnev,
+                vezeteknev: vezeteknev,
+                email: email,
+                jelszo: hashJelszo
+            } 
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async admin_felhasznaloTorles(keresztnev, vezeteknev, email, jelszo) {
+        try {
+            await new Promise((resolve, reject) => {
+                const query = "DELETE FROM felhasznalo WHERE felhasznalo_keresztnev = ? AND felhasznalo_vezeteknev = ? AND felhasznalo_email = ? AND felhasznalo_jelszo = ?"
+                connection.query(query, [keresztnev, vezeteknev, email, jelszo], (error, result) => {
+                    if (error) {
+                        reject(new Error(error.message))
+                    } else {
+                        if (result.affectedRows === 0) {
+                            console.log("Nincs olyan felhasználó az adatbázisban, akinek ezek a paraméterek megfelelnének.")
+                        } else {
+                            console.log("Felhasználó sikeresen törölve.")
+                            resolve()
+                        }
+                    }
+                })
+            })
+            return {
+                keresztnev: keresztnev,
+                vezeteknev: vezeteknev,
+                email: email,
+                jelszo: hashJelszo
+            } 
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async admin_felhasznaloModosit(keresztnev, vezeteknev, email, jelszo) {
+        try {
+            const hashJelszo = await bcrypt.hash(jelszo, 8)
+
+            await new Promise((resolve, reject) => {
+            const query = "UPDATE felhasznalo SET felhasznalo_keresztnev = ?, felhasznalo_vezeteknev = ?, felhasznalo_jelszo = ? WHERE felhasznalo_email = ?"
+            connection.query(query, [keresztnev, vezeteknev, hashJelszo, email], (error, result) => {
+                if (error) {
+                    reject(new Error(error.message))
+                } else {
+                    if (result.affectedRows === 0) {
+                        console.log("Nincs olyan felhasználó az adatbázisban, akinek ezek a paraméterek megfelelnének.")
+                    } else {
+                        console.log("Felhasználó sikeresen módosítva.")
+                        resolve()
+                    }
+                }
+            })
+        })
+        return {
+            keresztnev: keresztnev,
+            vezeteknev: vezeteknev,
+            email: email,
+            jelszo: hashJelszo
+        } 
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async admin_felhasznaloOlv() {
+        try {
+            const query = "SELECT felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_email FROM felhasznalo";
+            connection.query(query, (error, results) => {
+                if (error) {
+                    throw error;
+                } else {
+                    console.log("Felhasználók:");
+                    results.forEach(row => {
+                        console.log(`${row.felhasznalo_keresztnev} ${row.felhasznalo_vezeteknev} (${row.felhasznalo_email})`);
+                    });
+                }
+            });
+        } catch (error) {
+            console.error("Hiba történt a felhasználók lekérdezése közben:", error);
+        }
+    }
 }
+
+module.exports = DbService

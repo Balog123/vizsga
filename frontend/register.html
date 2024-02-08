@@ -28,7 +28,7 @@
 
     <div class="navigation">
         <div class="nav-center container d-flex">
-            <a href="index.html" class="logo">
+            <a href="/" class="logo">
                 <h1>hm</h1>
             </a>
 
@@ -50,7 +50,7 @@
                 </li>
 
                 <li class="icons d-flex">
-                    <a href="login.html" class="icon"><i class="bx bx-user"></i></a>
+                    <a href="/bejelentkezes" class="icon"><i class="bx bx-user"></i></a>
                     <div class="icon"><i class="bx bx-search"></i></div>
                     <div class="icon">
                         <i class="bx bx-heart"></i>
@@ -65,7 +65,7 @@
 
             <!-- Icons -->
             <div class="icons d-flex">
-                <a href="login.html" class="icon"><i class="bx bx-user"></i></a>
+                <a href="/bejelentkezes" class="icon"><i class="bx bx-user"></i></a>
                 <div class="icon"><i class="bx bx-search"></i></div>
                 <div class="icon">
                     <i class="bx bx-heart"></i>
@@ -87,26 +87,27 @@
     <!-- Login -->
     <div class="container">
         <div class="login-form">
-            <form action="">
+            <form action="/regisztracio" method="POST">
                 <h1>Regisztráció</h1>
                 <p>
                     Új fiók regisztrálásához adja meg adatait, ha már van fiókja
-                    <a href="login.html">Jelentkezzen be</a>
+                    <a href="/bejelentkezes">Jelentkezzen be</a>
                 </p>
 
-                <label for="email">Email cím</label>
-                <input type="text" placeholder="Enter cím" name="email" required />
+                <label for="registerFirstName">Keresztnév</label>
+                <input type="text" placeholder="Keresztnév" name="firstname" id="registerFirstName" required />
 
-                <label for="psw">Jelszó</label>
-                <input type="password" placeholder="Jelszó" name="psw" required />
+                <label for="registerLastName">Vezetéknév</label>
+                <input type="text" placeholder="Vezetéknév" name="lastname" id="registerLastName" required />
 
-                <label for="psw-repeat">Jelszó ismét</label>
-                <input type="password" placeholder="Jelszó ismét" name="psw-repeat" required />
+                <label for="registerEmail">Email cím</label>
+                <input type="email" placeholder="Email cím" name="email" id="registerEmail" required />
 
-                <label>
-                    <input type="checkbox" checked="checked" name="remember" style="margin-bottom: 15px" />
-                    Emlékezz rám
-                </label>
+                <label for="registerPsw">Jelszó</label>
+                <input type="password" placeholder="Jelszó" name="psw" id="registerPsw" required />
+
+                <label for="registerPswRepeat">Jelszó ismét</label>
+                <input type="password" placeholder="Jelszó ismét" name="pswRepeat" id="registerPswRepeat" required />
 
                 <p>
                     Fiókja létrehozásával elfogadja
@@ -114,14 +115,15 @@
                 </p>
 
                 <div class="buttons">
-                    <button type="button" class="cancelbtn">Mégsem</button>
-                    <button type="submit" class="signupbtn">Regisztráció</button>
+                    <button type="button" class="cancelbtn" id="cancelbtn">Mégsem</button>
+                    <button type="button" class="signupbtn" id="registerbtn">Regisztráció</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- indexjs -->
+    <script src="./js/register.js"></script>
+
     <script src="./js/script.js"></script>
 
 </body>
