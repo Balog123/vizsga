@@ -16,6 +16,14 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../frontend','index.html'))
 })
 
+app.get('/regisztracio', function(req, res) {
+    res.sendFile(path.join(__dirname, '../frontend','register.html'))
+})
+
+app.get('/bejelentkezes', function(req, res) {
+    res.sendFile(path.join(__dirname, '../frontend','login.html'))
+})
+
 app.post('/regisztracio', (request, response) => {
     const { keresztnev, vezeteknev, email, jelszo } = request.body
     const db = dbService.getDbServiceInstance()
