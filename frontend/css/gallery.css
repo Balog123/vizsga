@@ -1,0 +1,109 @@
+/* Betűtípos */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+/* Alap reset */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+    --white: #fff;
+    /* --black: #222; */
+    --green: #6ebe02;
+    --grey1: #f0f0f0;
+    --grey2: #e9d7d3;
+  
+    --main-color: #4D5061;
+    --black: #13131a;
+    --bg: #CCCCCC;
+    --border: .1rem solid rgba(255, 255, 255.3);
+    --orange: orange;
+  }
+
+  html {
+    font-size: 62.5%;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.6rem;
+    background-color: var(--bg);
+    color: var(--black);
+    font-weight: 400;
+    font-style: normal;
+  }
+
+.szoveg {
+    text-align: center;
+    padding: 10rem;
+}
+.szoveg h1 {
+    text-transform: uppercase;
+    font-size: 5rem;
+    font-weight: 500;
+}
+.szoveg h2 {
+    font-size: 3rem;
+    padding: 3rem;
+    font-weight: 200;
+}
+
+.doboz {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12rem 0 3.5rem 0;
+}
+.doboz2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 3.5rem 0;
+}
+.doboz3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0 12rem 0;
+}
+
+.containergallery {
+  width: 100%;
+  max-width: 1000px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1.25rem;
+  transition: all 400ms;
+}
+
+.card {
+  flex: 1;
+  height: 100%;
+  transition: all 400ms;
+  cursor: pointer;
+}
+.card > img {
+  display: block;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card:nth-child(odd) {
+  translate: 0 -20px;
+}
+.card:nth-child(even) {
+  translate: 0 20px;
+}
+
+.container:hover .card:not(:hover) {
+  filter: grayscale(100%);
+}
+.card:hover {
+  flex: 10;
+}
