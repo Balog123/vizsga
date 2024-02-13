@@ -50,6 +50,12 @@ app.post('/bejelentkezes', (request, response) => {
     .then(data => response.json({ success: true, data }))
 })
 
+app.get('/termek', async (req, res) => {
+    const db = dbService.getDbServiceInstance()
+    const termekInformacio = await db.termekMegjelenites()
+    res.json({ termekInformacio })
+})
+
 app.post('/admin-felhasznaloreg', (request, response) => {
     const { keresztnev, vezeteknev, email, jelszo } = request.body
     const db = dbService.getDbServiceInstance()

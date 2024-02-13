@@ -88,6 +88,23 @@ class DbService {
         }
     }
 
+    async termekMegjelenites() {
+        try {
+            const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id LIMIT 1"
+            const termekInformacio = await new Promise((resolve, reject) => {
+                connection.query(query, (err, result) => {
+                    if (err) reject(new Error(err.message))
+                    resolve(result[0]);
+                });
+            });
+    
+            return termekInformacio
+        } catch (error) {
+            console.log(error)
+            throw new Error('Hiba a termék információ lekérése során')
+        }
+    }
+
     async admin_felhasznaloFelvetel(keresztnev, vezeteknev, email, jelszo) {
         try {
             const hashJelszo = await bcrypt.hash(jelszo, 8)
