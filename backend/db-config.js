@@ -88,22 +88,45 @@ class DbService {
         }
     }
 
+    // async termekMegjelenites() {
+    //     try {
+    //         const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id LIMIT 1"
+    //         const termekInformacio = await new Promise((resolve, reject) => {
+    //             connection.query(query, (err, result) => {
+    //                 if (err) reject(new Error(err.message))
+    //                 resolve(result[0]);
+    //             });
+    //         });
+    
+    //         return termekInformacio
+    //     } catch (error) {
+    //         console.log(error)
+    //         throw new Error('Hiba a termék információ lekérése során')
+    //     }
+    // }
     async termekMegjelenites() {
         try {
-            const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id LIMIT 1"
-            const termekInformacio = await new Promise((resolve, reject) => {
+            const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id";
+            return await new Promise((resolve, reject) => {
                 connection.query(query, (err, result) => {
-                    if (err) reject(new Error(err.message))
-                    resolve(result[0]);
+                    if (err) {
+                        reject(new Error(err.message));
+                    } else {
+                        const termekInformaciok = result.map(row => ({
+                            termek_nev: row.termek_nev,
+                            termek_leiras: row.termek_leiras,
+                            kep_url1: row.kep_url1
+                        }));
+                        resolve(termekInformaciok);
+                    }
                 });
             });
-    
-            return termekInformacio
         } catch (error) {
-            console.log(error)
-            throw new Error('Hiba a termék információ lekérése során')
+            console.log(error);
+            throw new Error('Hiba a termék információ lekérése során');
         }
     }
+    
 
     async admin_felhasznaloFelvetel(keresztnev, vezeteknev, email, jelszo) {
         try {
