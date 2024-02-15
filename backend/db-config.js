@@ -90,7 +90,7 @@ class DbService {
 
     // async termekMegjelenites() {
     //     try {
-    //         const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id LIMIT 1"
+    //         const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id"
     //         const termekInformacio = await new Promise((resolve, reject) => {
     //             connection.query(query, (err, result) => {
     //                 if (err) reject(new Error(err.message))
@@ -104,20 +104,16 @@ class DbService {
     //         throw new Error('Hiba a termék információ lekérése során')
     //     }
     // }
+
     async termekMegjelenites() {
         try {
             const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id";
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 connection.query(query, (err, result) => {
                     if (err) {
-                        reject(new Error(err.message));
+                        reject(err);
                     } else {
-                        const termekInformaciok = result.map(row => ({
-                            termek_nev: row.termek_nev,
-                            termek_leiras: row.termek_leiras,
-                            kep_url1: row.kep_url1
-                        }));
-                        resolve(termekInformaciok);
+                        resolve(result);
                     }
                 });
             });
