@@ -1,4 +1,5 @@
 const express = require('express')
+const app = express()
 const cors = require('cors')
 const dotenv = require('dotenv')
 dotenv.config()
@@ -6,10 +7,9 @@ const path = require('path');
 const dbService = require('./db-config')
 const jwt = require('jsonwebtoken')
 
-const app = express()
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({ extended : false }))
+app.use(express.urlencoded({ extended : true }))
 app.use(express.static(path.join(__dirname, '../frontend')))
 
 app.get('/', function(req, res) {
@@ -24,15 +24,29 @@ app.get('/bejelentkezes', function(req, res) {
     res.sendFile(path.join(__dirname, '../frontend','login.html'))
 })
 
-app.post('/regisztracio', (request, response) => {
+app.post('/regisztracio', function (request, response) {
     const { keresztnev, vezeteknev, email, jelszo } = request.body
     const db = dbService.getDbServiceInstance()
+
+    console.log(keresztnev)
+    console.log(vezeteknev)
+    console.log(email)
+    console.log(jelszo)
+
 
     const result = db.felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo)
 
     result
-    .then(data => response.json({ data: data }))
-    .catch(err => console.log(err))
+    .then(data => {
+        response.status(200).json({ success: true, data });
+    })
+    .catch(err => {
+        console.log(err);
+        response.status(500).json({ success: false, error: 'Szerveroldali hiba történt' });
+    });
+
+    /*.then(data => response.json({ success: true, data}))
+    .catch(err => console.log(err))*/
 })
 
 app.post('/bejelentkezes', (request, response) => {
@@ -50,23 +64,11 @@ app.post('/bejelentkezes', (request, response) => {
     .then(data => response.json({ success: true, data }))
 })
 
-// app.get('/termek', async (req, res) => {
-//     const db = dbService.getDbServiceInstance()
-//     const termekInformacio = await db.termekMegjelenites()
-//     res.json({ termekInformacio })
-// })
 app.get('/termek', async (req, res) => {
-    const db = dbService.getDbServiceInstance();
-    const termekInformacio = await db.termekMegjelenites();
-    
-    console.log("Termékek:");
-    termekInformacio.forEach(row => {
-        console.log(`${row.termek_nev} - ${row.termek_leiras} - ${row.kep_url1}`);
-    });
-
-    res.json({ termekInformacio });
-});
-
+    const db = dbService.getDbServiceInstance()
+    const termekInformacio = await db.termekMegjelenites()
+    res.json({ termekInformacio })
+})
 
 app.post('/admin-felhasznaloreg', (request, response) => {
     const { keresztnev, vezeteknev, email, jelszo } = request.body
