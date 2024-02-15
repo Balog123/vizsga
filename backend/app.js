@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 const cors = require('cors')
 const dotenv = require('dotenv')
 dotenv.config()
@@ -9,7 +10,8 @@ const jwt = require('jsonwebtoken')
 
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({ extended : true }))
+app.use(bodyParser.json())
+app.use(express.urlencoded({ extended : false }))
 app.use(express.static(path.join(__dirname, '../frontend')))
 
 app.get('/', function(req, res) {
@@ -38,7 +40,11 @@ app.post('/regisztracio', function (request, response) {
 
     result
     .then(data => {
-        response.status(200).json({ success: true, data });
+        if (data) {
+            response.status(200).json({ success: true, data });
+        } else {
+            response.status(400).json({ success: false, error: 'Ez az email már foglalt' });
+        }
     })
     .catch(err => {
         console.log(err);
