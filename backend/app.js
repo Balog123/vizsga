@@ -50,11 +50,23 @@ app.post('/bejelentkezes', (request, response) => {
     .then(data => response.json({ success: true, data }))
 })
 
+// app.get('/termek', async (req, res) => {
+//     const db = dbService.getDbServiceInstance()
+//     const termekInformacio = await db.termekMegjelenites()
+//     res.json({ termekInformacio })
+// })
 app.get('/termek', async (req, res) => {
-    const db = dbService.getDbServiceInstance()
-    const termekInformacio = await db.termekMegjelenites()
-    res.json({ termekInformacio })
-})
+    const db = dbService.getDbServiceInstance();
+    const termekInformacio = await db.termekMegjelenites();
+    
+    console.log("Termékek:");
+    termekInformacio.forEach(row => {
+        console.log(`${row.termek_nev} - ${row.termek_leiras} - ${row.kep_url1}`);
+    });
+
+    res.json({ termekInformacio });
+});
+
 
 app.post('/admin-felhasznaloreg', (request, response) => {
     const { keresztnev, vezeteknev, email, jelszo } = request.body
