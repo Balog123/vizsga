@@ -60,27 +60,25 @@ class DbService {
     async felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo) {
         try {
             const hashJelszo = await bcrypt.hash(jelszo, 8);
-            const emailEllenorzes = "SELECT felhasznalo_email FROM felhasznalo WHERE felhasznalo_email = ?";
+            const emailEllenorzes = "SELECT felhasznalo_email FROM felhasznalo WHERE felhasznalo_email = ?"
             
-            // Ellenőrizd az email címet az adatbázisban
             const result = await new Promise((resolve, reject) => {
                 connection.query(emailEllenorzes, [email], (error, result) => {
-                    if (error) reject(error);
-                    resolve(result);
+                    if (error) reject(error)
+                    resolve(result)
                 });
             });
     
             if (result.length > 0) {
-                console.log('Ez az email már foglalt');
-                return null; // vagy valamilyen hibaüzenet
+                console.log('Ez az email már foglalt')
+                return null
             } else {
-                const query = "INSERT INTO felhasznalo (felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_email, felhasznalo_jelszo) VALUES (?,?,?,?)";
+                const query = "INSERT INTO felhasznalo (felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_email, felhasznalo_jelszo) VALUES (?,?,?,?)"
                 
-                // Új felhasználó hozzáadása az adatbázishoz
                 await new Promise((resolve, reject) => {
                     connection.query(query, [keresztnev, vezeteknev, email, hashJelszo], (err, res) => {
-                        if (err) reject(err);
-                        resolve(res);
+                        if (err) reject(err)
+                        resolve(res)
                     });
                 });
     
@@ -92,8 +90,8 @@ class DbService {
                 };
             }
         } catch (error) {
-            console.error(error);
-            return null; // vagy valamilyen hibaüzenet
+            console.error(error)
+            return null
         }
     }
     

@@ -39,20 +39,17 @@ app.post('/regisztracio', function (request, response) {
     const result = db.felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo)
 
     result
-    .then(data => {
-        if (data) {
-            response.status(200).json({ success: true, data });
+    .then(result => {
+        if (result) {
+            response.status(200).json({ success: true, result })
         } else {
-            response.status(400).json({ success: false, error: 'Ez az email már foglalt' });
+            response.status(400).json({ success: false, error: 'Ez az email már foglalt' })
         }
     })
     .catch(err => {
-        console.log(err);
-        response.status(500).json({ success: false, error: 'Szerveroldali hiba történt' });
-    });
-
-    /*.then(data => response.json({ success: true, data}))
-    .catch(err => console.log(err))*/
+        console.log(err)
+        response.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
+    })
 })
 
 app.post('/bejelentkezes', (request, response) => {

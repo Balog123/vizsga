@@ -15,7 +15,6 @@ registerBtn.onclick = function () {
         fetch('http://localhost:8000/regisztracio', {
             method: 'POST',
             headers: { 'Content-type' : 'application/json' },
-            //headers: { 'Content-type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
                 keresztnev: keresztnev,
                 vezeteknev: vezeteknev,
@@ -24,21 +23,18 @@ registerBtn.onclick = function () {
             })
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('A szerver hibát adott vissza');
-            }
-            return response.json();
+            return response.json()
         })
         .then(data => {
-            console.log(data);
+            console.log(data)
             if (data.success) {
                 window.location.href = '/bejelentkezes';
             } else {
-                document.getElementById('sikertelen-reg').innerText = 'Ez a felhasználó már regisztrálva van.';
+                document.getElementById('sikertelen-reg').innerHTML = 'Ez a felhasználó már regisztrálva van.'
             }
         })
         .catch(error => {
-            console.log('Hiba történt:', error);
+            console.log('Hiba történt:', error)
         });
     } catch (error) {
         console.log(error)
