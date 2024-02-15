@@ -26,7 +26,8 @@ class DbService {
         return instance ? instance : new DbService()
     }
 
-    async felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo) {
+
+    /*async felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo) {
         try {
             const hashJelszo = await bcrypt.hash(jelszo, 8)
             await new Promise((resolve, reject) => {
@@ -54,7 +55,48 @@ class DbService {
         } catch (error) {
             console.log(error)
         }
+    }*/
+
+    async felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo) {
+        try {
+            const hashJelszo = await bcrypt.hash(jelszo, 8);
+            const emailEllenorzes = "SELECT felhasznalo_email FROM felhasznalo WHERE felhasznalo_email = ?";
+            
+            // Ellenőrizd az email címet az adatbázisban
+            const result = await new Promise((resolve, reject) => {
+                connection.query(emailEllenorzes, [email], (error, result) => {
+                    if (error) reject(error);
+                    resolve(result);
+                });
+            });
+    
+            if (result.length > 0) {
+                console.log('Ez az email már foglalt');
+                return null; // vagy valamilyen hibaüzenet
+            } else {
+                const query = "INSERT INTO felhasznalo (felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_email, felhasznalo_jelszo) VALUES (?,?,?,?)";
+                
+                // Új felhasználó hozzáadása az adatbázishoz
+                await new Promise((resolve, reject) => {
+                    connection.query(query, [keresztnev, vezeteknev, email, hashJelszo], (err, res) => {
+                        if (err) reject(err);
+                        resolve(res);
+                    });
+                });
+    
+                return {
+                    keresztnev: keresztnev,
+                    vezeteknev: vezeteknev,
+                    email: email,
+                    jelszo: hashJelszo
+                };
+            }
+        } catch (error) {
+            console.error(error);
+            return null; // vagy valamilyen hibaüzenet
+        }
     }
+    
 
     async felhasznaloBejelentkezes(email, jelszo) {
         try {
@@ -87,6 +129,42 @@ class DbService {
             throw new Error('Sikertelen bejelentkezes')
         }
     }
+
+    // async termekMegjelenites() {
+    //     try {
+    //         const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id"
+    //         const termekInformacio = await new Promise((resolve, reject) => {
+    //             connection.query(query, (err, result) => {
+    //                 if (err) reject(new Error(err.message))
+    //                 resolve(result[0]);
+    //             });
+    //         });
+    
+    //         return termekInformacio
+    //     } catch (error) {
+    //         console.log(error)
+    //         throw new Error('Hiba a termék információ lekérése során')
+    //     }
+    // }
+
+    async termekMegjelenites() {
+        try {
+            const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id";
+            return new Promise((resolve, reject) => {
+                connection.query(query, (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+            });
+        } catch (error) {
+            console.log(error);
+            throw new Error('Hiba a termék információ lekérése során');
+        }
+    }
+    
 
     async admin_felhasznaloFelvetel(keresztnev, vezeteknev, email, jelszo) {
         try {
