@@ -26,37 +26,6 @@ class DbService {
         return instance ? instance : new DbService()
     }
 
-
-    /*async felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo) {
-        try {
-            const hashJelszo = await bcrypt.hash(jelszo, 8)
-            await new Promise((resolve, reject) => {
-                const emailEllenorzes = "SELECT felhasznalo_email FROM felhasznalo WHERE felhasznalo_email = ?"
-
-                connection.query(emailEllenorzes, [email], (error, result) => {
-                    if (result[0]) console.log('Ez az email már foglalt')
-                    else {
-                        const query = "INSERT INTO felhasznalo (felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_email, felhasznalo_jelszo) VALUES (?,?,?,?)"
-
-                        connection.query(query, [keresztnev, vezeteknev, email, hashJelszo], (err, res) => {
-                            if (err) reject(new Error(err.message))
-                        })
-                    }
-
-                })
-
-            })
-            return {
-                keresztnev: keresztnev,
-                vezeteknev: vezeteknev,
-                email: email,
-                jelszo: hashJelszo
-            } 
-        } catch (error) {
-            console.log(error)
-        }
-    }*/
-
     async felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo) {
         try {
             const hashJelszo = await bcrypt.hash(jelszo, 8);
@@ -115,8 +84,7 @@ class DbService {
     
             if (!helyesJelszo) throw new Error('Rossz jelszó');
             
-            // Ellenőrizd, hogy a felhasználónak van-e admin jogosultsága
-            const isAdmin = felhasznalo.isAdmin === 1;
+            const isAdmin = felhasznalo.admin === 1;
     
             console.log('Sikeres bejelentkezes');
     
@@ -164,7 +132,7 @@ class DbService {
             console.log(error)
             throw new Error('Sikertelen bejelentkezes')
         }
-    } */
+    }*/
 
     // async termekMegjelenites() {
     //     try {

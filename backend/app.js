@@ -6,14 +6,12 @@ dotenv.config()
 const path = require('path');
 const dbService = require('./db-config')
 const jwt = require('jsonwebtoken')
-const cookieParser = require('cookie-parser')
 
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended : false }))
 app.use(express.static(path.join(__dirname, '../frontend')))
 
-app.use(['/admin', '/admin/*'], authenticateAdmin);
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../frontend','index.html'))
@@ -40,12 +38,6 @@ app.get('/admin',  function(req, res) {
 app.post('/regisztracio', function (request, response) {
     const { keresztnev, vezeteknev, email, jelszo } = request.body
     const db = dbService.getDbServiceInstance()
-
-    console.log(keresztnev)
-    console.log(vezeteknev)
-    console.log(email)
-    console.log(jelszo)
-
 
     const result = db.felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo)
 
@@ -84,43 +76,10 @@ app.post('/bejelentkezes', (request, response) => {
 
     const result = db.felhasznaloBejelentkezes(email, jelszo)
 
-    console.log(email)
-    console.log(jelszo)
-
-    result.then(result => {
-        const isAdmin = result.isAdmin;
-
-        const token = jwt.sign({ email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
-            expiresIn: '1d',
-        });
-
-        response.cookie('token', token, { httpOnly: true });
-
-        if (isAdmin) {
-            response.json({ success: true, result, isAdmin: true})
-        } else {
-            response.json({ success: true, result, isAdmin: false})
-        }
-    })
-    .catch(error => {
-        response.status(500).json({ success: false, error: error.message });
-    });
+    result
+    .then(data => response.status(200).json({ success: true, data}))
+    .catch(error => response.status(500).json({ success: false, error: error.message }));
 })
-
-function authenticateAdmin(req, res, next) {
-    if (req.cookies && req.cookies.token) {
-        const token = req.cookies.token
-        jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-            if (err || !decodedToken || !decodedToken.isAdmin) {
-                res.status(403).json({ success: false, error: 'Nincs jogosultsága az admin oldalhoz' });
-            } else {
-                next(); 
-            }
-        });
-    } else {
-        res.status(401).json({ success: false, error: 'Nincs hitelesítő token' });
-    }
-}
 
 app.get('/termek', async (req, res) => {
     const db = dbService.getDbServiceInstance()
