@@ -6,12 +6,15 @@ dotenv.config()
 const path = require('path');
 const dbService = require('./db-config')
 const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser');
 
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser());
 app.use(express.urlencoded({ extended : false }))
 app.use(express.static(path.join(__dirname, '../frontend')))
 
+app.use(['/admin', '/admin/*'], authenticateAdmin);
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../frontend','index.html'))
@@ -61,14 +64,34 @@ app.post('/regisztracio', function (request, response) {
 
     const result = db.felhasznaloBejelentkezes(email, jelszo)
 
-    const token = jwt.sign({ email: email }, process.env.JWT_SECRET, {
-        expiresIn: '1d',
-    })
-    
-    response.cookie('token', token, { httpOnly: true })
     result
-    .then(data => response.json({ success: true, data }))
+    .then(data => response.status(200).json({ success: true, data}))
+    .catch(error => response.status(500).json({ success: false, error: error.message }));
 })*/
+
+function authenticateAdmin(req, res, next) {
+    console.log("authenticateAdmin middleware called");
+    if (req.cookies && req.cookies.token) {
+        console.log("Token found in cookies:", req.cookies.token);
+        const token = req.cookies.token;
+
+        jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+            if (err) {
+                console.error('Token decoding failed:', err);
+            } else {
+                console.log('Decoded token:', decodedToken);
+                if (decodedToken.isAdmin) {
+                    next(); 
+                } else {
+                    res.status(403).json({ success: false, error: 'Nincs jogosultsága az admin oldalhoz' });
+                }
+            }
+        });
+    } else {
+        console.log("No token found in cookies");
+        res.status(401).json({ success: false, error: 'Nincs hitelesítő token' });
+    }
+}
 
 app.post('/bejelentkezes', (request, response) => {
     const { email, jelszo } = request.body
@@ -76,10 +99,22 @@ app.post('/bejelentkezes', (request, response) => {
 
     const result = db.felhasznaloBejelentkezes(email, jelszo)
 
-    result
-    .then(data => response.status(200).json({ success: true, data}))
-    .catch(error => response.status(500).json({ success: false, error: error.message }));
+    result.then(data => {
+        const isAdmin = data.isAdmin;
+
+        const token = jwt.sign({ email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
+            expiresIn: '1d',
+        });
+
+        response.cookie('token', token, { httpOnly: true });
+
+        response.status(200).json({ success: true, data})
+    })
+    .catch(error => {
+        response.status(500).json({ success: false, error: error.message });
+    });
 })
+
 
 app.get('/termek', async (req, res) => {
     const db = dbService.getDbServiceInstance()
