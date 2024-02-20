@@ -32,6 +32,34 @@ app.get('/termekek', function(req, res) {
     res.sendFile(path.join(__dirname, '../frontend', 'product.html'))
 })
 
+app.get('/termek', async (req, res) => {
+    const db = dbService.getDbServiceInstance()
+    const termekInformacio = await db.termekMegjelenites()
+    res.json({ termekInformacio })
+})
+
+app.get('/termek/:termekId', async (req, res) => {
+    try {
+        const termekId = req.params.termekId;
+        const db = dbService.getDbServiceInstance(); // Példányosítjuk az adatbázis szolgáltatást
+        const termekAdatok = await getTermekById(termekId);
+        res.render('productDetails', { termekAdatok });
+    } catch (error) {
+        console.error('Hiba a termék lekérése során', error);
+        // Kezeljük a hibát, például küldjünk vissza egy hibaüzenetet
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+async function getTermekById(termekId) {
+    const sql = `SELECT * FROM termek WHERE termek_id = ?`;
+    const termekAdatok = await dbService.getDbServiceInstance().query(sql, [termekId]);
+    return termekAdatok;
+}
+
+
+
+
 app.get('/admin',  function(req, res) {
     res.sendFile(path.join(__dirname, '../frontend', 'admin.html'))
 
@@ -114,13 +142,5 @@ app.post('/bejelentkezes', (request, response) => {
         response.status(500).json({ success: false, error: error.message });
     });
 })
-
-
-app.get('/termek', async (req, res) => {
-    const db = dbService.getDbServiceInstance()
-    const termekInformacio = await db.termekMegjelenites()
-    res.json({ termekInformacio })
-})
-
 
 app.listen(process.env.PORT, () => console.log('Fut az app'))
