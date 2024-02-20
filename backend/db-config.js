@@ -134,23 +134,6 @@ class DbService {
         }
     }*/
 
-    // async termekMegjelenites() {
-    //     try {
-    //         const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id"
-    //         const termekInformacio = await new Promise((resolve, reject) => {
-    //             connection.query(query, (err, result) => {
-    //                 if (err) reject(new Error(err.message))
-    //                 resolve(result[0]);
-    //             });
-    //         });
-    
-    //         return termekInformacio
-    //     } catch (error) {
-    //         console.log(error)
-    //         throw new Error('Hiba a termék információ lekérése során')
-    //     }
-    // }
-
     async termekMegjelenites() {
         try {
             const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id";
@@ -167,7 +150,24 @@ class DbService {
             console.log(error);
             throw new Error('Hiba a termék információ lekérése során');
         }
-    }   
+    } 
+    
+    async getTermekById(termekId) {
+        try {
+            const query = "SELECT * FROM Termek WHERE termek_id = ?";
+            const termekAdatok = await new Promise((resolve, reject) => {
+                connection.query(query, [termekId], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result[0]);
+                });
+            });
+    
+            return termekAdatok;
+        } catch (error) {
+            console.log(error);
+            throw new Error('Hiba a termék információ lekérése során');
+        }
+    }    
 }
 
 module.exports = DbService
