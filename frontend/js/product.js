@@ -109,41 +109,34 @@ window.addEventListener("load", () => {
                 const termekItemDiv = document.createElement("div");
                 termekItemDiv.className = "product-item";
 
-                // termekItemDiv.innerHTML = `
-                //     <div class="overlay">
-                //         <a href="productDetails.html?termekId=${termekInformacio.termek_id}" class="product-thumb">
-                //             <img src="${termekInformacio.kep_url1}" alt="Termék kép" style="width: 100%;">
-                //         </a>
-                //     </div>
-                //     <div class="product-info">
-                //         <span>${termekInformacio.termek_nev}</span>
-                //         <a href="productDetails.html?termekId=${termekInformacio.termek_id}">${termekInformacio.termek_leiras}</a>
-                //         <h4>${termekInformacio.termek_ar}</h4>
-                //         <h1><a href="productDetails.html?termekId=1">TESZT</a></h1>
-                //     </div>
-                //     <ul class="icons">
-                //         <li><i class="bx bx-heart"></i></li>
-                //         <li><i class="bx bx-search"></i></li>
-                //         <li><i class="bx bx-cart"></i></li>
-                //     </ul>
-                // `;
+                // Módosított kattintáskezelő
+                termekItemDiv.addEventListener("click", (event) => {
+                    // Ellenőrizze, hogy az ikonra kattintottunk-e
+                    const isSearchIcon = event.target.classList.contains("bx-search");
+
+                    if (isSearchIcon) {
+                        // Átirányítás a productDetails.html oldalra a termék részleteivel
+                        window.location.href = `/termek/${termekInformacio.termek_id}`;
+                    }
+                });
+
                 termekItemDiv.innerHTML = `
-    <div class="overlay">
-        <a href="productDetails.html?termekId=${termekInformacio.termek_id}" class="product-thumb">
-            <img src="${termekInformacio.kep_url1}" alt="Termék kép" style="width: 100%;">
-        </a>
-    </div>
-    <div class="product-info">
-        <span>${termekInformacio.termek_nev}</span>
-        <a href="productDetails.html?termekId=${termekInformacio.termek_id}">${termekInformacio.termek_leiras}</a>
-        <h4>${termekInformacio.termek_ar}</h4>
-    </div>
-    <ul class="icons">
-        <li><i class="bx bx-heart"></i></li>
-        <li><i class="bx bx-search"></i></li>
-        <li><i class="bx bx-cart"></i></li>
-    </ul>
-`;
+                    <div class="overlay">
+                        <a href="#" class="product-thumb">
+                            <img src="${termekInformacio.kep_url1}" alt="Termék kép" style="width: 100%;">
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <span>${termekInformacio.termek_nev}</span>
+                        <p>${termekInformacio.termek_leiras}</p>
+                        <h4>${termekInformacio.termek_ar}</h4>
+                    </div>
+                    <ul class="icons">
+                        <li><i class="bx bx-heart"></i></li>
+                        <li><i class="bx bx-search"></i></li>
+                        <li><i class="bx bx-cart"></i></li>
+                    </ul>
+                `;
 
                 productCenterDiv.appendChild(termekItemDiv);
             });
@@ -152,3 +145,4 @@ window.addEventListener("load", () => {
             console.error("Hiba a termék információ lekérése során", error)
         );
 });
+
