@@ -1,101 +1,87 @@
-table tr td{
-    vertical-align: middle;
-}
-
-td button{
-    margin: 5px;
-}
-
-td button i{
-    font-size: 20px;
-}
-
-
-.modal-header{
-    background: #0d6efd;
-    color: #fff;
-}
-
-.modal-body form {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
     padding: 0;
+    background-color: #f0f0f0;
 }
 
-.modal-body form .imgholder{
-    width: 200px;
-    height: 200px;
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
+h1 {
+    text-align: center;
 }
 
-.imgholder .upload{
-    position: absolute;
-    bottom: 0;
-    left: 10;
+h3 {
+    text-align: center;
+}
+
+#termek_adat {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#termek_adat label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#termek_adat input {
     width: 100%;
-    height: 100px;
-    background: rgba(0,0,0,0.3);
-    display: none;
-    justify-content: center;
-    align-items: center;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#termek_adat button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-.upload i{
-    color: #fff;
-    font-size: 35px;
+#termek_adat button:hover {
+    background-color: #0056b3;
 }
 
-.imgholder:hover .upload{
-    display: flex;
-}
-
-.imgholder .upload input{
-    display: none;
-}
-
-.modal-body form .inputField{
-    flex-basis: 68%;
-    border-left: 5px groove blue;
-    padding-left: 20px;
-}
-
-form .inputField > div{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-form .inputField > div label{
-    font-size: 20px;
-    font-weight: 500;
-}
-
-#userForm form .inputField > div label::after{
-    content: "*";
-    color: red;
-}
-
-form .inputField > div input{
-    width: 75%;
+#sikeres-feltöltés, #sikertelen-feltöltés {
+    max-width: 600px;
+    margin: 20px auto;
     padding: 10px;
-    border: none;
-    outline: none;
-    background: transparent;
-    border-bottom: 2px solid blue;
+    border-radius: 8px;
+    text-align: center;
 }
 
-.modal-footer .submit{
-    font-size: 18px;
+#sikeres-feltöltés {
+    background-color: #d4edda;
+    color: #155724;
 }
 
+#sikertelen-feltöltés {
+    background-color: #f8d7da;
+    color: #721c24;
+}
 
-#readData form .inputField > div input{
-    color: #000;
-    font-size: 18px;
+@media only screen and (max-width: 600px) {
+    #termek_adat {
+        padding: 10px;
+    }
+    
+    #termek_adat input {
+        padding: 6px;
+    }
+    
+    #termek_adat button {
+        padding: 8px;
+    }
+    
+    #sikeres-feltöltés, #sikertelen-feltöltés {
+        padding: 8px;
+    }
 }

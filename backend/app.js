@@ -143,4 +143,20 @@ app.post('/bejelentkezes', (request, response) => {
     });
 })
 
+app.post('/admin/feltoltes', (req, res) => {
+    const { kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body
+    const db = dbService.getDbServiceInstance()
+  
+    const result = db.termekFeltoltes(kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron)
+  
+    result
+      .then((result) => {
+        res.status(200).json({ success: true, result })
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
+      })
+  })
+
 app.listen(process.env.PORT, () => console.log('Fut az app'))

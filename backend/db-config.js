@@ -167,7 +167,46 @@ class DbService {
             console.log(error);
             throw new Error('Hiba a termék információ lekérése során');
         }
-    }    
+    }
+
+    async termekFeltoltes(kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron) {
+        try {
+            const queryKategoria = "INSERT INTO Kategoria (kategoria_nev) VALUES (?)"
+            const queryKep = "INSERT INTO Kep (kep_url1) VALUES (?)"
+            
+            const resultKategoria = await new Promise((resolve, reject) => {
+                connection.query(queryKategoria, [kategoria_nev], (error, result) => {
+                    if (error) reject(error)
+                resolve(result)
+              });
+            });
+          
+            const kategoriaId = resultKategoria.insertId
+          
+            const resultKep = await new Promise((resolve, reject) => {
+                connection.query(queryKep, [kep_url], (error, result) => {
+                    if (error) reject(error)
+                resolve(result)
+              });
+            });
+          
+            const kepId = resultKep.insertId
+          
+            const queryTermek = "INSERT INTO Termek (termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_kategoria_id, termek_raktaron, termek_kep_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            const resultTermek = await new Promise((resolve, reject) => {
+                connection.query(queryTermek, [nev, ar, leiras, szelesseg, magassag, hossz, kategoriaId, raktaron, kepId], (error, result) => {
+                    if (error) reject(error)
+                resolve(result)
+              })
+            })
+          
+            return resultTermek
+        }   
+        catch (error) {
+            console.error(error)
+            throw new Error('Hiba az adatok feltöltésekor')
+        }
+      }
 }
 
 module.exports = DbService
