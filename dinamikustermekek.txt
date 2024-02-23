@@ -1,0 +1,208 @@
+Backend:
+    Szerver: 
+    
+const express = require('express');
+const connection = require('./db');
+require('dotenv').config();
+
+const path = require('path');
+
+
+const app = express();
+const port = 3000;
+
+app.use(express.static('public'));
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
+
+app.use('/js', express.static(path.join(__dirname, 'js')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/products/html', (req, res) => {
+    const query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.kep_id = Kep.kep_id';
+    connection.query(query, (error, results) => {
+        if (error) throw error;
+        res.sendFile(path.join(__dirname, 'public', 'allproducts.html'));
+    });
+});
+
+app.get('/singleproduct/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'singleproduct.html'));
+});
+
+app.get('/products', (req, res, next) => {
+    const query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.kep_id = Kep.kep_id';
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error("Error fetching products:", error);
+            return next(error);
+        }
+        res.json({ products: results });
+    });
+});
+
+app.get('/products/:id', (req, res, next) => {
+    const productId = req.params.id;
+    const query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.kep_id = Kep.kep_id WHERE termek_id = ?';
+    connection.query(query, [productId], (error, results) => {
+        if (error) {
+            console.error("Error fetching product details:", error);
+            return next(error);
+        }
+
+        if (results.length === 0) {
+            res.status(404).json({ error: "Product not found" });
+            return;
+        }
+
+        res.json({ product: results[0] });
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Server listening at http://localhost:${port}`);
+});
+
+    Adatbázis:
+
+const mysql = require('mysql');
+require('dotenv').config();
+
+const connection = mysql.createConnection({
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'allsingleproducts',
+});
+
+connection.connect();
+
+module.exports = connection;
+
+Frontend:
+    allproducts.html: 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products</title>
+</head>
+<body>
+    <h1>All Products</h1>
+    <ul id="productList"></ul>
+
+    <!-- Updated script tag -->
+    <script src="/js/allproducts.js"></script>
+
+</body>
+</html>
+
+    index.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to the Furniture Store</h1>
+    <p>Explore our collection of furniture!</p>
+    <a href="/products/html">View All Products</a>
+</body>
+</html>
+
+    singleproduct.html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Product</title>
+</head>
+<body>
+    <h1>Single Product</h1>
+    <div id="productDetails"></div>
+
+    <!-- Updated script tag -->
+    <script src="/js/singleproduct.js"></script>
+
+</body>
+</html>
+
+    Javascript:
+        allproducts.js:
+
+    window.addEventListener("DOMContentLoaded", () => {
+    fetch("http://localhost:3000/products")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const productList = document.getElementById("productList");
+
+            data.products.forEach(product => {
+                const listItem = document.createElement("li");
+
+                listItem.innerHTML = `
+                    <h2><a href="/singleproduct/${product.termek_id}">${product.termek_nev}</a></h2>
+                    <p>${product.termek_leiras}</p>
+                    <p>Price: $${product.termek_ar}</p>
+                    <a href="/singleproduct/${product.termek_id}">
+                        <img src="${product.kep_url}" alt="${product.termek_nev}" style="width: 300px; height: 300px;">
+                    </a>
+                `;
+
+                productList.appendChild(listItem);
+            });
+        })
+        .catch(error => console.error("Error fetching products:", error));
+});
+
+    singleproduct.js:
+
+    window.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    // const productId = urlParams.get('id');
+    
+    // Get the last part of the pathname (which should be the product ID)
+    const productId = window.location.pathname.split('/').pop();
+
+    if (productId) {
+        fetch(`http://localhost:3000/products/${productId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const productDetails = document.getElementById("productDetails");
+                const product = data.product;
+
+                const productHTML = `
+                    <h2>${product.termek_nev}</h2>
+                    <img src="${product.kep_url}" alt="${product.termek_nev}" style="width: 300px;">
+                    <p>${product.termek_leiras}</p>
+                    <p>Ár: ${product.termek_ar} Ft</p>
+                `;
+
+                productDetails.innerHTML = productHTML;
+            })
+            .catch(error => console.error("Error fetching product details:", error));
+    } else {
+        console.error("Product ID not found in the URL");
+    }
+});
