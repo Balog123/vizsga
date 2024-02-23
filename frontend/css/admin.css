@@ -13,6 +13,49 @@ h3 {
     text-align: center;
 }
 
+#megjelenites {
+    margin: 0 auto;
+    width: 80%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#table img {
+    max-width: 100px; /* Maximális szélesség */
+    max-height: 100px; /* Maximális magasság */
+}
+
+thead th {
+    background-color: #007bff;
+    color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+tbody {
+    height: 200px; /* Állítsa be az tbody magasságát az oldalon való görgetéshez */
+    overflow-y: auto; /* Engedélyezze az oldal görgetését, ha a táblázat többi része túl nagy */
+    padding-bottom: 10px;
+}
+
+tbody td {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Világosszürke hátterű páros sorok */
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
 #termek_adat {
     max-width: 600px;
     margin: 0 auto;
@@ -58,14 +101,23 @@ h3 {
     text-align: center;
 }
 
-#sikeres-feltöltés {
+#sikeres-feltoltes {
+    max-width: 600px;
+    margin: 0 auto;
     background-color: #d4edda;
     color: #155724;
+    display: none;
+    font-size: 25px;
 }
 
-#sikertelen-feltöltés {
+#sikertelen-feltoltes {
+    max-width: 600px;
+    margin: 0 auto;
     background-color: #f8d7da;
     color: #721c24;
+    display: none;
+    font-size: 25px;
+
 }
 
 @media only screen and (max-width: 600px) {

@@ -26,40 +26,70 @@
 
 
         <label>Név</label>
-        <input type="text" id="nev">
+        <input type="text" id="nev" required>
         <br>
 
         <label>Ár</label>
-        <input type="text" id="ar">
+        <input type="text" id="ar" required>
         <br>
 
         <label>Leírás</label>
-        <input type="text" id="leiras">
+        <input type="text" id="leiras" required>
         <br>
 
         <label>Szélesség</label>
-        <input type="text" id="szelesseg">
+        <input type="text" id="szelesseg" required>
         <br>
 
         <label>Magasság</label>
-        <input type="text" id="magassag">
+        <input type="text" id="magassag" required>
         <br>
 
         <label>Hossz</label>
-        <input type="text" id="hossz">
+        <input type="text" id="hossz" required>
         <br>
 
         <label>Raktáron</label>
-        <input type="text" id="raktaron">
+        <input type="text" id="raktaron" required>
         <br>
         <br>
         <br>
 
         <button type="submit" id="adatatokBtn">Adatok feltöltése</button>
+        <br>
+        <br>
+
+        <span id="statusz">
+            <div id="sikeres-feltoltes"></div>
+            <div id="sikertelen-feltoltes"></div>
+        </span>
     </div>
 
-    <p id="sikeres-feltöltés"></p>
-    <p id="sikertelen-feltöltés"></p>
+        <br>
+        <br>
+        <br>
+
+    <div id="megjelenites">
+        <table id="table">
+            <thead>
+                <th>ID</th>
+                <th>Név</th>
+                <th>Ár (Ft)</th>
+                <th>Leírás</th>
+                <th>Szélesség</th>
+                <th>Magasság</th>
+                <th>Hosszúság</th>
+                <th>Raktáron (db)</th>
+                <th>Kategória</th>
+                <th>Kép</th>
+                <th>Törlés</th>
+                <th>Edit</th>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
 
     <script src="./js/admin.js"></script>
 

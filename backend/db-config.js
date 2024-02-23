@@ -206,7 +206,30 @@ class DbService {
             console.error(error)
             throw new Error('Hiba az adatok feltöltésekor')
         }
-      }
+    }
+
+    async termekAdminMegjelenites() {
+        try {
+            const query = `
+                SELECT Termek.*, Kategoria.kategoria_nev, Kep.kep_url1
+                FROM Termek
+                INNER JOIN Kategoria ON Termek.termek_kategoria_id = Kategoria.kategoria_id
+                INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+            `;
+    
+            const result = await new Promise((resolve, reject) => {
+                connection.query(query, (error, result) => {
+                    if (error) reject(error);
+                    resolve(result);
+                });
+            });
+    
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Hiba az adatok lekérésekor');
+        }
+    }
 }
 
 module.exports = DbService

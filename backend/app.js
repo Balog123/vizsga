@@ -98,16 +98,16 @@ app.post('/regisztracio', function (request, response) {
 })*/
 
 function authenticateAdmin(req, res, next) {
-    console.log("authenticateAdmin middleware called");
+    //console.log("authenticateAdmin middleware called");
     if (req.cookies && req.cookies.token) {
-        console.log("Token found in cookies:", req.cookies.token);
+        //console.log("Token found in cookies:", req.cookies.token);
         const token = req.cookies.token;
 
         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
             if (err) {
-                console.error('Token decoding failed:', err);
+                //console.error('Token decoding failed:', err);
             } else {
-                console.log('Decoded token:', decodedToken);
+                //console.log('Decoded token:', decodedToken);
                 if (decodedToken.isAdmin) {
                     next(); 
                 } else {
@@ -150,13 +150,37 @@ app.post('/admin/feltoltes', (req, res) => {
     const result = db.termekFeltoltes(kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron)
   
     result
-      .then((result) => {
-        res.status(200).json({ success: true, result })
-      })
-      .catch((err) => {
+    .then((data) => {
+        res.status(200).json({ success: true, data })
+    })
+    .catch((err) => {
         console.log(err);
         res.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
-      })
-  })
+    })
+})
+
+/*app.post('/admin/megjelenites', (req, res) =>{
+    const db = dbService.getDbServiceInstance()
+
+    const result = db.termekMegjelenites()
+
+    result
+    .then(data => res.status(200).json({ success: true, data }))
+    .catch((err) => {
+        console.log(err);
+        res.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
+    })
+})*/
+
+app.get('/admin/megjelenites', (req, res) => {
+    const db = dbService.getDbServiceInstance();
+
+    db.termekAdminMegjelenites()
+        .then(data => res.status(200).json({ success: true, data }))
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ success: false, error: 'Szerveroldali hiba történt' });
+        });
+});
 
 app.listen(process.env.PORT, () => console.log('Fut az app'))

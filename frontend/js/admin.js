@@ -1,3 +1,62 @@
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('http://localhost:8000/admin/megjelenites')
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']))
+    .catch(error => console.error('Hiba történt:', error)); // Hiba kezelése
+})
+
+function loadHTMLTable(data) {
+    const table = document.querySelector('table tbody');
+
+    if (data.length === 0) {
+        table.innerHTML = "<tr><td class='no-data' colspan='12'>No Data</td></tr>";
+        return;
+    }
+
+    let tableHtml = "";
+
+    /*data.forEach(function ({termek_id, termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_raktaron, kategoria_nev, kep_url}) {
+        tableHtml += "<tr>";
+        tableHtml += `<td>${termek_id}</td>`;
+        tableHtml += `<td>${termek_nev}</td>`;
+        tableHtml += `<td>${termek_ar} Ft</td>`;
+        tableHtml += `<td>${termek_leiras}</td>`;
+        tableHtml += `<td>${termek_szelesseg}</td>`;
+        tableHtml += `<td>${termek_magassag}</td>`;
+        tableHtml += `<td>${termek_hossz}</td>`;
+        tableHtml += `<td>${termek_raktaron}</td>`;
+        tableHtml += `<td>${kategoria_nev}</td>`;
+        tableHtml += `<td><img src="${kep_url}"></td>`;
+        tableHtml += `<td><button class="delete-row-btn" data-id=${termek_id}}>Delete</td>`;
+        tableHtml += `<td><button class="edit-row-btn" data-id=${termek_id}>Edit</td>`;
+        tableHtml += "</tr>";
+    });*/
+
+    data.forEach(function ({termek_id, termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_raktaron, kategoria_nev, kep_url1}) {
+        tableHtml += "<tr>";
+        tableHtml += `<td>${termek_id}</td>`;
+        tableHtml += `<td>${termek_nev}</td>`;
+        tableHtml += `<td>${termek_ar} Ft</td>`;
+        tableHtml += `<td>${termek_leiras}</td>`;
+        tableHtml += `<td>${termek_szelesseg}</td>`;
+        tableHtml += `<td>${termek_magassag}</td>`;
+        tableHtml += `<td>${termek_hossz}</td>`;
+        tableHtml += `<td>${termek_raktaron}</td>`;
+        tableHtml += `<td>${kategoria_nev}</td>`;
+        // Ellenőrzés, hogy a kép URL nem üres
+        if (kep_url) {
+            tableHtml += `<td><img src="${kep_url1}"></td>`;
+        } else {
+            tableHtml += `<td>No Image</td>`; // Ha nincs kép URL, "No Image" szöveg jelenik meg
+        }
+        tableHtml += `<td><button class="delete-row-btn" data-id=${termek_id}}>Delete</td>`;
+        tableHtml += `<td><button class="edit-row-btn" data-id=${termek_id}>Edit</td>`;
+        tableHtml += "</tr>";
+    });
+
+    table.innerHTML = tableHtml;
+}
+
 const uploadBtn = document.querySelector('#adatatokBtn')
 
 uploadBtn.onclick = function () {
@@ -11,6 +70,12 @@ uploadBtn.onclick = function () {
         const magassag = parseInt(document.querySelector('#magassag').value)
         const hossz = parseInt(document.querySelector('#hossz').value)
         const raktaron = parseInt(document.querySelector('#raktaron').value)
+
+        // if (!nev || !ar || !leiras || !szelesseg || !magassag || !hossz || !raktaron) {
+        //     document.getElementById('sikertelen-feltoltes').style.display = "block";
+        //     document.getElementById('sikertelen-feltoltes').innerHTML = 'Adj meg minden adatot.';
+        //     throw new Error('Minden mező kitöltése kötelező!');
+        // }
 
         document.querySelector('#kategoria_nev').value = ""
         document.querySelector('#kep_url').value = ""
@@ -37,21 +102,23 @@ uploadBtn.onclick = function () {
                 raktaron: raktaron
             })
         })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                if (data.success) {
-                    document.getElementById('sikeres-feltoltes').innerHTML = 'Sikeresen feltöltötte az adatokat.'
-                } else {
-                    document.getElementById('sikertelen-feltoltes').innerHTML = 'Hiba történt az adatok feltöltésekor.'
-                }
-            })
-            .catch(error => {
-                console.log('Hiba történt:', error)
-            });
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            console.log(data)
+            if (data.success === true) {
+                document.getElementById('sikeres-feltoltes').style.display = "block"
+                document.getElementById('sikeres-feltoltes').innerHTML = 'Sikeresen feltöltötte az adatokat.'
+            } else {
+                document.getElementById('sikertelen-feltoltes').style.display = "block"
+                document.getElementById('sikertelen-feltoltes').innerHTML = 'Hiba történt az adatok feltöltésekor.'
+            }
+        })
+        .catch(error => {
+            console.log('Hiba történt:', error)
+        })
     } catch (error) {
         console.log(error)
     }
-};
+}
