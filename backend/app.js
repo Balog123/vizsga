@@ -5,6 +5,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 const path = require('path');
 const dbService = require('./db-config')
+const connection = dbService.getDbServiceInstance().getConnection();
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
 
@@ -12,58 +13,78 @@ app.use(cors())
 app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended : false }))
-app.use(express.static(path.join(__dirname, '../frontend')))
 
 app.use(['/admin', '/admin/*'], authenticateAdmin);
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '../frontend','index.html'))
-})
+app.use('/css', express.static(path.resolve(__dirname, '..', 'frontend', 'css')));
+app.use('/images', express.static(path.resolve(__dirname, '..', 'frontend', 'images')));
+app.use('/js', express.static(path.resolve(__dirname, '..', 'frontend', 'js')));
+app.use(express.static(path.resolve(__dirname, '..', 'frontend')));
 
 app.get('/regisztracio', function(req, res) {
-    res.sendFile(path.join(__dirname, '../frontend','register.html'))
+    // res.sendFile(path.join(__dirname, '../frontend','register.html'))
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'register.html'));
 })
 
 app.get('/bejelentkezes', function(req, res) {
-    res.sendFile(path.join(__dirname, '../frontend','login.html'))
+    // res.sendFile(path.join(__dirname, '../frontend','login.html'))
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'login.html'));
 })
 
-app.get('/termekek', function(req, res) {
-    res.sendFile(path.join(__dirname, '../frontend', 'product.html'))
-})
-
-app.get('/termek', async (req, res) => {
-    const db = dbService.getDbServiceInstance()
-    const termekInformacio = await db.termekMegjelenites()
-    res.json({ termekInformacio })
-})
-
-app.get('/termek/:termekId', async (req, res) => {
-    try {
-        const termekId = req.params.termekId;
-        const db = dbService.getDbServiceInstance(); // Példányosítjuk az adatbázis szolgáltatást
-        const termekAdatok = await getTermekById(termekId);
-        res.render('productDetails', { termekAdatok });
-    } catch (error) {
-        console.error('Hiba a termék lekérése során', error);
-        // Kezeljük a hibát, például küldjünk vissza egy hibaüzenetet
-        res.status(500).send('Internal Server Error');
-    }
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
 });
 
-async function getTermekById(termekId) {
-    const sql = `SELECT * FROM termek WHERE termek_id = ?`;
-    const termekAdatok = await dbService.getDbServiceInstance().query(sql, [termekId]);
-    return termekAdatok;
-}
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'index.html'));
+});
+
+app.get('/products/html', (req, res) => {
+    const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
+    connection.query(query, (error, results) => {
+        if (error) throw error;
+        res.sendFile(path.resolve(__dirname, '..', 'frontend', 'allproducts.html'));
+    });
+});
 
 
+app.get('/singleproduct/:id', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'singleproduct.html'));
+});
 
+app.get('/products', (req, res, next) => {
+    const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error("Error fetching products:", error);
+            return next(error);
+        }
+        res.json({ products: results });
+    });
+});
+
+app.get('/products/:id', (req, res, next) => {
+    const productId = req.params.id;
+    const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id WHERE termek_id = ?';
+    connection.query(query, [productId], (error, results) => {
+        if (error) {
+            console.error("Error fetching product details:", error);
+            return next(error);
+        }
+
+        if (results.length === 0) {
+            res.status(404).json({ error: "Product not found" });
+            return;
+        }
+
+        res.json({ product: results[0] });
+    });
+});
 
 app.get('/admin',  function(req, res) {
-    res.sendFile(path.join(__dirname, '../frontend', 'admin.html'))
-
-
+    // res.sendFile(path.join(__dirname, '../frontend', 'admin.html'))
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'admin.html'));
 })
 
 app.post('/regisztracio', function (request, response) {
@@ -85,17 +106,6 @@ app.post('/regisztracio', function (request, response) {
         response.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
     })
 })
-
-/*app.post('/bejelentkezes', (request, response) => {
-    const { email, jelszo } = request.body
-    const db = dbService.getDbServiceInstance()
-
-    const result = db.felhasznaloBejelentkezes(email, jelszo)
-
-    result
-    .then(data => response.status(200).json({ success: true, data}))
-    .catch(error => response.status(500).json({ success: false, error: error.message }));
-})*/
 
 function authenticateAdmin(req, res, next) {
     //console.log("authenticateAdmin middleware called");
@@ -159,19 +169,6 @@ app.post('/admin/feltoltes', (req, res) => {
     })
 })
 
-/*app.post('/admin/megjelenites', (req, res) =>{
-    const db = dbService.getDbServiceInstance()
-
-    const result = db.termekMegjelenites()
-
-    result
-    .then(data => res.status(200).json({ success: true, data }))
-    .catch((err) => {
-        console.log(err);
-        res.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
-    })
-})*/
-
 app.get('/admin/megjelenites', (req, res) => {
     const db = dbService.getDbServiceInstance();
 
@@ -183,4 +180,4 @@ app.get('/admin/megjelenites', (req, res) => {
         });
 });
 
-app.listen(process.env.PORT, () => console.log('Fut az app'))
+app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))
