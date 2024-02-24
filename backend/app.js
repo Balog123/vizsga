@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 app.use(cors())
 app.use(express.json())
 app.use(cookieParser());
-app.use(express.urlencoded({ extended : false }))
+app.use(express.urlencoded({ extended: false }))
 
 app.use(['/admin', '/admin/*'], authenticateAdmin);
 
@@ -21,13 +21,13 @@ app.use('/images', express.static(path.resolve(__dirname, '..', 'frontend', 'ima
 app.use('/js', express.static(path.resolve(__dirname, '..', 'frontend', 'js')));
 app.use(express.static(path.resolve(__dirname, '..', 'frontend')));
 
-app.get('/regisztracio', function(req, res) {
-    // res.sendFile(path.join(__dirname, '../frontend','register.html'))
+app.get('/regisztracio', function (req, res) {
+    // res.sendFile(path.join(__dirname, '../frontend','register.html')) régi útvonal
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'register.html'));
 })
 
-app.get('/bejelentkezes', function(req, res) {
-    // res.sendFile(path.join(__dirname, '../frontend','login.html'))
+app.get('/bejelentkezes', function (req, res) {
+    // res.sendFile(path.join(__dirname, '../frontend','login.html')) régi útvonal
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'login.html'));
 })
 
@@ -40,6 +40,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'index.html'));
 });
 
+// Termékek lekérdezése és megjelenítés html oldalon
 app.get('/products/html', (req, res) => {
     const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
     connection.query(query, (error, results) => {
@@ -48,11 +49,12 @@ app.get('/products/html', (req, res) => {
     });
 });
 
-
+// Kiválasztott termék átirányítás
 app.get('/singleproduct/:id', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'singleproduct.html'));
 });
 
+// Termékek lekérdezése
 app.get('/products', (req, res, next) => {
     const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
     connection.query(query, (error, results) => {
@@ -64,6 +66,7 @@ app.get('/products', (req, res, next) => {
     });
 });
 
+// Termék iválasztása id alapján
 app.get('/products/:id', (req, res, next) => {
     const productId = req.params.id;
     const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id WHERE termek_id = ?';
@@ -82,8 +85,8 @@ app.get('/products/:id', (req, res, next) => {
     });
 });
 
-app.get('/admin',  function(req, res) {
-    // res.sendFile(path.join(__dirname, '../frontend', 'admin.html'))
+app.get('/admin', function (req, res) {
+    // res.sendFile(path.join(__dirname, '../frontend', 'admin.html')) régi útvonal
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'admin.html'));
 })
 
@@ -94,17 +97,17 @@ app.post('/regisztracio', function (request, response) {
     const result = db.felhasznaloRegisztralas(keresztnev, vezeteknev, email, jelszo)
 
     result
-    .then(result => {
-        if (result) {
-            response.status(200).json({ success: true, result })
-        } else {
-            response.status(400).json({ success: false, error: 'Ez az email már foglalt' })
-        }
-    })
-    .catch(err => {
-        console.log(err)
-        response.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
-    })
+        .then(result => {
+            if (result) {
+                response.status(200).json({ success: true, result })
+            } else {
+                response.status(400).json({ success: false, error: 'Ez az email már foglalt' })
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            response.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
+        })
 })
 
 function authenticateAdmin(req, res, next) {
@@ -119,7 +122,7 @@ function authenticateAdmin(req, res, next) {
             } else {
                 //console.log('Decoded token:', decodedToken);
                 if (decodedToken.isAdmin) {
-                    next(); 
+                    next();
                 } else {
                     res.status(403).json({ success: false, error: 'Nincs jogosultsága az admin oldalhoz' });
                 }
@@ -146,27 +149,27 @@ app.post('/bejelentkezes', (request, response) => {
 
         response.cookie('token', token, { httpOnly: true });
 
-        response.status(200).json({ success: true, data})
+        response.status(200).json({ success: true, data })
     })
-    .catch(error => {
-        response.status(500).json({ success: false, error: error.message });
-    });
+        .catch(error => {
+            response.status(500).json({ success: false, error: error.message });
+        });
 })
 
 app.post('/admin/feltoltes', (req, res) => {
     const { kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body
     const db = dbService.getDbServiceInstance()
-  
+
     const result = db.termekFeltoltes(kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron)
-  
+
     result
-    .then((data) => {
-        res.status(200).json({ success: true, data })
-    })
-    .catch((err) => {
-        console.log(err);
-        res.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
-    })
+        .then((data) => {
+            res.status(200).json({ success: true, data })
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({ success: false, error: 'Szerveroldali hiba történt' })
+        })
 })
 
 app.get('/admin/megjelenites', (req, res) => {
