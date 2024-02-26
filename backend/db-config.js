@@ -13,12 +13,13 @@ const connection = sql.createConnection({
     port: process.env.DB_PORT
 })
 
-connection.connect((err) => {
-    if (err) {
-        console.log(err.message)
+connection.connect((error) => {
+    if (error) {
+      console.error('Error connecting to database:', error);
+    } else {
+      console.log('db connected');
     }
-    console.log('db ' + connection.state)
-})
+  });
 
 
 class DbService {
@@ -63,7 +64,6 @@ class DbService {
             return null
         }
     }
-    
 
     async felhasznaloBejelentkezes(email, jelszo) {
         try {
@@ -98,74 +98,6 @@ class DbService {
         } catch (error) {
             console.log(error);
             throw new Error('Sikertelen bejelentkezés');
-        }
-    }
-
-
-    /*async felhasznaloBejelentkezes(email, jelszo) {
-        try {
-            const felhasznalo = await new Promise((resolve, reject) => {
-                const query = "SELECT * FROM felhasznalo WHERE felhasznalo_email = ?"
-
-                connection.query(query, [email], (err, result) => {
-                    if (err) reject(new Error(err.message))
-                    resolve(result[0])
-                })
-            })
-
-            if (!felhasznalo) throw new Error('Rossz email vagy jelszó')
-
-            const helyesJelszo = await bcrypt.compare(jelszo, felhasznalo.felhasznalo_jelszo)
-
-            if (!helyesJelszo) throw new Error('Rossz jelszó')
-            else {
-                console.log('Sikeres bejelentkezes')
-            }
-
-            return {
-                keresztnev: felhasznalo.felhasznalo_keresztnev,
-                vezeteknev: felhasznalo.felhasznalo_vezeteknev,
-                email: email
-            }
-
-        } catch (error) { 
-            console.log(error)
-            throw new Error('Sikertelen bejelentkezes')
-        }
-    }*/
-
-    async termekMegjelenites() {
-        try {
-            const query = "SELECT termek_nev, termek_leiras, kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id";
-            return new Promise((resolve, reject) => {
-                connection.query(query, (err, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                });
-            });
-        } catch (error) {
-            console.log(error);
-            throw new Error('Hiba a termék információ lekérése során');
-        }
-    } 
-    
-    async getTermekById(termekId) {
-        try {
-            const query = "SELECT * FROM Termek WHERE termek_id = ?";
-            const termekAdatok = await new Promise((resolve, reject) => {
-                connection.query(query, [termekId], (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result[0]);
-                });
-            });
-    
-            return termekAdatok;
-        } catch (error) {
-            console.log(error);
-            throw new Error('Hiba a termék információ lekérése során');
         }
     }
 
@@ -229,6 +161,10 @@ class DbService {
             console.error(error);
             throw new Error('Hiba az adatok lekérésekor');
         }
+    }
+
+    getConnection() {
+        return connection;
     }
 }
 
