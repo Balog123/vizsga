@@ -15,23 +15,6 @@ function loadHTMLTable(data) {
 
     let tableHtml = "";
 
-    /*data.forEach(function ({termek_id, termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_raktaron, kategoria_nev, kep_url}) {
-        tableHtml += "<tr>";
-        tableHtml += `<td>${termek_id}</td>`;
-        tableHtml += `<td>${termek_nev}</td>`;
-        tableHtml += `<td>${termek_ar} Ft</td>`;
-        tableHtml += `<td>${termek_leiras}</td>`;
-        tableHtml += `<td>${termek_szelesseg}</td>`;
-        tableHtml += `<td>${termek_magassag}</td>`;
-        tableHtml += `<td>${termek_hossz}</td>`;
-        tableHtml += `<td>${termek_raktaron}</td>`;
-        tableHtml += `<td>${kategoria_nev}</td>`;
-        tableHtml += `<td><img src="${kep_url}"></td>`;
-        tableHtml += `<td><button class="delete-row-btn" data-id=${termek_id}}>Delete</td>`;
-        tableHtml += `<td><button class="edit-row-btn" data-id=${termek_id}>Edit</td>`;
-        tableHtml += "</tr>";
-    });*/
-
     data.forEach(function ({termek_id, termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_raktaron, kategoria_nev, kep_url1}) {
         tableHtml += "<tr>";
         tableHtml += `<td>${termek_id}</td>`;
@@ -43,11 +26,10 @@ function loadHTMLTable(data) {
         tableHtml += `<td>${termek_hossz}</td>`;
         tableHtml += `<td>${termek_raktaron}</td>`;
         tableHtml += `<td>${kategoria_nev}</td>`;
-        // Ellenőrzés, hogy a kép URL nem üres
-        if (kep_url) {
+        if (kep_url1) {
             tableHtml += `<td><img src="${kep_url1}"></td>`;
         } else {
-            tableHtml += `<td>No Image</td>`; // Ha nincs kép URL, "No Image" szöveg jelenik meg
+            tableHtml += `<td>No Image</td>`; 
         }
         tableHtml += `<td><button class="delete-row-btn" data-id=${termek_id}}>Delete</td>`;
         tableHtml += `<td><button class="edit-row-btn" data-id=${termek_id}>Edit</td>`;
@@ -57,9 +39,9 @@ function loadHTMLTable(data) {
     table.innerHTML = tableHtml;
 }
 
-const uploadBtn = document.querySelector('#adatatokBtn')
+const feltoltes = document.querySelector('#adatatokBtn')
 
-uploadBtn.onclick = function () {
+feltoltes.onclick = function () {
     try {
         const kategoria_nev = document.querySelector('#kategoria_nev').value
         const kep_url = document.querySelector('#kep_url').value

@@ -41,12 +41,11 @@ app.get('/termek', async (req, res) => {
 app.get('/termek/:termekId', async (req, res) => {
     try {
         const termekId = req.params.termekId;
-        const db = dbService.getDbServiceInstance(); // Példányosítjuk az adatbázis szolgáltatást
+        const db = dbService.getDbServiceInstance();
         const termekAdatok = await getTermekById(termekId);
         res.render('productDetails', { termekAdatok });
     } catch (error) {
         console.error('Hiba a termék lekérése során', error);
-        // Kezeljük a hibát, például küldjünk vissza egy hibaüzenetet
         res.status(500).send('Internal Server Error');
     }
 });
