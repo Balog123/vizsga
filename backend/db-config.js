@@ -166,6 +166,26 @@ class DbService {
     getConnection() {
         return connection;
     }
+
+    getAllProducts() {
+        const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+    }
+
+    getProductById(productId) {
+        const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id WHERE termek_id = ?';
+        return new Promise((resolve, reject) => {
+            connection.query(query, [productId], (error, results) => {
+                if (error) reject(error);
+                resolve(results[0]);
+            });
+        });
+    }
 }
 
 module.exports = DbService
