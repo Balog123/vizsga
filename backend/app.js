@@ -172,7 +172,7 @@
             });
     });
 
-    // Plusz termékek
+    // Hasonló termékek
     app.get('/api/related-products/:id', (req, res) => {
         const productId = req.params.id;
         const db = dbService.getDbServiceInstance();
