@@ -41,7 +41,6 @@
 //         console.error("Product ID not found in the URL");
 //     }
 // });
-
 window.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = window.location.pathname.split('/').pop();
