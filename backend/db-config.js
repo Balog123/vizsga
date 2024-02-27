@@ -177,8 +177,24 @@ class DbService {
         });
     }
 
+    // getProductById(productId) {
+    //     const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id WHERE termek_id = ?';
+    //     return new Promise((resolve, reject) => {
+    //         connection.query(query, [productId], (error, results) => {
+    //             if (error) reject(error);
+    //             resolve(results[0]);
+    //         });
+    //     });
+    // }
+
     getProductById(productId) {
-        const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id WHERE termek_id = ?';
+        const query = `
+            SELECT Termek.*, Kep.kep_url1, Kategoria.kategoria_nev
+            FROM Termek
+            INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+            INNER JOIN Kategoria ON Termek.termek_kategoria_id = Kategoria.kategoria_id
+            WHERE termek_id = ?`;
+        
         return new Promise((resolve, reject) => {
             connection.query(query, [productId], (error, results) => {
                 if (error) reject(error);
@@ -186,6 +202,25 @@ class DbService {
             });
         });
     }
+
+    getRelatedProducts(productId) {
+        const query = `
+            SELECT Termek.*, Kep.kep_url1
+            FROM Termek
+            INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+            WHERE termek_kategoria_id = (SELECT termek_kategoria_id FROM Termek WHERE termek_id = ?)
+            AND termek_id != ?
+            ORDER BY RAND()
+            LIMIT 4`;
+        
+        return new Promise((resolve, reject) => {
+            connection.query(query, [productId, productId], (error, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+    }
+    
 }
 
 module.exports = DbService
