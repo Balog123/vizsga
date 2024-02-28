@@ -220,7 +220,16 @@ class DbService {
             });
         });
     }
-    
+
+    async getAllCategories() {
+        const query = 'SELECT kategoria_nev FROM Kategoria';
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, results) => {
+                if (error) reject(error);
+                resolve(results.map(result => result.kategoria_nev));
+            });
+        });
+    }
 }
 
 module.exports = DbService
