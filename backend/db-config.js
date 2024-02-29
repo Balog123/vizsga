@@ -181,46 +181,6 @@ class DbService {
         }
     }
 
-    async updateProduct(id, kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron) {
-        try {
-            // Ellenőrizzük, hogy a termék létezik-e
-            const checkProductQuery = `SELECT termek_id FROM Termek WHERE termek_id = ?`;
-            const existingProduct = await new Promise((resolve, reject) => {
-                connection.query(checkProductQuery, [id], (error, result) => {
-                    if (error) reject(new Error(error.message));
-                    resolve(result);
-                });
-            });
-    
-            if (existingProduct.length === 0) {
-                return { success: false };
-            }
-    
-            // Frissítjük a termék adatait
-            const updateProductQuery = `
-                UPDATE Termek
-                SET termek_kategoria = ?, kep_url = ?, termek_nev = ?, termek_ar = ?, termek_leiras = ?,
-                    termek_szelesseg = ?, termek_magassag = ?, termek_hossz = ?, termek_raktaron = ?
-                WHERE termek_id = ?
-            `;
-            await new Promise((resolve, reject) => {
-                connection.query(
-                    updateProductQuery,
-                    [kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron, id],
-                    (error, result) => {
-                        if (error) reject(new Error(error.message));
-                        resolve(result);
-                    }
-                );
-            });
-    
-            return { success: true };
-        } catch (error) {
-            console.error(error);
-            return { success: false };
-        }
-    }
-
     getConnection() {
         return connection;
     }

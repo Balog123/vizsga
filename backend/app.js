@@ -363,23 +363,5 @@ app.delete('/api/products/:id', (req, res) => {
         });
 });
 
-app.put('/api/products/:id', (req, res) => {
-    const productId = req.params.id;
-    const { kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body;
-    const db = dbService.getDbServiceInstance();
-
-    db.updateProduct(productId, kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron)
-        .then(result => {
-            if (result.success) {
-                res.status(200).json({ success: true, message: "Product updated successfully" });
-            } else {
-                res.status(404).json({ success: false, error: "Product not found" });
-            }
-        })
-        .catch(error => {
-            console.error("Error updating product:", error);
-            res.status(500).json({ success: false, error: "Error updating product" });
-        });
-});
 
 app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))
