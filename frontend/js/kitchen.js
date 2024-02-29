@@ -1,5 +1,7 @@
+// kitchen.js
+
 window.addEventListener("DOMContentLoaded", () => {
-    fetch("http://localhost:8000/api/products")
+    fetch("http://localhost:8000/api/products?category=Kitchen")
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -15,6 +17,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 listItem.className = 'product-item';
 
                 listItem.innerHTML = `
+                    <!-- Customize the HTML structure as needed for the kitchen category -->
                     <div class="overlay" id="termek-info">
                         <a href="/products/${product.termek_id}" class="product-thumb">
                             <img src="${product.kep_url1}" alt="${product.termek_nev}">
@@ -35,5 +38,5 @@ window.addEventListener("DOMContentLoaded", () => {
                 productList.appendChild(listItem);
             });
         })
-        .catch(error => console.error("Error fetching products:", error));
+        .catch(error => console.error("Error fetching kitchen products:", error));
 });

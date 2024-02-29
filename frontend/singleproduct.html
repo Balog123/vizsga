@@ -1,16 +1,246 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Single Product</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Box icons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>Termék</title>
 </head>
+
 <body>
-    <h1>Single Product</h1>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <!-- top nav -->
+        <div class="top-nav">
+            <div class="container d-flex">
+                <p>Rendeljen online vagy Hívjon minket: (+36) 12 34 56 7</p>
+                <ul class="d-flex">
+                    <li><a href="">Rólunk</a></li>
+                    <li><a href="">Gyakran feltett kérdések</a></li>
+                    <li><a href="">Kapcsolatfelvétel</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <div class="nav-center container d-flex">
+                <a href="" class="logo">
+                    <h1>hm</h1>
+                </a>
+
+                <nav class="navbar">
+                    <ul class="nav-list d-flex">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link">Kezdőlap</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">Termékek</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#terms" class="nav-link">Terms</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#about" class="nav-link">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#contact" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#gallery" class="nav-link">Gallery</a>
+                        </li>
+
+                        <li class="icons d-flex">
+                            <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
+                            <div class="icon">
+                                <i class="bx bx-search"></i>
+                            </div>
+                            <div class="icon">
+                                <i class="bx bx-heart"></i>
+                                <span class="d-flex">0</span>
+                            </div>
+                            <a href="cart.html" class="icon">
+                                <i class="bx bx-cart"></i>
+                                <span class="d-flex">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Icons -->
+                <div class="icons d-flex">
+                    <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
+                    <div class="icon"><i class="bx bx-search"></i></div>
+                    <div class="icon">
+                        <i class="bx bx-heart"></i>
+                        <span class="d-flex">0</span>
+                    </div>
+                    <a href="cart.html" class="icon">
+                        <i class="bx bx-cart"></i>
+                        <span class="d-flex">0</span>
+                    </a>
+                </div>
+
+                <!-- Hamburger -->
+                <div class="hamburger">
+                    <i class="bx bx-menu-alt-left"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <div id="productDetails"></div>
 
-    <!-- Updated script tag -->
+    <!-- Product Details -->
+    <section class="section product-detail">
+        <div class="details container">
+
+            <!-- <div class="left image-container">
+                <div class="main" id="termek-kep">
+                </div>
+            </div>
+
+            <div class="right">
+                <span>Termékek > Nappali</span>
+                <h1 id="termek-nev">Ágy</h1>
+                <div class="price">5000 Ft</div>
+                <form class="form">
+                    <input type="text" placeholder="1" />
+                    <a href="cart.html" class="addCart">Kosárba</a>
+                </form>
+                <h3>Termék részletei</h3>
+                <p></p>
+            </div> -->
+
+        </div>
+    </section>
+
+    <!-- Related -->
+    <section class="section featured">
+        <div class="top container">
+            <h1>Hasonló termékek</h1>
+        </div>
+        <div class="product-center container">
+
+            <!-- <div class="product-item">
+                <div class="overlay">
+                    <a href="" class="product-thumb">
+                        <p>kép</p>
+                    </a>
+                </div>
+                <div class="product-info">
+                    <span>cím</span>
+                    <a href="">leírás</a>
+                    <h4>ár</h4>
+                </div>
+                <ul class="icons">
+                    <li><i class="bx bx-heart"></i></li>
+                    <li><i class="bx bx-search"></i></li>
+                    <li><i class="bx bx-cart"></i></li>
+                </ul>
+            </div>
+
+            <div class="product-item">
+                <div class="overlay">
+                    <a href="" class="product-thumb">
+                        <p>kép</p>
+                    </a>
+                </div>
+                <div class="product-info">
+                    <span>cím</span>
+                    <a href="">leírás</a>
+                    <h4>ár</h4>
+                </div>
+                <ul class="icons">
+                    <li><i class="bx bx-heart"></i></li>
+                    <li><i class="bx bx-search"></i></li>
+                    <li><i class="bx bx-cart"></i></li>
+                </ul>
+            </div>
+
+            <div class="product-item">
+                <div class="overlay">
+                    <a href="" class="product-thumb">
+                        <p>kép</p>
+                    </a>
+                </div>
+                <div class="product-info">
+                    <span>cím</span>
+                    <a href="">leírás</a>
+                    <h4>ár</h4>
+                </div>
+                <ul class="icons">
+                    <li><i class="bx bx-heart"></i></li>
+                    <li><i class="bx bx-search"></i></li>
+                    <li><i class="bx bx-cart"></i></li>
+                </ul>
+            </div>
+
+            <div class="product-item">
+                <div class="overlay">
+                    <a href="" class="product-thumb">
+                        <p>kép</p>
+                    </a>
+                </div>
+                <div class="product-info">
+                    <span>cím</span>
+                    <a href="">leírás</a>
+                    <h4>ár</h4>
+                </div>
+                <ul class="icons">
+                    <li><i class="bx bx-heart"></i></li>
+                    <li><i class="bx bx-search"></i></li>
+                    <li><i class="bx bx-cart"></i></li>
+                </ul>
+            </div> -->
+            
+        </div>
+    </section>
+
+    <!-- Filling -->
+    <div class="sectionfilling"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="row">
+            <div class="col d-flex">
+                <h4>Információ</h4>
+                <a href="">About Us</a>
+                <a href="">Contact Us</a>
+                <a href="">Terms</a>
+                <a href="">asd</a>
+            </div>
+            <div class="col d-flex">
+                <h4>Hasznos Linkek</h4>
+                <a href="#header">Kezdőlap</a>
+                <a href="">Contact Us</a>
+                <a href="">Terms</a>
+                <a href="">asd</a>
+            </div>
+            <div class="col d-flex">
+                <span><i class="bx bxl-facebook-square"></i></span>
+                <span><i class="bx bxl-instagram-alt"></i></span>
+                <span><i class="bx bxl-github"></i></span>
+                <span><i class="bx bxl-twitter"></i></span>
+                <span><i class="bx bxl-pinterest"></i></span>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- termek -->
     <script src="/js/singleproduct.js"></script>
 
+    <!-- indexjs -->
+    <script src="/js/script.js"></script>
+
 </body>
+
 </html>

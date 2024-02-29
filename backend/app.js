@@ -21,6 +21,10 @@ app.use('/images', express.static(path.resolve(__dirname, '..', 'frontend', 'ima
 app.use('/js', express.static(path.resolve(__dirname, '..', 'frontend', 'js')));
 app.use(express.static(path.resolve(__dirname, '..', 'frontend')));
 
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'index.html'));
+});
+
 app.get('/regisztracio', function (req, res) {
     // res.sendFile(path.join(__dirname, '../frontend','register.html')) régi útvonal
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'register.html'));
@@ -30,16 +34,7 @@ app.get('/bejelentkezes', function (req, res) {
     // res.sendFile(path.join(__dirname, '../frontend','login.html')) régi útvonal
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'login.html'));
 })
-
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
-});
-
-app.get('/', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'index.html'));
-});
-
+/*
 // Termékek lekérdezése és megjelenítés html oldalon
 app.get('/products/html', (req, res) => {
     const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
@@ -66,6 +61,7 @@ app.get('/products', (req, res, next) => {
     });
 });
 
+
 // Termék iválasztása id alapján
 app.get('/products/:id', (req, res, next) => {
     const productId = req.params.id;
@@ -84,6 +80,172 @@ app.get('/products/:id', (req, res, next) => {
         res.json({ product: results[0] });
     });
 });
+*/
+
+// Termékek lekérdezése és megjelenítés HTML oldalon
+/* app.get('/products', (req, res) => {
+     const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
+     connection.query(query, (error, results) => {
+         if (error) {
+             console.error("Error fetching products:", error);
+             res.status(500).send('Error fetching products');
+             return;
+         }
+         res.sendFile(path.resolve(__dirname, '..', 'frontend', 'allproducts.html'));
+     });
+ });
+
+ // Kiválasztott termék átirányítás
+ app.get('/products/:id', (req, res) => {
+     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'singleproduct.html'));
+ });
+
+ // Termékek lekérdezése JSON formátumban
+ app.get('/api/products', (req, res) => {
+     const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
+     connection.query(query, (error, results) => {
+         if (error) {
+             console.error("Error fetching products:", error);
+             res.status(500).json({ error: "Error fetching products" });
+             return;
+         }
+         res.json({ products: results });
+     });
+ });
+
+ // Termék iválasztása ID alapján
+ app.get('/api/products/:id', (req, res) => {
+     const productId = req.params.id;
+     const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id WHERE termek_id = ?';
+     connection.query(query, [productId], (error, results) => {
+         if (error) {
+             console.error("Error fetching product details:", error);
+             res.status(500).json({ error: "Error fetching product details" });
+             return;
+         }
+
+         if (results.length === 0) {
+             res.status(404).json({ error: "Product not found" });
+             return;
+         }
+
+         res.json({ product: results[0] });
+     });
+ });
+ */
+
+// app.get('/products', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'allproducts.html'));
+// });
+app.get('/products', (req, res) => {
+    const { category } = req.query;
+
+    // If no category is specified, render the default products page
+    if (!category) {
+        res.sendFile(path.resolve(__dirname, '..', 'frontend', 'allproducts.html'));
+        return;
+    }
+
+    // If a category is specified, render the corresponding category page
+    const categoryPagePath = path.resolve(__dirname, '..', 'frontend', `${category.toLowerCase()}.html`);
+    res.sendFile(categoryPagePath);
+});
+
+// Kiválasztott termék átirányítás
+app.get('/products/:id', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'singleproduct.html'));
+});
+
+// Termékek lekérdezése JSON formátumban
+// app.get('/api/products', (req, res) => {
+//     const db = dbService.getDbServiceInstance();
+//     db.getAllProducts()
+//         .then(products => res.json({ products }))
+//         .catch(error => {
+//             console.error("Error fetching products:", error);
+//             res.status(500).json({ error: "Error fetching products" });
+//         });
+// });
+// Modify your /api/products endpoint
+app.get('/api/products', (req, res, next) => {
+    const { category } = req.query;
+
+    // Check if category parameter is present
+    if (category) {
+        // If category is provided, filter products by category
+        const query = `
+            SELECT Termek.*, Kep.kep_url1
+            FROM Termek
+            INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+            INNER JOIN Kategoria ON Termek.termek_kategoria_id = Kategoria.kategoria_id
+            WHERE Kategoria.kategoria_nev = ?
+        `;
+        connection.query(query, [category], (error, results) => {
+            if (error) {
+                console.error("Error fetching products by category:", error);
+                res.status(500).json({ error: "Error fetching products by category" });
+                return;
+            }
+            res.json({ products: results });
+        });
+    } else {
+        // If no category is provided, fetch all products
+        const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
+        connection.query(query, (error, results) => {
+            if (error) {
+                console.error("Error fetching products:", error);
+                res.status(500).json({ error: "Error fetching products" });
+                return;
+            }
+            res.json({ products: results });
+        });
+    }
+});
+
+
+// Termék iválasztása ID alapján
+app.get('/api/products/:id', (req, res) => {
+    const productId = req.params.id;
+    const db = dbService.getDbServiceInstance();
+    db.getProductById(productId)
+        .then(product => {
+            if (!product) {
+                res.status(404).json({ error: "Product not found" });
+            } else {
+                res.json({ product });
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching product details:", error);
+            res.status(500).json({ error: "Error fetching product details" });
+        });
+});
+
+// Hasonló termékek
+app.get('/api/related-products/:id', (req, res) => {
+    const productId = req.params.id;
+    const db = dbService.getDbServiceInstance();
+
+    db.getRelatedProducts(productId)
+        .then(relatedProducts => {
+            res.json({ relatedProducts });
+        })
+        .catch(error => {
+            console.error("Error fetching related products:", error);
+            res.status(500).json({ error: "Error fetching related products" });
+        });
+});
+
+app.get('/api/categories', (req, res) => {
+    const db = dbService.getDbServiceInstance();
+    db.getAllCategories()
+        .then(categories => res.json({ categories }))
+        .catch(error => {
+            console.error("Error fetching categories:", error);
+            res.status(500).json({ error: "Error fetching categories" });
+        });
+});
+
 
 app.get('/admin', function (req, res) {
     // res.sendFile(path.join(__dirname, '../frontend', 'admin.html')) régi útvonal
