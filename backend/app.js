@@ -174,7 +174,7 @@ app.get('/api/products', (req, res, next) => {
     if (category) {
         // If category is provided, filter products by category
         const query = `
-            SELECT Termek.*, Kep.kep_url1
+            SELECT Termek.*, Kep.kep_url
             FROM Termek
             INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
             INNER JOIN Kategoria ON Termek.termek_kategoria_id = Kategoria.kategoria_id
@@ -190,7 +190,7 @@ app.get('/api/products', (req, res, next) => {
         });
     } else {
         // If no category is provided, fetch all products
-        const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
+        const query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
         connection.query(query, (error, results) => {
             if (error) {
                 console.error("Error fetching products:", error);
@@ -236,15 +236,15 @@ app.get('/api/related-products/:id', (req, res) => {
         });
 });
 
-app.get('/api/categories', (req, res) => {
-    const db = dbService.getDbServiceInstance();
-    db.getAllCategories()
-        .then(categories => res.json({ categories }))
-        .catch(error => {
-            console.error("Error fetching categories:", error);
-            res.status(500).json({ error: "Error fetching categories" });
-        });
-});
+// app.get('/api/categories', (req, res) => {
+//     const db = dbService.getDbServiceInstance();
+//     db.getAllCategories()
+//         .then(categories => res.json({ categories }))
+//         .catch(error => {
+//             console.error("Error fetching categories:", error);
+//             res.status(500).json({ error: "Error fetching categories" });
+//         });
+// });
 
 
 app.get('/admin', function (req, res) {

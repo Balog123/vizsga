@@ -17,7 +17,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 listItem.innerHTML = `
                     <div class="overlay" id="termek-info">
                         <a href="/products/${product.termek_id}" class="product-thumb">
-                            <img src="${product.kep_url1}" alt="${product.termek_nev}">
+                            <img src="${product.kep_url}" alt="${product.termek_nev}">
                         </a>
                     </div>
                     <div class="product-info">

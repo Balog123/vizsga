@@ -61,11 +61,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 const productHTML = `
                     <div class="left image-container">
                         <div class="main" id="termek-kep">
-                            <img src="${product.kep_url1}" alt="${product.termek_nev}" style="width: 100%;">
+                            <img src="${product.kep_url}" alt="${product.termek_nev}" style="width: 100%;">
                         </div>
                     </div>
                     <div class="right">
-                        <span>${product.kategoria_nev}</span>
+                        <span>${product.termek_kategoria}</span>
                         <h1>${product.termek_nev}</h1>
                         <div class="price">${product.termek_ar} Ft</div>
                         <form class="form">

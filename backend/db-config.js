@@ -84,7 +84,7 @@ class DbService {
     
             if (!helyesJelszo) throw new Error('Rossz jelszó');
             
-            const isAdmin = felhasznalo.admin === 1;
+            const isAdmin = felhasznalo.felhasznalo_admin === 1;
     
             console.log('Sikeres bejelentkezes');
     
@@ -101,19 +101,9 @@ class DbService {
         }
     }
 
-    async termekFeltoltes(kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron) {
+    async termekFeltoltes(kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron) {
         try {
-            const queryKategoria = "INSERT INTO Kategoria (kategoria_nev) VALUES (?)"
-            const queryKep = "INSERT INTO Kep (kep_url1) VALUES (?)"
-            
-            const resultKategoria = await new Promise((resolve, reject) => {
-                connection.query(queryKategoria, [kategoria_nev], (error, result) => {
-                    if (error) reject(error)
-                resolve(result)
-              });
-            });
-          
-            const kategoriaId = resultKategoria.insertId
+            const queryKep = "INSERT INTO Kep (kep_url) VALUES (?)"
           
             const resultKep = await new Promise((resolve, reject) => {
                 connection.query(queryKep, [kep_url], (error, result) => {
@@ -124,9 +114,9 @@ class DbService {
           
             const kepId = resultKep.insertId
           
-            const queryTermek = "INSERT INTO Termek (termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_kategoria_id, termek_raktaron, termek_kep_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            const queryTermek = "INSERT INTO Termek (termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_kategoria, termek_raktaron, termek_kep_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
             const resultTermek = await new Promise((resolve, reject) => {
-                connection.query(queryTermek, [nev, ar, leiras, szelesseg, magassag, hossz, kategoriaId, raktaron, kepId], (error, result) => {
+                connection.query(queryTermek, [nev, ar, leiras, szelesseg, magassag, hossz, kategoria, raktaron, kepId], (error, result) => {
                     if (error) reject(error)
                 resolve(result)
               })
@@ -143,9 +133,8 @@ class DbService {
     async termekAdminMegjelenites() {
         try {
             const query = `
-                SELECT Termek.*, Kategoria.kategoria_nev, Kep.kep_url1
+                SELECT Termek.*, Kep.kep_url
                 FROM Termek
-                INNER JOIN Kategoria ON Termek.termek_kategoria_id = Kategoria.kategoria_id
                 INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
             `;
     
@@ -168,7 +157,7 @@ class DbService {
     }
 
     getAllProducts() {
-        const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
+        const query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
         return new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
                 if (error) reject(error);
@@ -189,10 +178,9 @@ class DbService {
 
     getProductById(productId) {
         const query = `
-            SELECT Termek.*, Kep.kep_url1, Kategoria.kategoria_nev
+            SELECT Termek.*, Kep.kep_url
             FROM Termek
             INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
-            INNER JOIN Kategoria ON Termek.termek_kategoria_id = Kategoria.kategoria_id
             WHERE termek_id = ?`;
         
         return new Promise((resolve, reject) => {
@@ -203,33 +191,24 @@ class DbService {
         });
     }
 
-    getRelatedProducts(productId) {
-        const query = `
-            SELECT Termek.*, Kep.kep_url1
-            FROM Termek
-            INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
-            WHERE termek_kategoria_id = (SELECT termek_kategoria_id FROM Termek WHERE termek_id = ?)
-            AND termek_id != ?
-            ORDER BY RAND()
-            LIMIT 4`;
+    // getRelatedProducts(productId) {
+    //     const query = `
+    //         SELECT Termek.*, Kep.kep_url
+    //         FROM Termek
+    //         INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+    //         WHERE termek_kategoria_id = (SELECT termek_kategoria_id FROM Termek WHERE termek_id = ?)
+    //         AND termek_id != ?
+    //         ORDER BY RAND()
+    //         LIMIT 4`;
         
-        return new Promise((resolve, reject) => {
-            connection.query(query, [productId, productId], (error, results) => {
-                if (error) reject(error);
-                resolve(results);
-            });
-        });
-    }
-
-    async getAllCategories() {
-        const query = 'SELECT kategoria_nev FROM Kategoria';
-        return new Promise((resolve, reject) => {
-            connection.query(query, (error, results) => {
-                if (error) reject(error);
-                resolve(results.map(result => result.kategoria_nev));
-            });
-        });
-    }
+    //     return new Promise((resolve, reject) => {
+    //         connection.query(query, [productId, productId], (error, results) => {
+    //             if (error) reject(error);
+    //             resolve(results);
+    //         });
+    //     });
+    // }
+    
 }
 
 module.exports = DbService
