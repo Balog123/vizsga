@@ -221,20 +221,20 @@ app.get('/api/products/:id', (req, res) => {
         });
 });
 
-// Hasonló termékek
-app.get('/api/related-products/:id', (req, res) => {
-    const productId = req.params.id;
-    const db = dbService.getDbServiceInstance();
+// // Hasonló termékek
+// app.get('/api/related-products/:id', (req, res) => {
+//     const productId = req.params.id;
+//     const db = dbService.getDbServiceInstance();
 
-    db.getRelatedProducts(productId)
-        .then(relatedProducts => {
-            res.json({ relatedProducts });
-        })
-        .catch(error => {
-            console.error("Error fetching related products:", error);
-            res.status(500).json({ error: "Error fetching related products" });
-        });
-});
+//     db.getRelatedProducts(productId)
+//         .then(relatedProducts => {
+//             res.json({ relatedProducts });
+//         })
+//         .catch(error => {
+//             console.error("Error fetching related products:", error);
+//             res.status(500).json({ error: "Error fetching related products" });
+//         });
+// });
 
 // app.get('/api/categories', (req, res) => {
 //     const db = dbService.getDbServiceInstance();
@@ -319,10 +319,10 @@ app.post('/bejelentkezes', (request, response) => {
 })
 
 app.post('/admin/feltoltes', (req, res) => {
-    const { kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body
+    const { kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body
     const db = dbService.getDbServiceInstance()
 
-    const result = db.termekFeltoltes(kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron)
+    const result = db.termekFeltoltes(kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron)
 
     result
         .then((data) => {
@@ -342,6 +342,43 @@ app.get('/admin/megjelenites', (req, res) => {
         .catch(err => {
             console.error(err);
             res.status(500).json({ success: false, error: 'Szerveroldali hiba történt' });
+        });
+});
+
+app.delete('/api/products/:id', (req, res) => {
+    const termek_id = req.params.id;
+    const db = dbService.getDbServiceInstance();
+
+    db.termekAdminTorles(termek_id)
+        .then(result => {
+            if (result.affectedRows === 0) {
+                res.status(404).json({ success: false, error: "Product not found" });
+            } else {
+                res.status(200).json({ success: true, message: "Product deleted successfully" });
+            }
+        })
+        .catch(error => {
+            console.error("Error deleting product:", error);
+            res.status(500).json({ success: false, error: "Error deleting product" });
+        });
+});
+
+app.put('/api/products/:id', (req, res) => {
+    const productId = req.params.id;
+    const { kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body;
+    const db = dbService.getDbServiceInstance();
+
+    db.updateProduct(productId, kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron)
+        .then(result => {
+            if (result.success) {
+                res.status(200).json({ success: true, message: "Product updated successfully" });
+            } else {
+                res.status(404).json({ success: false, error: "Product not found" });
+            }
+        })
+        .catch(error => {
+            console.error("Error updating product:", error);
+            res.status(500).json({ success: false, error: "Error updating product" });
         });
 });
 

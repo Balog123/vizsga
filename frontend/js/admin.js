@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:8000/admin/megjelenites')
     .then(response => response.json())
     .then(data => loadHTMLTable(data['data']))
-    .catch(error => console.error('Hiba történt:', error)); // Hiba kezelése
+    .catch(error => console.error('Hiba történt:', error));
 })
 
 function loadHTMLTable(data) {
@@ -37,6 +37,34 @@ function loadHTMLTable(data) {
     });
 
     table.innerHTML = tableHtml;
+
+    const deleteButtons = document.querySelectorAll('.delete-row-btn');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const termekId = button.getAttribute('data-id');
+            deleteRow(termekId);
+        });
+    });
+}
+
+function deleteRow(termekId) {
+    fetch(`http://localhost:8000/api/products/${termekId}`, {
+        method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            fetch('http://localhost:8000/admin/megjelenites')
+            .then(response => response.json())
+            .then(data => loadHTMLTable(data['data']))
+            .catch(error => console.error('Hiba történt:', error));
+        } else {
+            console.error(data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Hiba történt:', error);
+    });
 }
 
 const feltoltes = document.querySelector('#adatatokBtn')
@@ -52,12 +80,6 @@ feltoltes.onclick = function () {
         const magassag = parseInt(document.querySelector('#magassag').value)
         const hossz = parseInt(document.querySelector('#hossz').value)
         const raktaron = parseInt(document.querySelector('#raktaron').value)
-
-        // if (!nev || !ar || !leiras || !szelesseg || !magassag || !hossz || !raktaron) {
-        //     document.getElementById('sikertelen-feltoltes').style.display = "block";
-        //     document.getElementById('sikertelen-feltoltes').innerHTML = 'Adj meg minden adatot.';
-        //     throw new Error('Minden mező kitöltése kötelező!');
-        // }
 
         document.querySelector('#kategoria').value = ""
         document.querySelector('#kep_url').value = ""
