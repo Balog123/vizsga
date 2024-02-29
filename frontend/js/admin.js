@@ -15,7 +15,7 @@ function loadHTMLTable(data) {
 
     let tableHtml = "";
 
-    data.forEach(function ({termek_id, termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_raktaron, kategoria_nev, kep_url1}) {
+    data.forEach(function ({termek_id, termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_raktaron, termek_kategoria, kep_url}) {
         tableHtml += "<tr>";
         tableHtml += `<td>${termek_id}</td>`;
         tableHtml += `<td>${termek_nev}</td>`;
@@ -25,9 +25,9 @@ function loadHTMLTable(data) {
         tableHtml += `<td>${termek_magassag}</td>`;
         tableHtml += `<td>${termek_hossz}</td>`;
         tableHtml += `<td>${termek_raktaron}</td>`;
-        tableHtml += `<td>${kategoria_nev}</td>`;
-        if (kep_url1) {
-            tableHtml += `<td><img src="${kep_url1}"></td>`;
+        tableHtml += `<td>${termek_kategoria}</td>`;
+        if (kep_url) {
+            tableHtml += `<td><img src="${kep_url}"></td>`;
         } else {
             tableHtml += `<td>No Image</td>`; 
         }
@@ -43,7 +43,7 @@ const feltoltes = document.querySelector('#adatatokBtn')
 
 feltoltes.onclick = function () {
     try {
-        const kategoria_nev = document.querySelector('#kategoria_nev').value
+        const kategoria = document.querySelector('#kategoria').value
         const kep_url = document.querySelector('#kep_url').value
         const nev = document.querySelector('#nev').value
         const ar = parseFloat(document.querySelector('#ar').value)
@@ -59,7 +59,7 @@ feltoltes.onclick = function () {
         //     throw new Error('Minden mező kitöltése kötelező!');
         // }
 
-        document.querySelector('#kategoria_nev').value = ""
+        document.querySelector('#kategoria').value = ""
         document.querySelector('#kep_url').value = ""
         document.querySelector('#nev').value = ""
         document.querySelector('#ar').value = ""
@@ -73,7 +73,7 @@ feltoltes.onclick = function () {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
-                kategoria_nev: kategoria_nev,
+                kategoria: kategoria,
                 kep_url: kep_url,
                 nev: nev,
                 ar: ar,
