@@ -236,6 +236,48 @@ app.get('/api/related-products/:id', (req, res) => {
         });
 });
 
+app.get('/api/categories', async (req, res) => {
+    try {
+        const db = dbService.getDbServiceInstance();
+        const categories = await db.getCategories();
+        res.json({ categories });
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+        res.status(500).json({ error: "Error fetching categories" });
+    }
+});
+
+app.get('/api/products/:category', (req, res) => {
+    const category = req.params.category;
+    console.log("Requested category:", category); // Add this line for debugging
+    const sql = `
+        SELECT Termek.*, Kep.kep_url
+        FROM Termek
+        INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+        WHERE LOWER(Termek.termek_kategoria) = LOWER(?)
+    `;
+
+    console.log("SQL Query:", sql); // Add this line for debugging
+
+    db.query(sql, [category], (error, results) => {
+        if (error) {
+            console.error("Error fetching products by category:", error);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        res.json({ products: results });
+    });
+});
+
+
+
+
+
+
+
+
+
+
 
 
 app.get('/admin', function (req, res) {
