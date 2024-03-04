@@ -181,6 +181,26 @@ class DbService {
         }
     }
 
+    async termekArModositas(id, ar) {
+        try {
+            id = parseInt(id, 10); 
+            console.log(id)
+            const response = await new Promise((resolve, reject) => {
+                const query = "UPDATE Termek SET termek_ar = ? WHERE termek_id = ?";
+    
+                connection.query(query, [ar, id] , (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.affectedRows);
+                })
+            });
+    
+            return response === 1 ? true : false;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
     getConnection() {
         return connection;
     }

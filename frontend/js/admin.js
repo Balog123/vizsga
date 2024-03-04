@@ -5,6 +5,15 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => console.error('Hiba történt:', error));
 })
 
+document.querySelector('table tbody').addEventListener('click', function(event) {
+    if (event.target.className === "delete-row-btn") {
+        deleteRowById(event.target.dataset.id);
+    }
+    if (event.target.className === "edit-row-btn") {
+        handleEditRow(event.target.dataset.id);
+    }
+});
+
 function loadHTMLTable(data) {
     const table = document.querySelector('table tbody');
 
@@ -31,20 +40,34 @@ function loadHTMLTable(data) {
         } else {
             tableHtml += `<td>No Image</td>`; 
         }
-        tableHtml += `<td><button class="delete-row-btn" data-id=${termek_id}}>Delete</td>`;
-        tableHtml += `<td><button class="edit-row-btn" data-id=${termek_id}>Edit</td>`;
+        tableHtml += `<td><button class="edit-row-btn" data-id=${termek_id}>Módosítás</td>`;
+        tableHtml += `<td><button class="delete-row-btn" data-id=${termek_id}}>Törlés</td>`;
         tableHtml += "</tr>";
     });
 
     table.innerHTML = tableHtml;
 
-    const deleteButtons = document.querySelectorAll('.delete-row-btn');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const termekId = button.getAttribute('data-id');
-            deleteRow(termekId);
-        });
-    });
+    // const deleteButtons = document.querySelectorAll('.delete-row-btn');
+    // deleteButtons.forEach(button => {
+    //     button.addEventListener('click', () => {
+    //         const termekId = button.getAttribute('data-id');
+    //         deleteRow(termekId);
+    //     });
+    // });
+
+    // const editButtons = document.querySelectorAll('.edit-row-btn');
+    // editButtons.forEach(button => {
+    //     button.addEventListener('click', () => {
+    //         const termekId = button.getAttribute('data-id');
+    //         handleEditRow(termekId);
+    //     });
+    // });
+}
+
+function handleEditRow(id) {
+    const updateSection = document.querySelector('#update-row');
+    updateSection.hidden = false;
+    document.querySelector('#modositas-input').dataset.id = id;
 }
 
 function deleteRow(termekId) {
@@ -125,4 +148,31 @@ feltoltes.onclick = function () {
     } catch (error) {
         console.log(error)
     }
+}
+
+
+const updateBtn = document.querySelector('#update-row-btn');
+
+updateBtn.onclick = function() {
+    const modositas_input = document.querySelector('#modositas-input');
+
+
+    console.log(modositas_input);
+
+    fetch('http://localhost:8000/admin/modositas', {
+        method: 'PATCH',
+        headers: {
+            'Content-type' : 'application/json'
+        },
+        body: JSON.stringify({
+            id: modositas_input.dataset.id,
+            ar: modositas_input.value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    })
 }
