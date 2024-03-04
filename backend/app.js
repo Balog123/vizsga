@@ -336,6 +336,17 @@ app.get('/admin/megjelenites', (req, res) => {
         });
 });
 
+app.patch('/admin/modositas', (request, response) => {
+    const { id, ar } = request.body;
+    const db = dbService.getDbServiceInstance();
+
+    const result = db.termekArModositas(id, ar);
+    
+    result
+    .then(data => response.json({success : data}))
+    .catch(err => console.log(err));
+});
+
 app.delete('/api/products/:id', (req, res) => {
     const termek_id = req.params.id;
     const db = dbService.getDbServiceInstance();
