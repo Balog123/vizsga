@@ -220,24 +220,23 @@ class DbService {
         });
     }
 
-    // getRelatedProducts(productId) {
-    //     const query = `
-    //         SELECT Termek.*, Kep.kep_url
-    //         FROM Termek
-    //         INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
-    //         WHERE termek_kategoria_id = (SELECT termek_kategoria_id FROM Termek WHERE termek_id = ?)
-    //         AND termek_id != ?
-    //         ORDER BY RAND()
-    //         LIMIT 4`;
-        
-    //     return new Promise((resolve, reject) => {
-    //         connection.query(query, [productId, productId], (error, results) => {
-    //             if (error) reject(error);
-    //             resolve(results);
-    //         });
-    //     });
-    // }
+    getRelatedProducts(productId) {
+        const query = `
+            SELECT t1.*, k1.kep_url
+            FROM Termek t1
+            LEFT JOIN Kep k1 ON t1.termek_kep_id = k1.kep_id
+            WHERE t1.termek_kategoria = (SELECT termek_kategoria FROM Termek WHERE termek_id = ?)
+            AND t1.termek_id != ?
+            ORDER BY RAND()
+            LIMIT 4`;
     
+        return new Promise((resolve, reject) => {
+            connection.query(query, [productId, productId], (error, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+    }    
 }
 
 module.exports = DbService

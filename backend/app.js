@@ -221,30 +221,21 @@ app.get('/api/products/:id', (req, res) => {
         });
 });
 
-// // Hasonló termékek
-// app.get('/api/related-products/:id', (req, res) => {
-//     const productId = req.params.id;
-//     const db = dbService.getDbServiceInstance();
+// Hasonló termékek
+app.get('/api/related-products/:id', (req, res) => {
+    const productId = req.params.id;
+    const db = dbService.getDbServiceInstance();
 
-//     db.getRelatedProducts(productId)
-//         .then(relatedProducts => {
-//             res.json({ relatedProducts });
-//         })
-//         .catch(error => {
-//             console.error("Error fetching related products:", error);
-//             res.status(500).json({ error: "Error fetching related products" });
-//         });
-// });
+    db.getRelatedProducts(productId)
+        .then(relatedProducts => {
+            res.json({ relatedProducts });
+        })
+        .catch(error => {
+            console.error("Error fetching related products:", error);
+            res.status(500).json({ error: "Error fetching related products" });
+        });
+});
 
-// app.get('/api/categories', (req, res) => {
-//     const db = dbService.getDbServiceInstance();
-//     db.getAllCategories()
-//         .then(categories => res.json({ categories }))
-//         .catch(error => {
-//             console.error("Error fetching categories:", error);
-//             res.status(500).json({ error: "Error fetching categories" });
-//         });
-// });
 
 
 app.get('/admin', function (req, res) {
