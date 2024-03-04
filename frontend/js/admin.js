@@ -40,8 +40,8 @@ function loadHTMLTable(data) {
         } else {
             tableHtml += `<td>No Image</td>`; 
         }
-        tableHtml += `<td><button class="delete-row-btn" data-id=${termek_id}}>Delete</td>`;
-        tableHtml += `<td><button class="edit-row-btn" data-id=${termek_id}>Edit</td>`;
+        tableHtml += `<td><button class="edit-row-btn" data-id=${termek_id}>Módosítás</td>`;
+        tableHtml += `<td><button class="delete-row-btn" data-id=${termek_id}}>Törlés</td>`;
         tableHtml += "</tr>";
     });
 
