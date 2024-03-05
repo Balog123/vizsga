@@ -107,7 +107,7 @@ li {
 }
 
 .nav-center .nav-link:hover {
-  color: var(--orange);
+  color: var(--main-color);
 }
 
 /* Icons */

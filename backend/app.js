@@ -166,7 +166,7 @@ app.get('/products/:id', (req, res) => {
 //             res.status(500).json({ error: "Error fetching products" });
 //         });
 // });
-// Modify your /api/products endpoint
+
 app.get('/api/products', (req, res, next) => {
     const { category } = req.query;
 
@@ -177,8 +177,7 @@ app.get('/api/products', (req, res, next) => {
             SELECT Termek.*, Kep.kep_url
             FROM Termek
             INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
-            INNER JOIN Kategoria ON Termek.termek_kategoria_id = Kategoria.kategoria_id
-            WHERE Kategoria.kategoria_nev = ?
+            WHERE Termek.termek_kategoria = ?
         `;
         connection.query(query, [category], (error, results) => {
             if (error) {
@@ -201,6 +200,8 @@ app.get('/api/products', (req, res, next) => {
         });
     }
 });
+
+
 
 
 // Termék iválasztása ID alapján
@@ -247,27 +248,27 @@ app.get('/api/categories', async (req, res) => {
     }
 });
 
-app.get('/api/products/:category', (req, res) => {
-    const category = req.params.category;
-    console.log("Requested category:", category); // Add this line for debugging
-    const sql = `
-        SELECT Termek.*, Kep.kep_url
-        FROM Termek
-        INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
-        WHERE LOWER(Termek.termek_kategoria) = LOWER(?)
-    `;
+// app.get('/api/products/:category', (req, res) => {
+//     const category = req.params.category;
+//     console.log("Requested category:", category); // Add this line for debugging
+//     const sql = `
+//         SELECT Termek.*, Kep.kep_url
+//         FROM Termek
+//         INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+//         WHERE LOWER(Termek.termek_kategoria) = LOWER(?)
+//     `;
 
-    console.log("SQL Query:", sql); // Add this line for debugging
+//     console.log("SQL Query:", sql); // Add this line for debugging
 
-    db.query(sql, [category], (error, results) => {
-        if (error) {
-            console.error("Error fetching products by category:", error);
-            return res.status(500).json({ error: "Internal Server Error" });
-        }
+//     db.query(sql, [category], (error, results) => {
+//         if (error) {
+//             console.error("Error fetching products by category:", error);
+//             return res.status(500).json({ error: "Internal Server Error" });
+//         }
 
-        res.json({ products: results });
-    });
-});
+//         res.json({ products: results });
+//     });
+// });
 
 
 
