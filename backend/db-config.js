@@ -156,7 +156,6 @@ class DbService {
         try {
             id = parseInt(id, 10);
     
-            // Képek törlése
             const deleteImagesQuery = `DELETE FROM Kep WHERE kep_id IN (SELECT termek_kep_id FROM Termek WHERE termek_id = ?)`;
             await new Promise((resolve, reject) => {
                 connection.query(deleteImagesQuery, [id], (err, result) => {
@@ -165,7 +164,6 @@ class DbService {
                 });
             });
     
-            // Termék törlése
             const deleteProductQuery = `DELETE FROM Termek WHERE termek_id = ?`;
             const response = await new Promise((resolve, reject) => {
                 connection.query(deleteProductQuery, [id], (err, result) => {
@@ -214,16 +212,6 @@ class DbService {
             });
         });
     }
-
-    // getProductById(productId) {
-    //     const query = 'SELECT Termek.*, Kep.kep_url1 FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id WHERE termek_id = ?';
-    //     return new Promise((resolve, reject) => {
-    //         connection.query(query, [productId], (error, results) => {
-    //             if (error) reject(error);
-    //             resolve(results[0]);
-    //         });
-    //     });
-    // }
 
     getProductById(productId) {
         const query = `

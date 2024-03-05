@@ -46,22 +46,6 @@ function loadHTMLTable(data) {
     });
 
     table.innerHTML = tableHtml;
-
-    // const deleteButtons = document.querySelectorAll('.delete-row-btn');
-    // deleteButtons.forEach(button => {
-    //     button.addEventListener('click', () => {
-    //         const termekId = button.getAttribute('data-id');
-    //         deleteRow(termekId);
-    //     });
-    // });
-
-    // const editButtons = document.querySelectorAll('.edit-row-btn');
-    // editButtons.forEach(button => {
-    //     button.addEventListener('click', () => {
-    //         const termekId = button.getAttribute('data-id');
-    //         handleEditRow(termekId);
-    //     });
-    // });
 }
 
 function handleEditRow(id) {
