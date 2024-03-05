@@ -236,15 +236,48 @@ app.get('/api/related-products/:id', (req, res) => {
         });
 });
 
-// app.get('/api/categories', (req, res) => {
-//     const db = dbService.getDbServiceInstance();
-//     db.getAllCategories()
-//         .then(categories => res.json({ categories }))
-//         .catch(error => {
-//             console.error("Error fetching categories:", error);
-//             res.status(500).json({ error: "Error fetching categories" });
-//         });
-// });
+app.get('/api/categories', async (req, res) => {
+    try {
+        const db = dbService.getDbServiceInstance();
+        const categories = await db.getCategories();
+        res.json({ categories });
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+        res.status(500).json({ error: "Error fetching categories" });
+    }
+});
+
+app.get('/api/products/:category', (req, res) => {
+    const category = req.params.category;
+    console.log("Requested category:", category); // Add this line for debugging
+    const sql = `
+        SELECT Termek.*, Kep.kep_url
+        FROM Termek
+        INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+        WHERE LOWER(Termek.termek_kategoria) = LOWER(?)
+    `;
+
+    console.log("SQL Query:", sql); // Add this line for debugging
+
+    db.query(sql, [category], (error, results) => {
+        if (error) {
+            console.error("Error fetching products by category:", error);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        res.json({ products: results });
+    });
+});
+
+
+
+
+
+
+
+
+
+
 
 
 app.get('/admin', function (req, res) {
@@ -319,10 +352,10 @@ app.post('/bejelentkezes', (request, response) => {
 })
 
 app.post('/admin/feltoltes', (req, res) => {
-    const { kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body
+    const { kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body
     const db = dbService.getDbServiceInstance()
 
-    const result = db.termekFeltoltes(kategoria_nev, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron)
+    const result = db.termekFeltoltes(kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron)
 
     result
         .then((data) => {
@@ -344,5 +377,35 @@ app.get('/admin/megjelenites', (req, res) => {
             res.status(500).json({ success: false, error: 'Szerveroldali hiba történt' });
         });
 });
+
+app.patch('/admin/modositas', (request, response) => {
+    const { id, ar } = request.body;
+    const db = dbService.getDbServiceInstance();
+
+    const result = db.termekArModositas(id, ar);
+    
+    result
+    .then(data => response.json({success : data}))
+    .catch(err => console.log(err));
+});
+
+app.delete('/api/products/:id', (req, res) => {
+    const termek_id = req.params.id;
+    const db = dbService.getDbServiceInstance();
+
+    db.termekAdminTorles(termek_id)
+        .then(result => {
+            if (result.affectedRows === 0) {
+                res.status(404).json({ success: false, error: "Product not found" });
+            } else {
+                res.status(200).json({ success: true, message: "Product deleted successfully" });
+            }
+        })
+        .catch(error => {
+            console.error("Error deleting product:", error);
+            res.status(500).json({ success: false, error: "Error deleting product" });
+        });
+});
+
 
 app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))

@@ -152,6 +152,55 @@ class DbService {
         }
     }
 
+    async termekAdminTorles(id) {
+        try {
+            id = parseInt(id, 10);
+    
+            // Képek törlése
+            const deleteImagesQuery = `DELETE FROM Kep WHERE kep_id IN (SELECT termek_kep_id FROM Termek WHERE termek_id = ?)`;
+            await new Promise((resolve, reject) => {
+                connection.query(deleteImagesQuery, [id], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve();
+                });
+            });
+    
+            // Termék törlése
+            const deleteProductQuery = `DELETE FROM Termek WHERE termek_id = ?`;
+            const response = await new Promise((resolve, reject) => {
+                connection.query(deleteProductQuery, [id], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.affectedRows);
+                });
+            });
+    
+            return response === 1 ? true : false;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    async termekArModositas(id, ar) {
+        try {
+            id = parseInt(id, 10); 
+            console.log(id)
+            const response = await new Promise((resolve, reject) => {
+                const query = "UPDATE Termek SET termek_ar = ? WHERE termek_id = ?";
+    
+                connection.query(query, [ar, id] , (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.affectedRows);
+                })
+            });
+    
+            return response === 1 ? true : false;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
     getConnection() {
         return connection;
     }
@@ -191,23 +240,40 @@ class DbService {
         });
     }
 
-    // getRelatedProducts(productId) {
-    //     const query = `
-    //         SELECT Termek.*, Kep.kep_url
-    //         FROM Termek
-    //         INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
-    //         WHERE termek_kategoria_id = (SELECT termek_kategoria_id FROM Termek WHERE termek_id = ?)
-    //         AND termek_id != ?
-    //         ORDER BY RAND()
-    //         LIMIT 4`;
-        
-    //     return new Promise((resolve, reject) => {
-    //         connection.query(query, [productId, productId], (error, results) => {
-    //             if (error) reject(error);
-    //             resolve(results);
-    //         });
-    //     });
-    // }
+    getRelatedProducts(productId) {
+        const query = `
+            SELECT t1.*, k1.kep_url
+            FROM Termek t1
+            LEFT JOIN Kep k1 ON t1.termek_kep_id = k1.kep_id
+            WHERE t1.termek_kategoria = (SELECT termek_kategoria FROM Termek WHERE termek_id = ?)
+            AND t1.termek_id != ?
+            ORDER BY RAND()
+            LIMIT 4`;
+    
+        return new Promise((resolve, reject) => {
+            connection.query(query, [productId, productId], (error, results) => {
+                if (error) reject(error);
+                resolve(results);
+            });
+        });
+    }
+    
+    async getCategories() {
+        try {
+            const query = 'SELECT DISTINCT termek_kategoria AS category_name FROM Termek';
+            const result = await new Promise((resolve, reject) => {
+                connection.query(query, (error, result) => {
+                    if (error) reject(error);
+                    resolve(result);
+                });
+            });
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error fetching categories');
+        }
+    }
+    
     
 }
 

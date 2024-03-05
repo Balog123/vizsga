@@ -4,15 +4,8 @@ USE butorbolt;
 
 CREATE TABLE Kep (
     kep_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    kep_url VARCHAR(500),
-    -- kep_url1 VARCHAR(500),
-    -- kep_url2 VARCHAR(500)
+    kep_url VARCHAR(500)
 )
-
--- CREATE TABLE Kategoria (
---     kategoria_id INT(11) AUTO_INCREMENT PRIMARY KEY,
---     kategoria_nev VARCHAR(50)
--- )
 
 --termek
 CREATE TABLE Termek (
@@ -24,12 +17,9 @@ CREATE TABLE Termek (
     termek_magassag INT(11),
     termek_hossz INT(11),
     termek_kategoria VARCHAR(50),
-    --termek_kategoria_id INT(11),
     termek_raktaron INT(11),
     termek_kep_id INT(11),
-    --FOREIGN KEY (termek_kategoria_id) REFERENCES Kategoria(kategoria_id),
     FOREIGN KEY (termek_kep_id) REFERENCES Kep(kep_id) ON DELETE CASCADE
-    --FOREIGN KEY (termek_kep_id) REFERENCES Kep(kep_id)
 )
 
 --felhasznalo
