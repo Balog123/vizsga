@@ -49,36 +49,77 @@ app.get('/products/:id', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'singleproduct.html'));
 });
 
+// app.get('/api/products', (req, res, next) => {
+//     const { category } = req.query;
+
+//     if (category) {
+//         const query = `
+//             SELECT Termek.*, Kep.kep_url
+//             FROM Termek
+//             INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+//             WHERE Termek.termek_kategoria = ?
+//         `;
+//         connection.query(query, [category], (error, results) => {
+//             if (error) {
+//                 console.error("Error fetching products by category:", error);
+//                 res.status(500).json({ error: "Error fetching products by category" });
+//                 return;
+//             }
+//             res.json({ products: results });
+//         });
+//     } else {
+//         const query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
+//         connection.query(query, (error, results) => {
+//             if (error) {
+//                 console.error("Error fetching products:", error);
+//                 res.status(500).json({ error: "Error fetching products" });
+//                 return;
+//             }
+//             res.json({ products: results });
+//         });
+//     }
+// });
+
 app.get('/api/products', (req, res, next) => {
-    const { category } = req.query;
+    const { category, sortOrder } = req.query;
+
+    let query;
 
     if (category) {
-        const query = `
+        query = `
             SELECT Termek.*, Kep.kep_url
             FROM Termek
             INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
             WHERE Termek.termek_kategoria = ?
         `;
-        connection.query(query, [category], (error, results) => {
-            if (error) {
-                console.error("Error fetching products by category:", error);
-                res.status(500).json({ error: "Error fetching products by category" });
-                return;
-            }
-            res.json({ products: results });
-        });
     } else {
-        const query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
-        connection.query(query, (error, results) => {
-            if (error) {
-                console.error("Error fetching products:", error);
-                res.status(500).json({ error: "Error fetching products" });
-                return;
-            }
-            res.json({ products: results });
-        });
+        query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
     }
+
+    if (sortOrder) {
+        switch (sortOrder) {
+            case '1':
+                query += ' ORDER BY termek_nev ASC';
+                break;
+            case '2':
+                query += ' ORDER BY termek_ar DESC';
+                break;
+            case '3':
+                query += ' ORDER BY termek_ar ASC';
+                break;
+        }
+    }
+
+    connection.query(query, category ? [category] : [], (error, results) => {
+        if (error) {
+            console.error("Error fetching products:", error);
+            res.status(500).json({ error: "Error fetching products" });
+            return;
+        }
+        res.json({ products: results });
+    });
 });
+
 
 app.get('/api/products/:id', (req, res) => {
     const productId = req.params.id;
@@ -179,7 +220,7 @@ app.post('/bejelentkezes', (request, response) => {
     result.then(data => {
         const isAdmin = data.isAdmin;
 
-        const token = jwt.sign({id: data.id, email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: data.id, email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
             expiresIn: '1h',
         });
 
@@ -224,10 +265,10 @@ app.patch('/admin/modositas', (request, response) => {
     const db = dbService.getDbServiceInstance();
 
     const result = db.termekArModositas(id, ar);
-    
+
     result
-    .then(data => response.json({success : data}))
-    .catch(err => console.log(err));
+        .then(data => response.json({ success: data }))
+        .catch(err => console.log(err));
 });
 
 app.delete('/api/products/:id', (req, res) => {
