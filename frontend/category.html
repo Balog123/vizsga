@@ -1,0 +1,86 @@
+<!-- category.html -->
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Box icons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>Valami</title>
+</head>
+<body>
+
+
+    <div class="product-center container"></div>
+
+
+    <div id="category-products"></div>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    const categoryParam = new URLSearchParams(window.location.search).get('category');
+
+    if (categoryParam) {
+        fetch(`http://localhost:8000/api/products?category=${encodeURIComponent(categoryParam)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Fetched data:", data);
+
+                //const categoryProductsContainer = document.getElementById("category-products");
+
+                const productList = document.querySelector(".product-center");
+
+                
+                //categoryProductsContainer.innerHTML = "";
+
+                if (data.products && data.products.length > 0) {
+                    data.products.forEach(product => {
+                        const listItem = document.createElement("div");
+                        listItem.className = 'product-item'; 
+
+                        listItem.innerHTML = `
+                        <div class="overlay" id="termek-info">
+                            <a href="/products/${product.termek_id}" class="product-thumb">
+                                <img src="${product.kep_url}" alt="${product.termek_nev}">
+                            </a>
+                        </div>
+                        <div class="product-info">
+                            <span><a href="/products/${product.termek_id}">${product.termek_nev}</a></span>
+                            <a>${product.termek_leiras}</a>
+                            <h4>${product.termek_ar}</h4>
+                        </div>
+                        <ul class="icons">
+                            <li><i class="bx bx-heart"></i></li>
+                            <li><a href="/products/${product.termek_id}"><i class="bx bx-search"></a></i></li>
+                            <li><i class="bx bx-cart"></i></li>
+                        </ul>
+                        `;
+                        productList.appendChild(listItem);
+                    });
+                } else {
+                    productList.innerHTML = "<p>No products found in this category.</p>";
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching products:", error);
+            });
+    } else {
+        console.error("No category parameter provided in the URL");
+    }
+});
+
+        
+    </script>
+</body>
+</html>

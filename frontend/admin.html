@@ -1,155 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <!--Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-    <title>Admin felület</title>
-
-
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./css/admin.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/admin.css" />
+    <title>Admin</title>
 </head>
-
 <body>
 
-
-    <section class="p-3">
-
-        <div class="row">
-            <div class="col-12">
-                <button class="btn btn-primary newUser" data-bs-toggle="modal" data-bs-target="#userForm">Új termék <i
-                        class=""></i></button>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <table class="table table-striped table-hover mt-3 text-center table-bordered">
-
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Kép</th>
-                            <th>Név</th>
-                            <th>Ár</th>
-                            <th>Kategória</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="data"></tbody>
-
-                </table>
-            </div>
-        </div>
-
-    </section>
+    <h1>Admin</h1>
 
 
-    <!--Modal Form-->
-    <div class="modal fade" id="userForm">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+    <h3>Termék adatok:</h3>
 
-                <div class="modal-header">
-                    <h4 class="modal-title">Termék módosítása</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+    <div id="termek_adat">
+        <label>Kategória</label>
+        <input type="text" id="kategoria">
+        <br>
 
-                <div class="modal-body">
+        <label>Kép</label>
+        <input type="text" id="kep_url">
+        <br>
+        <br>
+        <br>
 
-                    <form action="#" id="myForm">
 
-                        <div class="card imgholder">
-                            <label for="imgInput" class="upload">
-                                <input type="file" name="" id="imgInput">
-                                <i class="bi bi-plus-circle-dotted"></i>
-                            </label>
-                            <img src="./image/Profile Icon.webp" alt="" width="200" height="200" class="img">
-                        </div>
+        <label>Név</label>
+        <input type="text" id="nev" required/>
+        <br>
 
-                        <div class="inputField">
-                            <div>
-                                <label for="name">Név:</label>
-                                <input type="text" name="" id="name" required>
-                            </div>
-                            <div>
-                                <label for="age">Ár:</label>
-                                <input type="number" name="" id="age" required>
-                            </div>
-                            <div>
-                                <label for="city">Kategória:</label>
-                                <input type="text" name="" id="city" required>
-                            </div>
-                        </div>
+        <label>Ár</label>
+        <input type="text" id="ar" required/>
+        <br>
 
-                    </form>
-                </div>
+        <label>Leírás</label>
+        <input type="text" id="leiras" required/>
+        <br>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Bezár</button>
-                    <button type="button" form="myForm" class="btn btn-success submit">Véglegesít</button>
-                </div>
-            </div>
-        </div>
+        <label>Szélesség</label>
+        <input type="text" id="szelesseg" required/>
+        <br>
+
+        <label>Magasság</label>
+        <input type="text" id="magassag" required/>
+        <br>
+
+        <label>Hossz</label>
+        <input type="text" id="hossz" required/>
+        <br>
+
+        <label>Raktáron</label>
+        <input type="text" id="raktaron" required/>
+        <br>
+        <br>
+        <br>
+
+        <button type="submit" id="adatatokBtn">Adatok feltöltése</button>
+        <br>
+        <br>
+
+        <span id="statusz">
+            <div id="sikeres-feltoltes"></div>
+            <div id="sikertelen-feltoltes"></div>
+        </span>
     </div>
 
-    <!--Read Data Modal-->
-    <div class="modal fade" id="readData">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+        <br>
+        <br>
+        <br>
+        
+        <section hidden id="update-row">
+            <label>Name:</label>
+            <input type="text" id="modositas-input">
+            <button id="update-row-btn">Update</button>
+        </section>
 
-                <div class="modal-header">
-                    <h4 class="modal-title">Profil</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+        <br>
+        <br>
+        <br>
 
-                <div class="modal-body">
+    <div id="megjelenites">
+        <table id="table">
+            <thead>
+                <th>ID</th>
+                <th>Név</th>
+                <th>Ár (Ft)</th>
+                <th>Leírás</th>
+                <th>Szélesség</th>
+                <th>Magasság</th>
+                <th>Hosszúság</th>
+                <th>Raktáron (db)</th>
+                <th>Kategória</th>
+                <th>Kép</th>
+                <th>Ár módosítás</th>
+                <th>Törlés</th>
+            </thead>
+            <tbody>
 
-                    <form action="#" id="myForm">
-
-                        <div class="card imgholder">
-                            <img src="./image/Profile Icon.webp" alt="" width="200" height="200" class="showImg">
-                        </div>
-
-                        <div class="inputField">
-                            <div>
-                                <label for="name">Név:</label>
-                                <input type="text" name="" id="showName" disabled>
-                            </div>
-                            <div>
-                                <label for="age">Ár:</label>
-                                <input type="number" name="" id="showAge" disabled>
-                            </div>
-                            <div>
-                                <label for="city">Kategória:</label>
-                                <input type="text" name="" id="showCity" disabled>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </div>
+            </tbody>
+        </table>
     </div>
-
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
 
     <script src="./js/admin.js"></script>
-</body>
 
+</body>
 </html>

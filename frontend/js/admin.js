@@ -1,134 +1,162 @@
-var form = document.getElementById("myForm"),
-    imgInput = document.querySelector(".img"),
-    file = document.getElementById("imgInput"),
-    userName = document.getElementById("name"),
-    age = document.getElementById("age"),
-    city = document.getElementById("city"),
-    email = document.getElementById("email"),
-    submitBtn = document.querySelector(".submit"),
-    userInfo = document.getElementById("data"),
-    modal = document.getElementById("userForm"),
-    modalTitle = document.querySelector("#userForm .modal-title"),
-    newUserBtn = document.querySelector(".newUser")
-
-
-let getData = localStorage.getItem('userProfile') ? JSON.parse(localStorage.getItem('userProfile')) : []
-
-let isEdit = false, editId
-showInfo()
-
-newUserBtn.addEventListener('click', ()=> {
-    submitBtn.innerText = 'Submit',
-    modalTitle.innerText = "Fill the Form"
-    isEdit = false
-    imgInput.src = "./image/Profile Icon.webp"
-    form.reset()
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('http://localhost:8000/admin/megjelenites')
+    .then(response => response.json())
+    .then(data => loadHTMLTable(data['data']))
+    .catch(error => console.error('Hiba történt:', error));
 })
 
-
-file.onchange = function(){
-    if(file.files[0].size < 1000000){  // 1MB = 1000000
-        var fileReader = new FileReader();
-
-        fileReader.onload = function(e){
-            imgUrl = e.target.result
-            imgInput.src = imgUrl
-        }
-
-        fileReader.readAsDataURL(file.files[0])
+document.querySelector('table tbody').addEventListener('click', function(event) {
+    if (event.target.className === "delete-row-btn") {
+        deleteRow(event.target.dataset.id);
     }
-    else{
-        alert("This file is too large!")
+    if (event.target.className === "edit-row-btn") {
+        handleEditRow(event.target.dataset.id);
+    }
+});
+
+function loadHTMLTable(data) {
+    const table = document.querySelector('table tbody');
+
+    if (data.length === 0) {
+        table.innerHTML = "<tr><td class='no-data' colspan='12'>No Data</td></tr>";
+        return;
+    }
+
+    let tableHtml = "";
+
+    data.forEach(function ({termek_id, termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_raktaron, termek_kategoria, kep_url}) {
+        tableHtml += "<tr>";
+        tableHtml += `<td>${termek_id}</td>`;
+        tableHtml += `<td>${termek_nev}</td>`;
+        tableHtml += `<td>${termek_ar} Ft</td>`;
+        tableHtml += `<td>${termek_leiras}</td>`;
+        tableHtml += `<td>${termek_szelesseg}</td>`;
+        tableHtml += `<td>${termek_magassag}</td>`;
+        tableHtml += `<td>${termek_hossz}</td>`;
+        tableHtml += `<td>${termek_raktaron}</td>`;
+        tableHtml += `<td>${termek_kategoria}</td>`;
+        if (kep_url) {
+            tableHtml += `<td><img src="${kep_url}"></td>`;
+        } else {
+            tableHtml += `<td>No Image</td>`; 
+        }
+        tableHtml += `<td><button class="edit-row-btn" data-id=${termek_id}>Módosítás</td>`;
+        tableHtml += `<td><button class="delete-row-btn" data-id=${termek_id}}>Törlés</td>`;
+        tableHtml += "</tr>";
+    });
+
+    table.innerHTML = tableHtml;
+}
+
+function handleEditRow(id) {
+    const updateSection = document.querySelector('#update-row');
+    updateSection.hidden = false;
+    document.querySelector('#modositas-input').dataset.id = id;
+}
+
+function deleteRow(termekId) {
+    fetch(`http://localhost:8000/api/products/${termekId}`, {
+        method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            fetch('http://localhost:8000/admin/megjelenites')
+            .then(response => response.json())
+            .then(data => loadHTMLTable(data['data']))
+            .catch(error => console.error('Hiba történt:', error));
+        } else {
+            console.error(data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Hiba történt:', error);
+    });
+}
+
+const feltoltes = document.querySelector('#adatatokBtn')
+
+feltoltes.onclick = function () {
+    try {
+        const kategoria = document.querySelector('#kategoria').value
+        const kep_url = document.querySelector('#kep_url').value
+        const nev = document.querySelector('#nev').value
+        const ar = parseFloat(document.querySelector('#ar').value)
+        const leiras = document.querySelector('#leiras').value
+        const szelesseg = parseInt(document.querySelector('#szelesseg').value)
+        const magassag = parseInt(document.querySelector('#magassag').value)
+        const hossz = parseInt(document.querySelector('#hossz').value)
+        const raktaron = parseInt(document.querySelector('#raktaron').value)
+
+        document.querySelector('#kategoria').value = ""
+        document.querySelector('#kep_url').value = ""
+        document.querySelector('#nev').value = ""
+        document.querySelector('#ar').value = ""
+        document.querySelector('#leiras').value = ""
+        document.querySelector('#szelesseg').value = ""
+        document.querySelector('#magassag').value = ""
+        document.querySelector('#hossz').value = ""
+        document.querySelector('#raktaron').value = ""
+
+        fetch('http://localhost:8000/admin/feltoltes', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({
+                kategoria: kategoria,
+                kep_url: kep_url,
+                nev: nev,
+                ar: ar,
+                leiras: leiras,
+                szelesseg: szelesseg,
+                magassag: magassag,
+                hossz: hossz,
+                raktaron: raktaron
+            })
+        })
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            console.log(data)
+            if (data.success === true) {
+                document.getElementById('sikeres-feltoltes').style.display = "block"
+                document.getElementById('sikeres-feltoltes').innerHTML = 'Sikeresen feltöltötte az adatokat.'
+            } else {
+                document.getElementById('sikertelen-feltoltes').style.display = "block"
+                document.getElementById('sikertelen-feltoltes').innerHTML = 'Hiba történt az adatok feltöltésekor.'
+            }
+        })
+        .catch(error => {
+            console.log('Hiba történt:', error)
+        })
+    } catch (error) {
+        console.log(error)
     }
 }
 
 
-function showInfo(){
-    document.querySelectorAll('.employeeDetails').forEach(info => info.remove())
-    getData.forEach((element, index) => {
-        let createElement = `<tr class="employeeDetails">
-            <td>${index+1}</td>
-            <td><img src="${element.picture}" alt="" width="50" height="50"></td>
-            <td>${element.employeeName}</td>
-            <td>${element.employeeAge}</td>
-            <td>${element.employeeCity}</td>
+const updateBtn = document.querySelector('#update-row-btn');
+
+updateBtn.onclick = function() {
+    const modositas_input = document.querySelector('#modositas-input');
 
 
-            <td>
-                <button class="btn btn-success" onclick="readInfo('${element.picture}', '${element.employeeName}', '${element.employeeAge}', '${element.employeeCity}')" data-bs-toggle="modal" data-bs-target="#readData"><i class="bi bi-eye"></i></button>
+    console.log(modositas_input);
 
-                <button class="btn btn-primary" onclick="editInfo(${index}, '${element.picture}', '${element.employeeName}', '${element.employeeAge}', '${element.employeeCity}')" data-bs-toggle="modal" data-bs-target="#userForm"><i class="bi bi-pencil-square"></i></button>
-
-                <button class="btn btn-danger" onclick="deleteInfo(${index})"><i class="bi bi-trash"></i></button>
-                            
-            </td>
-        </tr>`
-
-        userInfo.innerHTML += createElement
+    fetch('http://localhost:8000/admin/modositas', {
+        method: 'PATCH',
+        headers: {
+            'Content-type' : 'application/json'
+        },
+        body: JSON.stringify({
+            id: modositas_input.dataset.id,
+            ar: modositas_input.value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
     })
 }
-showInfo()
-
-
-function readInfo(pic, name, age, city, email, phone, post, sDate){
-    document.querySelector('.showImg').src = pic,
-    document.querySelector('#showName').value = name,
-    document.querySelector("#showAge").value = age,
-    document.querySelector("#showCity").value = city
-}
-
-
-function editInfo(index, pic, name, Age, City){
-    isEdit = true
-    editId = index
-    imgInput.src = pic
-    userName.value = name
-    age.value = Age
-    city.value =City
-
-    submitBtn.innerText = "Update"
-    modalTitle.innerText = "Update The Form"
-}
-
-
-function deleteInfo(index){
-    if(confirm("Are you sure want to delete?")){
-        getData.splice(index, 1)
-        localStorage.setItem("userProfile", JSON.stringify(getData))
-        showInfo()
-    }
-}
-
-
-form.addEventListener('submit', (e)=> {
-    e.preventDefault()
-
-    const information = {
-        picture: imgInput.src == undefined ? "./image/Profile Icon.webp" : imgInput.src,
-        employeeName: userName.value,
-        employeeAge: age.value,
-        employeeCity: city.value
-    }
-
-    if(!isEdit){
-        getData.push(information)
-    }
-    else{
-        isEdit = false
-        getData[editId] = information
-    }
-
-    localStorage.setItem('userProfile', JSON.stringify(getData))
-
-    submitBtn.innerText = "Submit"
-    modalTitle.innerHTML = "Fill The Form"
-
-    showInfo()
-
-    form.reset()
-
-    imgInput.src = "./image/Profile Icon.webp"  
-
-    // modal.style.display = "none"
-    // document.querySelector(".modal-backdrop").remove()
-})
