@@ -100,8 +100,8 @@
     <section class="section all-products" id="products">
         <div class="top container">
             <h1>Összes termék</h1>
-            <form>
-                <select>
+            <form id="sortForm">
+                <select id="sortSelect" name="sortOrder">
                     <option value="0" disabled selected hidden>Rendezés módosítása</option>
                     <option value="1">Név szerint</option>
                     <option value="2">Ár szerint csökkenő</option>
@@ -111,10 +111,9 @@
             </form>
         </div>
         <div class="product-center container">
-            <!-- A dinamikusan generált tartalom itt jelenik majd meg JavaScript segítségével -->
+            
         </div>
     </section>
-
 
     <section class="pagination">
         <div class="container">
