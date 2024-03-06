@@ -154,7 +154,7 @@ function authenticateAdmin(req, res, next) {
 
         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
             if (err) {
-                //console.error('Token decoding failed:', err);
+                console.error('Token decoding failed:', err);
             } else {
                 //console.log('Decoded token:', decodedToken);
                 if (decodedToken.isAdmin) {
@@ -179,8 +179,8 @@ app.post('/bejelentkezes', (request, response) => {
     result.then(data => {
         const isAdmin = data.isAdmin;
 
-        const token = jwt.sign({ email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
-            expiresIn: '1d',
+        const token = jwt.sign({id: data.id, email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
+            expiresIn: '1h',
         });
 
         response.cookie('token', token, { httpOnly: true });

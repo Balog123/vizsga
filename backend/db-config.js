@@ -89,6 +89,7 @@ class DbService {
             console.log('Sikeres bejelentkezes');
     
             return {
+                id: felhasznalo.felhasznalo_id,
                 keresztnev: felhasznalo.felhasznalo_keresztnev,
                 vezeteknev: felhasznalo.felhasznalo_vezeteknev,
                 jelszo: jelszo,
@@ -156,6 +157,7 @@ class DbService {
         try {
             id = parseInt(id, 10);
     
+
             const deleteImagesQuery = `DELETE FROM Kep WHERE kep_id IN (SELECT termek_kep_id FROM Termek WHERE termek_id = ?)`;
             await new Promise((resolve, reject) => {
                 connection.query(deleteImagesQuery, [id], (err, result) => {
