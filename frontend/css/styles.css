@@ -1138,10 +1138,21 @@ form span {
 }
 
 .product-detail .form .addCart {
-  background: var(--black);
+  font-family: 'Inter', sans-serif;
+  background: var(--white);
   padding: 0.8rem 4rem;
-  color: #fff;
+  color: var(--black);
   border-radius: 3rem;
+  font-weight: 700;
+  border: 0.2px var(--black) solid;
+  transition: all 0.2s ease-in-out;
+}
+
+.product-detail .form .addCart:hover {
+  cursor: pointer; 
+  background-color: var(--black);
+  color: var(--white);
+  transition: all 0.2s ease-in-out;
 }
 
 .product-detail h3 {
