@@ -69,6 +69,8 @@ window.addEventListener("DOMContentLoaded", () => {
                         console.error('Hiba történt a kosár API hívásakor:', error);
                     });
                 });
+                
+                const productId = this.getAttribute("data-product-id");
 
                 fetch(`http://localhost:8000/api/related-products/${productId}`)
                     .then(response => {
@@ -101,7 +103,7 @@ window.addEventListener("DOMContentLoaded", () => {
                                     <ul class="icons">
                                         <li><i class="bx bx-heart"></i></li>
                                         <li><a href="/products/${relatedProduct.termek_id}"><i class="bx bx-search"></a></i></li>
-                                        <li><i class="bx bx-cart"></i></li>
+                                        <li><span class="addToCartBtn" data-product-id="${relatedProduct.termek_id}"><i class="bx bx-cart"></i></span></li>
                                     </ul>
                                 `;
 
