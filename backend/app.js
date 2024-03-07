@@ -224,9 +224,9 @@ app.post('/bejelentkezes', (request, response) => {
 
     result.then(data => {
         const isAdmin = data.isAdmin;
-
+        
         const token = jwt.sign({ id: data.id, email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
-            expiresIn: '1h',
+            expiresIn: '4h',
         });
 
         response.cookie('token', token, { httpOnly: true });
@@ -283,11 +283,11 @@ app.post('/api/kosar', authenticateUser, async (req, res) => {
             const { termek_nev, termek_ar } = results[0];
 
             const insertQuery = `
-                INSERT INTO Kosar (kosar_termek_id, kosar_nev, kosar_ar, kosar_darab)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO Kosar (kosar_termek_id, kosar_nev, kosar_ar, kosar_darab, kosar_felhasznalo_id)
+                VALUES (?, ?, ?, ?, ?)
             `;
 
-            connection.query(insertQuery, [productId, termek_nev, termek_ar, darab], (error, result) => {
+            connection.query(insertQuery, [productId, termek_nev, termek_ar, darab, userId], (error, result) => {
                 if (error) {
                     console.error("Error adding product to cart:", error);
                     res.status(500).json({ success: false, error: "Error adding product to cart" });

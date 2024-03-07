@@ -53,7 +53,8 @@ window.addEventListener("DOMContentLoaded", () => {
                             },
                             body: JSON.stringify({
                                 productId: productId,
-                                darab: 1
+                                darab: 1,
+                                userId: getUserId()
                             }),
                         })
                         .then(response => {
@@ -81,3 +82,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
     fetchProducts(0);
 });
+
+function getUserId() {
+    const cookies = document.cookie.split(';');
+    let userId = null;
+
+    cookies.forEach(cookie => {
+        const [name, value] = cookie.split('=');
+        if (name.trim() === 'userId') {
+            userId = value;
+        }
+    });
+
+    return userId;
+}

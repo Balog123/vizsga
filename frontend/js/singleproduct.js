@@ -39,6 +39,11 @@ window.addEventListener("DOMContentLoaded", () => {
                     event.preventDefault();
 
                     const darab = document.getElementById('darab').value
+
+                    if (!darab || darab <= 0) {
+                        console.error("Érvénytelen darabszám!");
+                        return;
+                    }
                     
                     fetch('http://localhost:8000/api/kosar', {
                         method: 'POST',
@@ -47,7 +52,8 @@ window.addEventListener("DOMContentLoaded", () => {
                         },
                         body: JSON.stringify({
                             productId: productId,
-                            darab: darab
+                            darab: darab,
+                            userId: getUserId()
                         }),
                     })
                     .then(response => {
@@ -141,3 +147,17 @@ window.addEventListener("DOMContentLoaded", () => {
         console.error("Product ID not found in the URL");
     }
 });
+
+function getUserId() {
+    const cookies = document.cookie.split(';');
+    let userId = null;
+
+    cookies.forEach(cookie => {
+        const [name, value] = cookie.split('=');
+        if (name.trim() === 'userId') {
+            userId = value;
+        }
+    });
+
+    return userId;
+}
