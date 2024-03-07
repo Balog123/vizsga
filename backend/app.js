@@ -8,6 +8,7 @@ const dbService = require('./db-config')
 const connection = dbService.getDbServiceInstance().getConnection();
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
+const nodemailer = require('nodemailer');
 
 app.use(cors())
 app.use(express.json())
@@ -288,6 +289,36 @@ app.delete('/api/products/:id', (req, res) => {
             res.status(500).json({ success: false, error: "Error deleting product" });
         });
 });
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'butorprojekt@gmail.com',
+        pass: 'gykc kjhj ajrn nbfo' //Qwertzuiop123456789
+    }
+});
+
+app.post('/api/send-email', (req, res) => {
+    const { email } = req.query;
+
+    const mailOptions = {
+        from: 'butorprojekt@gmail.com',
+        to: email,
+        subject: 'Köszönjük az érdeklődését',
+        text: 'kabe a faszomat!'
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).json({ error: 'Error sending email' });
+        } else {
+            console.log('Email sent:', info.response);
+            res.json({ success: true, message: 'Email sent successfully' });
+        }
+    });
+});
+
 
 
 app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))
