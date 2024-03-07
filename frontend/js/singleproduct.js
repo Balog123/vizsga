@@ -25,9 +25,9 @@ window.addEventListener("DOMContentLoaded", () => {
                         <h1>${product.termek_nev}</h1>
                         <div class="price">${product.termek_ar} Ft</div>
                         <form class="form">
-                            <input type="text" id="darab" placeholder="1" />
+                            <input type="text" id="darab" value="1" />
                             <button type="submit" id="addToCartBtn" class="addCart">Kosárba</button>
-                        </form>
+                            </form>
                         <h3>Termék részletei</h3>
                         <p>${product.termek_leiras}</p>
                     </div>
@@ -95,13 +95,44 @@ window.addEventListener("DOMContentLoaded", () => {
                                     <ul class="icons">
                                         <li><i class="bx bx-heart"></i></li>
                                         <li><a href="/products/${relatedProduct.termek_id}"><i class="bx bx-search"></a></i></li>
-                                        <li><i class="bx bx-cart"></i></li>
+                                        <li><span class="addToCartBtn" data-product-id="${relatedProduct.termek_id}"><i class="bx bx-cart"></i></span></li>
                                     </ul>
                                 `;
 
                                 relatedProductsContainer.appendChild(relatedProductItem);
                             });
                         }
+
+                        document.querySelectorAll(".addToCartBtn").forEach(button => {
+                            button.addEventListener("click", function(event) {
+                                event.preventDefault();
+                                
+                                const productId = this.getAttribute("data-product-id");
+        
+                                fetch('http://localhost:8000/api/kosar', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        productId: productId,
+                                        darab: 1
+                                    }),
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error! Status: ${response.status}`);
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    console.log('Termék sikeresen hozzáadva a kosárhoz:', data);
+                                })
+                                .catch(error => {
+                                    console.error('Hiba történt a kosár API hívásakor:', error);
+                                });
+                            });
+                        });
                     })
                     .catch(error => console.error("Error fetching related products:", error));
             })
