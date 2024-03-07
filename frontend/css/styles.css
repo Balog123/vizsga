@@ -1188,7 +1188,7 @@ form span {
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
-  transition: 0.3s;
+  transition: 0.1s;
   transform: scale(1);
 }
 
@@ -1313,6 +1313,24 @@ form span {
   background-color: var(--black);
   border: 1px solid var(--grey2);
   color: var(--white);
+}
+
+.feliratkozasGomb {
+  display: inline-block;
+  padding: 1.8rem 5rem;
+  border-radius: 3rem;
+  font-weight: 700;
+  color: var(--black);
+  background-color: var(--bg);
+  border: 1px solid var(--grey2);
+  transition: 0.3s;
+}
+
+.feliratkozasGomb:hover {
+  background-color: var(--black);
+  border: 1px solid var(--grey2);
+  color: var(--white);
+  cursor: pointer;
 }
 
 .hide-popup {
