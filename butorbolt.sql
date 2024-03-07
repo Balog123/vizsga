@@ -52,12 +52,11 @@ CREATE TABLE Rendeles (
 )
 
 --A kosár tartalma
-CREATE TABLE RendelesReszlet (
-    reszlet_rendeles_id INT(11),
-    reszlet_termek_id INT(11),
-    reszlet_nev VARCHAR(100),
-    reszlet_ar FLOAT,
-    reszlet_darab INT(11),
-    FOREIGN KEY (reszlet_rendeles_id) REFERENCES Rendeles(rendeles_id),
-    FOREIGN KEY (reszlet_termek_id) REFERENCES Termek(termek_id)
+CREATE TABLE Kosar (
+    kosar_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    kosar_termek_id INT(11),
+    kosar_nev VARCHAR(100),
+    kosar_ar FLOAT,
+    kosar_darab INT(11),
+    FOREIGN KEY (kosar_termek_id) REFERENCES Termek(termek_id)
 )
