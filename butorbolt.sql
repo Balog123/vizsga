@@ -55,8 +55,10 @@ CREATE TABLE Rendeles (
 CREATE TABLE Kosar (
     kosar_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     kosar_termek_id INT(11),
+    kosar_felahasznalo_id INT(11)
     kosar_nev VARCHAR(100),
     kosar_ar FLOAT,
     kosar_darab INT(11),
-    FOREIGN KEY (kosar_termek_id) REFERENCES Termek(termek_id)
+    FOREIGN KEY (kosar_termek_id) REFERENCES Termek(termek_id),
+    FOREIGN KEY (kosar_felhasznalo_id) REFERENCES Felhasznalo(felhasznalo_id)
 )
