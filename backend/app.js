@@ -261,6 +261,33 @@ app.post('/api/kosar', authenticateUser, async (req, res) => {
     try {
         const { productId, darab } = req.body;
         const userId = req.user.id;
+        const db = dbService.getDbServiceInstance()
+
+        const productDetails = await db.getProductById(productId);
+
+        if (!productDetails) {
+            return res.status(404).json({ success: false, error: "Product not found" });
+        }
+
+        const { termek_nev, termek_ar } = productDetails;
+
+        const result = await db.addToCart(productId, termek_nev, termek_ar, darab, userId);
+
+        if (result.success) {
+            return res.status(200).json({ success: true, message: "Product added to cart successfully" });
+        } else {
+            return res.status(500).json({ success: false, error: "Error adding product to cart" });
+        }
+    } catch (error) {
+        console.error("Error adding product to cart:", error);
+        res.status(500).json({ success: false, error: "Error adding product to cart" });
+    }
+});
+
+/*app.post('/api/kosar', authenticateUser, async (req, res) => {
+    try {
+        const { productId, darab } = req.body;
+        const userId = req.user.id;
 
         const query = `
             SELECT termek_nev, termek_ar
@@ -300,7 +327,7 @@ app.post('/api/kosar', authenticateUser, async (req, res) => {
         console.error("Error adding product to cart:", error);
         res.status(500).json({ success: false, error: "Error adding product to cart" });
     }
-});
+});*/
 
 // app.post('/api/kosar', authenticateUser, async (req, res) => {
 //     try {

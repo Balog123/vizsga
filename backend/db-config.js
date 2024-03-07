@@ -102,6 +102,45 @@ class DbService {
         }
     }
 
+    async getProductById(productId) {
+        try {
+            const query = `
+                SELECT termek_nev, termek_ar
+                FROM Termek
+                WHERE termek_id = ?
+            `;
+            const result = await new Promise((resolve, reject) => {
+                this.getConnection().query(query, [productId], (error, results) => {
+                    if (error) reject(error);
+                    resolve(results[0]);
+                });
+            });
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error fetching product details');
+        }
+    }
+    
+    async addToCart(productId, termek_nev, termek_ar, darab, userId) {
+        try {
+            const insertQuery = `
+                INSERT INTO Kosar (kosar_termek_id, kosar_nev, kosar_ar, kosar_darab, kosar_felhasznalo_id)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+            const result = await new Promise((resolve, reject) => {
+                this.getConnection().query(insertQuery, [productId, termek_nev, termek_ar, darab, userId], (error, result) => {
+                    if (error) reject(error);
+                    resolve(result);
+                });
+            });
+            return { success: true };
+        } catch (error) {
+            console.error(error);
+            return { success: false };
+        }
+    }
+
     async termekFeltoltes(kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron) {
         try {
             const queryKep = "INSERT INTO Kep (kep_url) VALUES (?)"
