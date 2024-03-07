@@ -33,11 +33,42 @@ window.addEventListener("DOMContentLoaded", () => {
                         <ul class="icons">
                             <li><i class="bx bx-heart"></i></li>
                             <li><a href="/products/${product.termek_id}"><i class="bx bx-search"></a></i></li>
-                            <li><i class="bx bx-cart"></i></li>
+                            <li><span class="addToCartBtn" data-product-id="${product.termek_id}"><i class="bx bx-cart"></i></span></li>
                         </ul>
                     `;
 
                     productList.appendChild(listItem);
+                });
+
+                document.querySelectorAll(".addToCartBtn").forEach(button => {
+                    button.addEventListener("click", function(event) {
+                        event.preventDefault();
+                        
+                        const productId = this.getAttribute("data-product-id");
+
+                        fetch('http://localhost:8000/api/kosar', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                productId: productId,
+                                darab: 1
+                            }),
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Termék sikeresen hozzáadva a kosárhoz:', data);
+                        })
+                        .catch(error => {
+                            console.error('Hiba történt a kosár API hívásakor:', error);
+                        });
+                    });
                 });
             })
             .catch(error => console.error("Error fetching products:", error));
