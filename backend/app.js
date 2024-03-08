@@ -257,11 +257,42 @@ function authenticateUser(req, res, next) {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get('/api/kosar', authenticateUser, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const db = dbService.getDbServiceInstance();
+
+        const cartItems = await db.getCartItemsByUserId(userId);
+
+        res.status(200).json({ success: true, cartItems });
+    } catch (error) {
+        console.error("Error fetching cart items:", error);
+        res.status(500).json({ success: false, error: "Error fetching cart items" });
+    }
+});
+
 app.post('/api/kosar', authenticateUser, async (req, res) => {
     try {
         const { productId, darab } = req.body;
         const userId = req.user.id;
-        const db = dbService.getDbServiceInstance()
+        const db = dbService.getDbServiceInstance();
 
         const productDetails = await db.getProductById(productId);
 
@@ -274,7 +305,10 @@ app.post('/api/kosar', authenticateUser, async (req, res) => {
         const result = await db.addToCart(productId, termek_nev, termek_ar, darab, userId);
 
         if (result.success) {
-            return res.status(200).json({ success: true, message: "Product added to cart successfully" });
+            // After adding the product to the cart, fetch updated cart items
+            const updatedCartItems = await db.getCartItemsByUserId(userId);
+            
+            return res.status(200).json({ success: true, message: "Product added to cart successfully", cartItems: updatedCartItems });
         } else {
             return res.status(500).json({ success: false, error: "Error adding product to cart" });
         }
@@ -283,6 +317,68 @@ app.post('/api/kosar', authenticateUser, async (req, res) => {
         res.status(500).json({ success: false, error: "Error adding product to cart" });
     }
 });
+
+/*app.post('/api/kosar', authenticateUser, async (req, res) => {
+    try {
+        const { productId, darab } = req.body;
+        const userId = req.user.id;
+
+        const query = `
+            SELECT termek_nev, termek_ar
+            FROM Termek
+            WHERE termek_id = ?
+        `;
+
+        connection.query(query, [productId], (error, results) => {
+            if (error) {
+                console.error("Error retrieving product details:", error);
+                res.status(500).json({ success: false, error: "Error retrieving product details" });
+                return;
+            }
+
+            if (results.length === 0) {
+                res.status(404).json({ success: false, error: "Product not found" });
+                return;
+            }
+
+            const { termek_nev, termek_ar } = results[0];
+
+            const insertQuery = `
+                INSERT INTO Kosar (kosar_termek_id, kosar_nev, kosar_ar, kosar_darab, kosar_felhasznalo_id)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+
+            connection.query(insertQuery, [productId, termek_nev, termek_ar, darab, userId], (error, result) => {
+                if (error) {
+                    console.error("Error adding product to cart:", error);
+                    res.status(500).json({ success: false, error: "Error adding product to cart" });
+                    return;
+                }
+                res.status(200).json({ success: true, message: "Product added to cart successfully" });
+            });
+        });
+    } catch (error) {
+        console.error("Error adding product to cart:", error);
+        res.status(500).json({ success: false, error: "Error adding product to cart" });
+    }
+});*/
+
+// app.post('/api/kosar', authenticateUser, async (req, res) => {
+//     try {
+//         const { productId } = req.body;
+//         const userId = req.user.id;
+
+//         // Itt hívd meg az adatbázis metódust a termék hozzáadásához a kosárhoz
+//         // Példa:
+//         // const addedToCart = await db.addToCart(userId, productId);
+
+//         // Például ha az addToCart visszatér a sikeres hozzáadási üzenettel
+//         res.status(200).json({ success: true, message: "Termék hozzáadva a kosárhoz" });
+//     } catch (error) {
+//         console.error("Error adding product to cart:", error);
+//         res.status(500).json({ success: false, error: "Hiba történt a kosárba helyezés közben" });
+//     }
+// });
 
 app.post('/admin/feltoltes', (req, res) => {
     const { kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body

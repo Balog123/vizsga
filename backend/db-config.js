@@ -260,14 +260,20 @@ class DbService {
             FROM Termek
             INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
             WHERE termek_id = ?`;
-        
+
         return new Promise((resolve, reject) => {
             connection.query(query, [productId], (error, results) => {
-                if (error) reject(error);
-                resolve(results[0]);
+                if (error) {
+                    console.error("Error in getProductById query:", error);
+                    reject(error);
+                } else {
+                    console.log("Results in getProductById:", results);
+                    resolve(results[0]);
+                }
             });
         });
     }
+    
 
     getRelatedProducts(productId) {
         const query = `
@@ -303,6 +309,27 @@ class DbService {
         }
     }
     
+    async getCartItemsByUserId(userId) {
+        try {
+            const query = `
+                SELECT Kosar.*, Termek.*, Kep.kep_url
+                FROM Kosar
+                INNER JOIN Termek ON Kosar.kosar_termek_id = Termek.termek_id
+                INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+                WHERE kosar_felhasznalo_id = ?
+            `;
+            const cartItems = await new Promise((resolve, reject) => {
+                this.getConnection().query(query, [userId], (error, results) => {
+                    if (error) reject(error);
+                    resolve(results);
+                });
+            });
+            return cartItems;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error fetching cart items by user ID');
+        }
+    }    
     
 }
 
