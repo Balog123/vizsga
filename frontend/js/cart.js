@@ -33,9 +33,7 @@ const displayCartItems = async (cartItems) => {
     for (const item of cartItems) {
         const { kosar_nev, kosar_ar, kosar_darab, kosar_termek_id, kep_url } = item;
 
-        // Move this line up to declare productDetails before accessing it
         const productDetails = await fetchProductDetails(kosar_termek_id);
-        // const kep_url = productDetails ? productDetails.kep_url : '';
 
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -43,15 +41,18 @@ const displayCartItems = async (cartItems) => {
             <td><img src="${kep_url}" alt="${kosar_nev}" title="${kosar_nev}" class="product-thumbnail"></td>
             <td>${kosar_ar} Ft</td>
             <td>${kosar_darab}</td>
-            <td><a href="#">Eltávolítás</a></td>
+            <td><button class="removeButton">Eltávolítás</button></td>
         `;
         cartItemsContainer.appendChild(row);
-        console.log(kep_url)
+
+        const removeButton = row.querySelector('.removeButton');
+        removeButton.addEventListener('click', () => {
+            removeCartItem(item, row);
+        });
     }
     totalPriceElement.textContent = calculateTotalPrice(cartItems);
 };
 
-//<td>${productDetails ? `<img src="${productDetails.kep_url}" alt="${kosar_nev}" title="${kosar_nev}" class="product-thumbnail">` : ''}</td>
 const fetchProductDetails = async (termekId) => {
     try {
         const response = await fetch(`/api/products/${termekId}`, {
@@ -63,8 +64,6 @@ const fetchProductDetails = async (termekId) => {
         });
 
         const result = await response.json();
-
-        console.log('Fetch Product Details Result:', result);
 
         return result.success ? result.product : null;
     } catch (error) {
@@ -81,3 +80,38 @@ const calculateTotalPrice = (cartItems) => {
 
     return `${totalPrice} Ft`;
 };
+
+async function removeCartItem(item, row) {
+    try {
+        const response = await fetch('/api/removeCartItem', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ kosar_id: item.kosar_id }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to remove item from the cart');
+        }
+
+        if (row) {
+            row.remove();
+        }
+
+        const cartResponse = await fetch('/api/kosar');
+        const cartData = await cartResponse.json();
+
+        updateCartUI(cartData);
+
+    } catch (error) {
+        console.error('Error removing item from the cart:', error);
+    }
+}
+
+function updateCartUI(cartData) {
+    //console.log('Updated cart data:', cartData);
+
+    const totalPriceElement = document.getElementById('total-price');
+    totalPriceElement.textContent = calculateTotalPrice(cartData.cartItems);
+}

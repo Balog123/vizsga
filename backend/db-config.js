@@ -329,7 +329,29 @@ class DbService {
             console.error(error);
             throw new Error('Error fetching cart items by user ID');
         }
-    }    
+    }
+    
+    async removeCartItem(kosarId) {
+        try {
+            const deleteQuery = 'DELETE FROM Kosar WHERE kosar_id = ?';
+            const result = await new Promise((resolve, reject) => {
+                this.getConnection().query(deleteQuery, [kosarId], (error, result) => {
+                    if (error) {
+                        console.error("Error in removeCartItem query:", error);
+                        reject(error);
+                    }
+                    resolve(result);
+                });
+            });
+    
+            return { success: result.affectedRows > 0 };
+        } catch (error) {
+            console.error("Error in removeCartItem:", error);
+            return { success: false };
+        }
+    }
+    
+    
     
 }
 
