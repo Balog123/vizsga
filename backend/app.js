@@ -15,6 +15,26 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }))
 
+// Middleware to check for JWT cookie
+app.use((req, res, next) => {
+    const token = req.cookies.your_jwt_cookie_name;
+  
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+          res.clearCookie('your_jwt_cookie_name');
+          next();
+        } else {
+          req.user = user;
+          next();
+        }
+      });
+    } else {
+      next();
+    }
+  });
+  
+
 app.use(['/admin', '/admin/*'], authenticateAdmin);
 
 app.use('/css', express.static(path.resolve(__dirname, '..', 'frontend', 'css')));
@@ -434,7 +454,7 @@ app.post('/api/send-email', (req, res) => {
         from: 'butorprojekt@gmail.com',
         to: email,
         subject: 'Köszönjük az érdeklődését',
-        text: 'kabe a faszomat!'
+        text: 'Üdvözöljük feliratkozóink között!'
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -485,6 +505,12 @@ app.get('/api/search', async (req, res) => {
         res.status(500).json({ success: false, error: "Error in search query" });
     }
 });
+
+app.get('/check-auth', authenticateUser, (req, res) => {
+    console.log('User is authenticated:', req.user);
+    res.json({ success: true, data: req.user });
+});
+
 
 
 

@@ -2,10 +2,10 @@
 const hamburger = document.querySelector(".hamburger");
 const navList = document.querySelector(".nav-list");
 
-if(hamburger) {
-    hamburger.addEventListener("click", () => {
-        navList.classList.toggle("open");
-    });
+if (hamburger) {
+  hamburger.addEventListener("click", () => {
+    navList.classList.toggle("open");
+  });
 }
 
 //popup
@@ -80,35 +80,63 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchSubmit = document.getElementById('searchSubmit');
 
   searchIcon.addEventListener('click', (event) => {
-      event.stopPropagation(); // Prevents the document click event from firing immediately
-      searchBar.style.display = 'flex';
-      searchInput.focus();
+    event.stopPropagation();
+    searchBar.style.display = 'flex';
+    searchInput.focus();
   });
 
   searchSubmit.addEventListener('click', (event) => {
-      event.stopPropagation(); // Prevents the document click event from firing immediately
-      performSearch();
+    event.stopPropagation();
+    performSearch();
   });
 
   document.addEventListener('click', (event) => {
-      if (!searchBar.contains(event.target) && event.target !== searchIcon) {
-          searchBar.style.display = 'none';
-      }
+    if (!searchBar.contains(event.target) && event.target !== searchIcon) {
+      searchBar.style.display = 'none';
+    }
   });
 
   searchInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-          performSearch();
-      }
+    if (event.key === 'Enter') {
+      performSearch();
+    }
   });
 
   function performSearch() {
     const searchTerm = searchInput.value.trim();
     if (searchTerm !== '') {
-        console.log('Performing search:', searchTerm);
+      console.log('Performing search:', searchTerm);
 
-        // Assuming you have a search.html page, you can redirect to it with the search query
-        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+      window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
     }
-}
+  }
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const userIcon = document.getElementById('userIcon');
+
+  if (userIcon) {
+      userIcon.addEventListener('click', () => {
+          // Check if user is logged in
+          fetch('http://localhost:8000/check-auth', {
+              method: 'GET',
+              credentials: 'include',
+          })
+              .then(response => response.json())
+              .then(data => {
+                  console.log('Authentication check response:', data);
+
+                  if (data.success) {
+                      // User is logged in, redirect to profile.html
+                      window.location.href = '/profile.html';
+                  } else {
+                      // User is not logged in, redirect to register.html
+                      window.location.href = '/register.html';
+                  }
+              })
+              .catch(error => console.error('Error checking authentication:', error));
+      });
+  }
+});
+
