@@ -1472,3 +1472,41 @@ th:last-child {
     font-size: 12px;
   }
 }
+
+.search-bar-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 10px;
+  display: none;
+  z-index: 999;
+}
+
+
+#searchInput {
+  width: 80%;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+#searchSubmit {
+  cursor: pointer;
+}
+
+.noProductFound {
+  text-align: center;
+  font-size: 2rem;
+  padding: 2rem 2rem;
+  margin-top: 10rem;
+}
+
+.sectionfillingSearch {
+  padding: 5rem;
+  background-color: var(--bg);
+}
+
+#keresettTermek {
+  margin-bottom: 10rem;
+}
