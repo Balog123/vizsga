@@ -469,6 +469,23 @@ app.delete('/api/removeCartItem', authenticateUser, async (req, res) => {
 });
 
 
+app.get('/search', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'frontend', 'search.html'));
+});
+
+app.get('/api/search', async (req, res) => {
+    const db = dbService.getDbServiceInstance();
+    const query = req.query.query;
+
+    try {
+        const searchResults = await db.searchProducts(query);
+        res.json({ success: true, searchResults });
+    } catch (error) {
+        console.error("Error in search query:", error);
+        res.status(500).json({ success: false, error: "Error in search query" });
+    }
+});
+
 
 
 app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))
