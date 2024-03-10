@@ -72,3 +72,43 @@ if (popup) {
 //       .catch(error => console.error("Error sending email:", error));
 //   }
 // });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const searchIcon = document.getElementById('searchIcon');
+  const searchBar = document.getElementById('searchBar');
+  const searchInput = document.getElementById('searchInput');
+  const searchSubmit = document.getElementById('searchSubmit');
+
+  searchIcon.addEventListener('click', (event) => {
+      event.stopPropagation(); // Prevents the document click event from firing immediately
+      searchBar.style.display = 'flex';
+      searchInput.focus();
+  });
+
+  searchSubmit.addEventListener('click', (event) => {
+      event.stopPropagation(); // Prevents the document click event from firing immediately
+      performSearch();
+  });
+
+  document.addEventListener('click', (event) => {
+      if (!searchBar.contains(event.target) && event.target !== searchIcon) {
+          searchBar.style.display = 'none';
+      }
+  });
+
+  searchInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+          performSearch();
+      }
+  });
+
+  function performSearch() {
+    const searchTerm = searchInput.value.trim();
+    if (searchTerm !== '') {
+        console.log('Performing search:', searchTerm);
+
+        // Assuming you have a search.html page, you can redirect to it with the search query
+        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+    }
+}
+});
