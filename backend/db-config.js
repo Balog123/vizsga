@@ -196,6 +196,13 @@ class DbService {
         try {
             id = parseInt(id, 10);
 
+            const deleteCartItemsQuery = `DELETE FROM Kosar WHERE kosar_termek_id = ?`;
+            await new Promise((resolve, reject) => {
+            connection.query(deleteCartItemsQuery, [id], (err, result) => {
+                if (err) reject(new Error(err.message));
+                resolve();
+                });
+            });
 
             const deleteImagesQuery = `DELETE FROM Kep WHERE kep_id IN (SELECT termek_kep_id FROM Termek WHERE termek_id = ?)`;
             await new Promise((resolve, reject) => {
