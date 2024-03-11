@@ -511,6 +511,16 @@ app.get('/check-auth', authenticateUser, (req, res) => {
     res.json({ success: true, data: req.user });
 });
 
+app.post('/logout', (req, res) => {
+    // Clear any user session data or perform logout actions
+    // Example: Clear JWT token or session cookie
+    res.clearCookie('token'); // Change 'token' to your actual cookie name
+
+    // You can also perform additional logout actions if needed
+
+    // Send a response indicating successful logout
+    res.json({ success: true, message: 'Logout successful' });
+});
 
 
 

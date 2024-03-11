@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Boxicons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>Profil</title>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <!-- top nav -->
+        <div class="top-nav">
+            <div class="container d-flex">
+                <p>Rendeljen online vagy Hívjon minket: (+36) 12 34 56 7</p>
+                <ul class="d-flex">
+                    <li><a href="">Rólunk</a></li>
+                    <li><a href="">Gyakran feltett kérdések</a></li>
+                    <li><a href="">Kapcsolatfelvétel</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <div class="nav-center container d-flex">
+                <a href="" class="logo">
+                    <h1>hm</h1>
+                </a>
+
+                <nav class="navbar">
+                    <ul class="nav-list d-flex">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link">Kezdőlap</a>
+                        </li>
+                        <li class="nav-item with-dropdown">
+                            <div class="nav-link nav-link-categories"><a href="/products">Termékek</a></div>
+                            <div class="dropdown-content"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#terms" class="nav-link">Terms</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#about" class="nav-link">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#contact" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#gallery" class="nav-link">Gallery</a>
+                        </li>
+
+                        <li class="icons d-flex">
+                            <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
+                            <div class="icon">
+                                <i class="bx bx-search"></i>
+                            </div>
+                            <div class="icon">
+                                <i class="bx bx-heart"></i>
+                                <span class="d-flex">0</span>
+                            </div>
+                            <a href="/kosar" class="icon">
+                                <i class="bx bx-cart"></i>
+                                <span class="d-flex">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Icons -->
+                <!-- <div class="icons d-flex">
+                    <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
+                    <div class="icon"><i class="bx bx-search"></i></div>
+                    <div class="icon">
+                        <i class="bx bx-heart"></i>
+                        <span class="d-flex">0</span>
+                    </div>
+                    <a href="/kosar" class="icon">
+                        <i class="bx bx-cart"></i>
+                        <span class="d-flex">0</span>
+                    </a>
+                </div> -->
+
+                <!-- Icons -->
+                <div class="icons d-flex">
+                    <!-- <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a> -->
+                    <a href="#" class="icon" id="userIcon"><i class="bx bx-user"></i></a>
+
+
+                    <div class="icon" id="searchIcon"><i class="bx bx-search"></i></div>
+
+                    <div class="icon">
+                        <i class="bx bx-heart"></i>
+                        <span class="d-flex">0</span>
+                    </div>
+                    <a href="/kosar" class="icon">
+                        <i class="bx bx-cart"></i>
+                        <span class="d-flex">0</span>
+                    </a>
+                </div>
+                <!-- Search Bar -->
+                <div id="searchBar" class="search-bar-container">
+                    <input type="text" id="searchInput" placeholder="Search...">
+                    <div class="icon" id="searchSubmit"><i class="bx bx-search"></i></div>
+                </div>
+
+
+
+
+                <!-- Hamburger -->
+                <div class="hamburger">
+                    <i class="bx bx-menu-alt-left"></i>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Logout Button -->
+        <div class="logout-container">
+            <button id="logoutBtn">Kijelentkezés</button>
+        </div>
+
+        <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    // Perform logout operation, e.g., clear cookies, redirect to index.html
+                    fetch('http://localhost:8000/logout', {
+                        method: 'POST',
+                        credentials: 'include',
+                    })
+                    .then(response => {
+                        // Redirect to index.html after successful logout
+                        window.location.href = '/';
+                    })
+                    .catch(error => console.error('Error during logout:', error));
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
