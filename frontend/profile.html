@@ -76,20 +76,6 @@
                 </nav>
 
                 <!-- Icons -->
-                <!-- <div class="icons d-flex">
-                    <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
-                    <div class="icon"><i class="bx bx-search"></i></div>
-                    <div class="icon">
-                        <i class="bx bx-heart"></i>
-                        <span class="d-flex">0</span>
-                    </div>
-                    <a href="/kosar" class="icon">
-                        <i class="bx bx-cart"></i>
-                        <span class="d-flex">0</span>
-                    </a>
-                </div> -->
-
-                <!-- Icons -->
                 <div class="icons d-flex">
                     <!-- <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a> -->
                     <a href="#" class="icon" id="userIcon"><i class="bx bx-user"></i></a>
@@ -124,31 +110,44 @@
 
 
         <!-- Logout Button -->
-        <div class="logout-container">
+        <!-- <div class="logout-container">
             <button id="logoutBtn">Kijelentkezés</button>
-        </div>
+        </div> -->
 
-        <!-- JavaScript -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const logoutBtn = document.getElementById('logoutBtn');
+        <!-- Main Content -->
+<div class="container">
+    <h2>Profil</h2>
 
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', () => {
-                    // Perform logout operation, e.g., clear cookies, redirect to index.html
-                    fetch('http://localhost:8000/logout', {
-                        method: 'POST',
-                        credentials: 'include',
-                    })
-                    .then(response => {
-                        // Redirect to index.html after successful logout
-                        window.location.href = '/';
-                    })
-                    .catch(error => console.error('Error during logout:', error));
-                });
-            }
-        });
-    </script>
+    <button id="logoutButton">Kijelentkezés</button>
+
+    <div class="login-form">
+        <form id="userDetailsForm">
+            <h1>Felhasználói adatok módosítása</h1>
+            <p>
+                Adja meg az új felhasználói adatait alább:
+            </p>
+
+            <label for="felhasznaloVaros">Város:</label>
+            <input type="text" id="felhasznaloVaros" name="felhasznaloVaros" placeholder="Város" required />
+
+            <label for="felhasznaloIranyitoszam">Irányítószám:</label>
+            <input type="text" id="felhasznaloIranyitoszam" name="felhasznaloIranyitoszam"
+                placeholder="Irányítószám" required />
+
+            <label for="felhasznaloCim1">Cím:</label>
+            <input type="text" id="felhasznaloCim1" name="felhasznaloCim1" placeholder="Cím" required />
+
+            <div class="buttons">
+                <button type="button" class="cancelbtn" id="cancelbtn">Mégsem</button>
+                <button type="button" id="saveChangesButton" class="signupbtn">Változtatások Mentése</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+        <script src="/js/script.js"></script>
+        <script src="/js/profile.js"></script>
 
 </body>
 

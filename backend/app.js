@@ -512,15 +512,22 @@ app.get('/check-auth', authenticateUser, (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-    // Clear any user session data or perform logout actions
-    // Example: Clear JWT token or session cookie
-    res.clearCookie('token'); // Change 'token' to your actual cookie name
-
-    // You can also perform additional logout actions if needed
-
-    // Send a response indicating successful logout
+    res.clearCookie('token');
     res.json({ success: true, message: 'Logout successful' });
 });
+
+app.post('/api/save-user-details', authenticateUser, async (req, res) => {
+    const { felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1 } = req.body;
+    
+    try {
+        const result = await saveUserDetailsDetails(req.user.id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1);
+        res.status(200).json({ success: true, result });
+    } catch (error) {
+        console.error("Error saving user details:", error);
+        res.status(500).json({ success: false, error: "Error saving user details" });
+    }
+});
+
 
 
 
