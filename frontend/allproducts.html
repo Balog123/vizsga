@@ -42,7 +42,7 @@
                             <a href="/" class="nav-link">Kezdőlap</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">Termékek</a>
+                            <a href="/products" class="nav-link">Termékek</a>
                         </li>
                         <li class="nav-item">
                             <a href="#terms" class="nav-link">Terms</a>
@@ -76,8 +76,11 @@
 
                 <!-- Icons -->
                 <div class="icons d-flex">
-                    <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
-                    <div class="icon"><i class="bx bx-search"></i></div>
+                    <a href="#" class="icon" id="userIcon"><i class="bx bx-user"></i></a>
+
+                    
+                    <div class="icon" id="searchIcon"><i class="bx bx-search"></i></div>
+
                     <div class="icon">
                         <i class="bx bx-heart"></i>
                         <span class="d-flex">0</span>
@@ -87,11 +90,17 @@
                         <span class="d-flex">0</span>
                     </a>
                 </div>
+                <!-- Search Bar -->
+                <div id="searchBar" class="search-bar-container">
+                    <input type="text" id="searchInput" placeholder="Search...">
+                    <div class="icon" id="searchSubmit"><i class="bx bx-search"></i></div>
+                </div>
 
                 <!-- Hamburger -->
                 <div class="hamburger">
                     <i class="bx bx-menu-alt-left"></i>
                 </div>
+
             </div>
         </div>
     </header>

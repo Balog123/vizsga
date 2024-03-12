@@ -76,8 +76,11 @@
 
         <!-- Icons -->
         <div class="icons d-flex">
-          <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
-          <div class="icon"><i class="bx bx-search"></i></div>
+          <a href="#" class="icon" id="userIcon"><i class="bx bx-user"></i></a>
+
+
+          <div class="icon" id="searchIcon"><i class="bx bx-search"></i></div>
+
           <div class="icon">
             <i class="bx bx-heart"></i>
             <span class="d-flex">0</span>
@@ -87,6 +90,11 @@
             <span class="d-flex">0</span>
           </a>
         </div>
+        <!-- Search Bar -->
+        <div id="searchBar" class="search-bar-container">
+          <input type="text" id="searchInput" placeholder="Search...">
+          <div class="icon" id="searchSubmit"><i class="bx bx-search"></i></div>
+        </div>
 
         <!-- Hamburger -->
         <div class="hamburger">
@@ -94,55 +102,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Cart Items -->
-    <!-- <div class="container cart">
-        <table>
-          <tr>
-            <th>Termék</th>
-            <th>Mennyiség</th>
-            <th>Összesen</th>
-          </tr>
-          <tr>
-            <td>
-              <div class="cart-info">
-                <img src="./images/png.png" alt="" />
-                <div>
-                  <p>Fotel</p>
-                  <span>Ár: 50.000 Ft</span> <br />
-                  <a href="#">Eltávolítás</a>
-                </div>
-              </div>
-            </td>
-            <td><input type="number" value="1" min="1" /></td>
-            <td>50.000</td>
-          </tr>
-          <tr>
-            <td>
-              <div class="cart-info">
-                <img src="./images/png.png" alt="" />
-                <div>
-                  <p>Fotel</p>
-                  <span>Ár: 200.000 Ft</span> <br />
-                  <a href="#">Eltávolítás</a>
-                </div>
-              </div>
-            </td>
-            <td><input type="number" value="1" min="1" /></td>
-            <td>200.000</td>
-          </tr>
-        </table>
-        <div class="total-price">
-          <table>
-            <tr>
-              <td>Összesen</td>
-              <td>250.000 Ft</td>
-            </tr>
-          </table>
-          <a href="#" class="checkout btn">Tovább a fizetéshez</a>
-        </div>
-      </div>-->
-
 
     <!-- Cart Items -->
     <div class="container cart">

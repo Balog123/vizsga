@@ -54,7 +54,11 @@ app.get('/bejelentkezes', function (req, res) {
 })
 
 app.get('/kosar', function (req, res) {
-    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'cart.html'))
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'cart.html'));
+})
+
+app.get('/profil', function (req, res) {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'profile.html'));
 })
 
 app.get('/products', (req, res) => {
