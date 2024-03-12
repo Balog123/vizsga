@@ -15,14 +15,13 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }))
 
-// Middleware to check for JWT cookie
 app.use((req, res, next) => {
-    const token = req.cookies.your_jwt_cookie_name;
+    const token = req.cookies.token;
   
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
-          res.clearCookie('your_jwt_cookie_name');
+          res.clearCookie('token');
           next();
         } else {
           req.user = user;
@@ -73,37 +72,6 @@ app.get('/products', (req, res) => {
 app.get('/products/:id', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'singleproduct.html'));
 });
-
-// app.get('/api/products', (req, res, next) => {
-//     const { category } = req.query;
-
-//     if (category) {
-//         const query = `
-//             SELECT Termek.*, Kep.kep_url
-//             FROM Termek
-//             INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
-//             WHERE Termek.termek_kategoria = ?
-//         `;
-//         connection.query(query, [category], (error, results) => {
-//             if (error) {
-//                 console.error("Error fetching products by category:", error);
-//                 res.status(500).json({ error: "Error fetching products by category" });
-//                 return;
-//             }
-//             res.json({ products: results });
-//         });
-//     } else {
-//         const query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
-//         connection.query(query, (error, results) => {
-//             if (error) {
-//                 console.error("Error fetching products:", error);
-//                 res.status(500).json({ error: "Error fetching products" });
-//                 return;
-//             }
-//             res.json({ products: results });
-//         });
-//     }
-// });
 
 app.get('/api/products', (req, res, next) => {
     const { category, sortOrder } = req.query;
@@ -320,68 +288,6 @@ app.post('/api/kosar', authenticateUser, async (req, res) => {
         res.status(500).json({ success: false, error: "Error adding product to cart" });
     }
 });
-
-/*app.post('/api/kosar', authenticateUser, async (req, res) => {
-    try {
-        const { productId, darab } = req.body;
-        const userId = req.user.id;
-
-        const query = `
-            SELECT termek_nev, termek_ar
-            FROM Termek
-            WHERE termek_id = ?
-        `;
-
-        connection.query(query, [productId], (error, results) => {
-            if (error) {
-                console.error("Error retrieving product details:", error);
-                res.status(500).json({ success: false, error: "Error retrieving product details" });
-                return;
-            }
-
-            if (results.length === 0) {
-                res.status(404).json({ success: false, error: "Product not found" });
-                return;
-            }
-
-            const { termek_nev, termek_ar } = results[0];
-
-            const insertQuery = `
-                INSERT INTO Kosar (kosar_termek_id, kosar_nev, kosar_ar, kosar_darab, kosar_felhasznalo_id)
-                VALUES (?, ?, ?, ?, ?)
-            `;
-
-            connection.query(insertQuery, [productId, termek_nev, termek_ar, darab, userId], (error, result) => {
-                if (error) {
-                    console.error("Error adding product to cart:", error);
-                    res.status(500).json({ success: false, error: "Error adding product to cart" });
-                    return;
-                }
-                res.status(200).json({ success: true, message: "Product added to cart successfully" });
-            });
-        });
-    } catch (error) {
-        console.error("Error adding product to cart:", error);
-        res.status(500).json({ success: false, error: "Error adding product to cart" });
-    }
-});*/
-
-// app.post('/api/kosar', authenticateUser, async (req, res) => {
-//     try {
-//         const { productId } = req.body;
-//         const userId = req.user.id;
-
-//         // Itt hívd meg az adatbázis metódust a termék hozzáadásához a kosárhoz
-//         // Példa:
-//         // const addedToCart = await db.addToCart(userId, productId);
-
-//         // Például ha az addToCart visszatér a sikeres hozzáadási üzenettel
-//         res.status(200).json({ success: true, message: "Termék hozzáadva a kosárhoz" });
-//     } catch (error) {
-//         console.error("Error adding product to cart:", error);
-//         res.status(500).json({ success: false, error: "Hiba történt a kosárba helyezés közben" });
-//     }
-// });
 
 app.post('/admin/feltoltes', (req, res) => {
     const { kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body
