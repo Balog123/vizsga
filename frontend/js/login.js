@@ -49,7 +49,7 @@ loginBtn.onclick = function () {
                     window.location.href = '/admin';
                 } else {
                     // Redirect to index.html after successful login
-                    window.location.href = 'index.html';
+                    window.location.href = '/';
                 }
             } else {
                 document.getElementById('sikeres-bejelentkezes-uzenet').innerText = 'Sikertelen bejelentkezés. Kérlek próbáld újra.';

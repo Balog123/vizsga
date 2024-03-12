@@ -87,6 +87,7 @@ li {
 .navigation {
   height: 8rem;
   line-height: 8rem;
+  border-bottom: 1px solid var(--grey2);
 }
 
 .nav-center {
@@ -106,8 +107,19 @@ li {
   padding: 1rem;
 }
 
+.nav-center .nav-link-termekek a {
+  font-size: 1.8rem;
+}
+
 .nav-center .nav-link:hover {
   color: var(--main-color);
+}
+
+.logo {
+  max-width: 60px;
+  max-height: 60px;
+  display: flex;
+  border-radius: 100%;
 }
 
 /* Icons */
