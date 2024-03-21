@@ -442,31 +442,6 @@ app.post('/api/save-user-details', authenticateUser, async (req, res) => {
     }
 });
 
-// app.post('/api/order', authenticateUser, async (req, res) => {
-//     try {
-//         const userId = req.user.id;
-//         const db = dbService.getDbServiceInstance();
-
-//         const cartItems = await db.getCartItemsByUserId(userId);
-
-//         if (cartItems.length === 0) {
-//             return res.status(400).json({ success: false, error: "Empty cart, cannot place order" });
-//         }
-
-//         const orderResult = await db.saveOrder(userId, cartItems);
-
-//         if (orderResult.success) {
-//             await db.clearCart(userId);
-//             res.status(200).json({ success: true, message: "Order placed successfully" });
-//         } else {
-//             res.status(500).json({ success: false, error: "Error placing order" });
-//         }
-//     } catch (error) {
-//         console.error("Error placing order:", error);
-//         res.status(500).json({ success: false, error: "Error placing order" });
-//     }
-// });
-
 app.post('/api/order', authenticateUser, async (req, res) => {
     try {
         const userId = req.user.id;
@@ -479,6 +454,13 @@ app.post('/api/order', authenticateUser, async (req, res) => {
         }
 
         const deliveryDetails = req.body;
+
+        const requiredFields = ['firstName', 'lastName', 'city', 'zipcode', 'address'];
+        for (const field of requiredFields) {
+            if (!deliveryDetails[field]) {
+                return res.status(400).json({ success: false, error: `Missing field: ${field}` });
+            }
+        }
 
         const orderResult = await db.saveOrder(userId, cartItems, deliveryDetails);
 
@@ -493,10 +475,6 @@ app.post('/api/order', authenticateUser, async (req, res) => {
         res.status(500).json({ success: false, error: "Error placing order" });
     }
 });
-
-
-
-
 
 
 app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))

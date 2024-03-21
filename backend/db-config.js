@@ -404,33 +404,33 @@ class DbService {
     async saveOrder(userId, cartItems, deliveryDetails) {
         try {
             const {
-                szallitasi_keresztnev,
-                szallitasi_vezeteknev,
-                szallitasi_varos,
-                szallitasi_iranyitoszam,
-                szallitasi_cim,
-                szallitasi_emelet,
-                szallitasi_ajto
+                firstName,
+                lastName,
+                city,
+                zipcode,
+                address,    
+                floor,
+                door
             } = deliveryDetails;
     
             const query = "INSERT INTO Rendeles (rendeles_felhasznalo_id, rendeles_szalitasi_keresztnev, rendeles_szalitasi_vezeteknev, rendeles_varos, rendeles_iranyitoszam, rendeles_cim, rendeles_emelet, rendeles_ajto, rendeles_datum) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
             
             const result = await new Promise((resolve, reject) => {
-                connection.query(query, [userId, szallitasi_keresztnev, szallitasi_vezeteknev, szallitasi_varos, szallitasi_iranyitoszam, szallitasi_cim, szallitasi_emelet, szallitasi_ajto], (err, res) => {
-                    if (err) reject(err);
+                connection.query(query, [userId, firstName, lastName, city, zipcode, address, floor, door], (err, res) => {
+                    if (err) reject(err)
                     resolve(res);
                 });
             });
     
-            await this.clearCart(userId);
+            //await this.clearCart(userId);
     
-            return result;
+            //return result;
+            return { success: true }
         } catch (error) {
             console.error("Error saving order:", error);
             return { success: false };
         }
     }
-    
     
     async clearCart(userId) {
         try {
