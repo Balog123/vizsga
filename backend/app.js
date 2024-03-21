@@ -234,6 +234,25 @@ app.post('/bejelentkezes', (request, response) => {
         });
 })
 
+// function authenticateUser(req, res, next) {
+//     if (req.cookies && req.cookies.token) {
+//         const token = req.cookies.token;
+
+//         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+//             if (err) {
+//                 console.error('Hiba a token decodolása során:', err)
+//                 res.status(401).json({ success: false, error: 'Érvénytelen token' })
+//             } else {
+//                 req.user = decodedToken
+//                 next();
+//             }
+//         });
+//     } else {
+//         console.log('Nem talált tokent')
+//         res.status(401).json({ success: false, error: 'Nincs hitelesíthető token' })
+//     }
+// }
+
 function authenticateUser(req, res, next) {
     if (req.cookies && req.cookies.token) {
         const token = req.cookies.token;
@@ -243,7 +262,11 @@ function authenticateUser(req, res, next) {
                 console.error('Hiba a token decodolása során:', err)
                 res.status(401).json({ success: false, error: 'Érvénytelen token' })
             } else {
-                req.user = decodedToken
+                // Log the user's ID
+                console.log('User ID:', decodedToken.felhasznalo_id);
+                
+                // Set the user object in the request
+                req.user = decodedToken;
                 next();
             }
         });
@@ -252,6 +275,7 @@ function authenticateUser(req, res, next) {
         res.status(401).json({ success: false, error: 'Nincs hitelesíthető token' })
     }
 }
+
 
 app.get('/api/kosar', authenticateUser, async (req, res) => {
     try {
@@ -428,19 +452,56 @@ app.get('/check-auth', authenticateUser, (req, res) => {
 app.post('/logout', (req, res) => {
     res.clearCookie('token');
     res.json({ success: true, message: 'Logout successful' });
+    console.log('Sikeres kijelentkezés');
 });
 
+// app.post('/api/save-user-details', authenticateUser, async (req, res) => {
+//     const { felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1 } = req.body;
+    
+//     try {
+//         const result = await saveUserDetails(req.user.id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1); // Corrected function name
+//         res.status(200).json({ success: true, result });
+//     } catch (error) {
+//         console.error("Error saving user details:", error);
+//         res.status(500).json({ success: false, error: "Error saving user details" });
+//     }
+// });
+
+// Define the saveUserDetails function to handle saving user details to the database
+const saveUserDetails = async (felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1) => {
+    try {
+        const query = "UPDATE Felhasznalo SET felhasznalo_varos=?, felhasznalo_iranyitoszam=?, felhasznalo_cim1=? WHERE felhasznalo_id=?";
+        const result = await new Promise((resolve, reject) => {
+            connection.query(query, [felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1, felhasznalo_id], (err, res) => {
+                if (err) reject(err);
+                resolve(res);
+            });
+        });
+
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw new Error("Error updating user details");
+    }
+};
+
+// Route to handle POST request for saving user details
 app.post('/api/save-user-details', authenticateUser, async (req, res) => {
     const { felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1 } = req.body;
     
     try {
-        const result = await saveUserDetailsDetails(req.user.id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1);
+        // Retrieve the user ID from the authenticated user
+        const felhasznalo_id = req.user.id; // Change this line to access the user ID correctly
+
+        // Call the saveUserDetails function to save user details in the database
+        const result = await saveUserDetails(felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1);
         res.status(200).json({ success: true, result });
     } catch (error) {
         console.error("Error saving user details:", error);
         res.status(500).json({ success: false, error: "Error saving user details" });
     }
 });
+
 
 // app.post('/api/order', authenticateUser, async (req, res) => {
 //     try {

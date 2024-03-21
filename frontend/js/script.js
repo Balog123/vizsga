@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (userIcon) {
       userIcon.addEventListener('click', () => {
-          // Check if user is logged in
           fetch('http://localhost:8000/check-auth', {
               method: 'GET',
               credentials: 'include',
@@ -128,12 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
                   console.log('Authentication check response:', data);
 
                   if (data.success) {
-                      // User is logged in, redirect to profile.html
                       window.location.href = '/profil';
                   } else {
-                      // User is not logged in, redirect to register.html
-                      window.location.href = '/regisztracio';
+                    window.location.href = '/regisztracio';
                   }
+
               })
               .catch(error => console.error('Error checking authentication:', error));
       });
