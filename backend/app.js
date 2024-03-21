@@ -502,7 +502,6 @@ app.post('/api/save-user-details', authenticateUser, async (req, res) => {
     }
 });
 
-
 // app.post('/api/order', authenticateUser, async (req, res) => {
 //     try {
 //         const userId = req.user.id;
@@ -541,6 +540,13 @@ app.post('/api/order', authenticateUser, async (req, res) => {
 
         const deliveryDetails = req.body;
 
+        const requiredFields = ['firstName', 'lastName', 'city', 'zipcode', 'address'];
+        for (const field of requiredFields) {
+            if (!deliveryDetails[field]) {
+                return res.status(400).json({ success: false, error: `Missing field: ${field}` });
+            }
+        }
+
         const orderResult = await db.saveOrder(userId, cartItems, deliveryDetails);
 
         if (orderResult.success) {
@@ -554,10 +560,6 @@ app.post('/api/order', authenticateUser, async (req, res) => {
         res.status(500).json({ success: false, error: "Error placing order" });
     }
 });
-
-
-
-
 
 
 app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))

@@ -1,15 +1,15 @@
 document.getElementById('orderForm').addEventListener('submit', async (event) => {
     event.preventDefault();
-    
+
     const formData = new FormData(event.target);
     const deliveryDetails = {
-        szallitasi_keresztnev: formData.get('firstName'),
-        szallitasi_vezeteknev: formData.get('lastName'),
-        szallitasi_varos: formData.get('city'),
-        szallitasi_iranyitoszam: formData.get('zipcode'),
-        szallitasi_cim: formData.get('address'),
-        szallitasi_emelet: formData.get('floor'),
-        szallitasi_ajto: formData.get('door')
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        city: formData.get('city'),
+        zipcode: formData.get('zipcode'),
+        address: formData.get('address'),
+        floor: formData.get('floor'),
+        door: formData.get('door')
     };
 
     try {
@@ -17,7 +17,6 @@ document.getElementById('orderForm').addEventListener('submit', async (event) =>
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
             body: JSON.stringify(deliveryDetails)
         });
