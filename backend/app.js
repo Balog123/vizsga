@@ -61,6 +61,10 @@ app.get('/profil', function (req, res) {
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'profile.html'));
 })
 
+app.get('/aszf', function (req, res) {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'aszf.html'));
+})
+
 app.get('/products', (req, res) => {
     const { category } = req.query;
 
@@ -234,25 +238,6 @@ app.post('/bejelentkezes', (request, response) => {
         });
 })
 
-// function authenticateUser(req, res, next) {
-//     if (req.cookies && req.cookies.token) {
-//         const token = req.cookies.token;
-
-//         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-//             if (err) {
-//                 console.error('Hiba a token decodolása során:', err)
-//                 res.status(401).json({ success: false, error: 'Érvénytelen token' })
-//             } else {
-//                 req.user = decodedToken
-//                 next();
-//             }
-//         });
-//     } else {
-//         console.log('Nem talált tokent')
-//         res.status(401).json({ success: false, error: 'Nincs hitelesíthető token' })
-//     }
-// }
-
 function authenticateUser(req, res, next) {
     if (req.cookies && req.cookies.token) {
         const token = req.cookies.token;
@@ -262,11 +247,7 @@ function authenticateUser(req, res, next) {
                 console.error('Hiba a token decodolása során:', err)
                 res.status(401).json({ success: false, error: 'Érvénytelen token' })
             } else {
-                // Log the user's ID
-                console.log('User ID:', decodedToken.felhasznalo_id);
-                
-                // Set the user object in the request
-                req.user = decodedToken;
+                req.user = decodedToken
                 next();
             }
         });
@@ -275,7 +256,6 @@ function authenticateUser(req, res, next) {
         res.status(401).json({ success: false, error: 'Nincs hitelesíthető token' })
     }
 }
-
 
 app.get('/api/kosar', authenticateUser, async (req, res) => {
     try {
