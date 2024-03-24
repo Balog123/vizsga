@@ -1,54 +1,245 @@
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Boxicons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/aszf.css">
     <title>ÁSZF</title>
 </head>
-<body>
-    <p>Általános Szerződési Feltételek
 
-        1. Bevezetés
-        
-        Kérjük, figyelmesen olvassa el az alábbi Általános Szerződési Feltételeket, mielőtt használná webáruházunkat. Az alábbiakban meghatározott feltételek és feltételek az Ön és a [webáruház neve] közötti szerződés tárgyát képezik az Ön weboldalunkon keresztül történő vásárlásai esetén. Az oldalunk használatával Ön elfogadja ezeket a feltételeket és kötelezettségeket. Kérjük, ne használja oldalunkat, ha nem ért egyet ezen feltételekkel.
-        
-        2. Termékek és Szolgáltatások
-        
-        Az áruházunkban kínált összes termék és szolgáltatás a legjobb minőségű és a lehető legpontosabb leírással kerül bemutatásra. Minden erőfeszítést megteszünk annak érdekében, hogy a termékek fényképei és leírásai pontosak és naprakészek legyenek. Azonban nem garantáljuk, hogy az általunk nyújtott információk teljesek, pontosak vagy naprakészek lesznek minden esetben.
-        
-        3. Árak és Fizetési Feltételek
-        
-        Az árak minden terméknél nettó árak, és tartalmazzák az alkalmazandó adókat és illetékeket. A fizetés módját az Ön kényelme és biztonsága érdekében biztosítjuk, és elfogadunk bankkártyákat és más online fizetési módokat. Az árak változtatásának jogát fenntartjuk anélkül, hogy előzetes értesítést küldenénk.
-        
-        4. Szállítás és Kiszállítás
-        
-        A megrendelt termékek szállításának és kiszállításának részletes feltételei a Szállítási és Kiszállítási feltételek menüpont alatt találhatóak. Kérjük, olvassa el ezeket a feltételeket, mielőtt megrendelést adna fel.
-        
-        5. Visszatérítés és Csere
-        
-        Az elégedetlenség esetén kérjük, vegye fel velünk a kapcsolatot, és mi megteszünk minden tőlünk telhetőt a probléma megoldása érdekében. További információkért és részletekért tekintse meg a Visszatérítési és Cserés feltételeket.
-        
-        6. Adatvédelem és Biztonság
-        
-        Adatvédelmi és biztonsági intézkedéseink részletei megtalálhatók az Adatvédelmi Irányelvek menüpont alatt. Az Ön biztonsága és személyes adatai védelme az egyik legfontosabb prioritásunk.
-        
-        7. Felhasználói Jogok és Kötelezettségek
-        
-        Az oldalunk használatával Ön elfogadja, hogy nem fog olyan tartalmat küldeni vagy megosztani, amely sértő, törvénytelen vagy tisztességtelen módon beavatkozik mások jogaira vagy az oldal működésébe.
-        
-        8. Jogorvoslati intézkedések
-        
-        Bármely jogi vitás ügyben az adott ország jogrendszerének megfelelően intézkedünk, és igyekszünk az ügyet minél gyorsabban és hatékonyabban rendezni.
-        
-        9. Változtatások a Szerződési Feltételekben
-        
-        Fenntartjuk a jogot, hogy bármikor módosítsuk vagy frissítsük ezeket az Általános Szerződési Feltételeket. Az ilyen változásokról értesíteni fogjuk Önt az oldalunkon keresztül.
-        
-        10. Kapcsolatfelvétel
-        
-        Kérdések vagy észrevételek esetén kérjük, vegye fel velünk a kapcsolatot az [email protected] címen.
-        
-        Köszönjük, hogy vásárolt nálunk!</p>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <!-- top nav -->
+        <div class="top-nav">
+            <div class="container d-flex">
+                <p>Rendeljen online vagy Hívjon minket: (+36) 12 34 56 7</p>
+                <ul class="d-flex">
+                    <li><a href="">Rólunk</a></li>
+                    <li><a href="">Gyakran feltett kérdések</a></li>
+                    <li><a href="">Kapcsolatfelvétel</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <div class="nav-center container d-flex">
+                <a href="/">
+                    <span>
+                        <img src="/images/logo.jpg" class="logo" alt="Logo" title="Logo" />
+                    </span>
+                </a>
+
+                <nav class="navbar">
+                    <ul class="nav-list d-flex">
+                        <!-- Navbar link -->
+                        <li class="nav-item">
+                            <a href="/" class="nav-link">Kezdőlap</a>
+                        </li>
+                        <!-- Hamburger menu link -->
+                        <li class="without-dropdown nav-item">
+                            <div class="nav-link-termekek">
+                                <a href="/products">Termékek</a>
+                            </div>
+                        </li>
+                        <!-- Navbar link -->
+                        <li class="nav-item with-dropdown">
+                            <div class="nav-link-termekek nav-link-categories">
+                                <a href="/products">Termékek</a>
+                            </div>
+                            <div class="dropdown-content"></div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#about" class="nav-link">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#contact" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#gallery" class="nav-link">Gallery</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/aszf" class="nav-link">ÁSZF</a>
+                        </li>
+
+                        <li class="icons d-flex">
+                            <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
+                            <div class="icon">
+                                <i class="bx bx-search"></i>
+                            </div>
+                            <div class="icon">
+                                <i class="bx bx-heart"></i>
+                                <span class="d-flex">0</span>
+                            </div>
+                            <a href="/kosar" class="icon">
+                                <i class="bx bx-cart"></i>
+                                <span class="d-flex">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Icons -->
+                <div class="icons d-flex">
+                    <a href="#" class="icon" id="userIcon"><i class="bx bx-user"></i></a>
+
+                    <div class="icon" id="searchIcon"><i class="bx bx-search"></i></div>
+
+                    <div class="icon">
+                        <i class="bx bx-heart"></i>
+                        <span class="d-flex">0</span>
+                    </div>
+                    <a href="/kosar" class="icon">
+                        <i class="bx bx-cart"></i>
+                        <span class="d-flex">0</span>
+                    </a>
+                </div>
+                <!-- Search Bar -->
+                <div id="searchBar" class="search-bar-container">
+                    <input type="text" id="searchInput" placeholder="Keresés..." />
+                    <div class="icon" id="searchSubmit">
+                        <i class="bx bx-search"></i>
+                    </div>
+                </div>
+
+                <!-- Hamburger -->
+                <div class="hamburger">
+                    <i class="bx bx-menu-alt-left"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filling -->
+    <div class="sectionfillingASZF"></div>
+
+    <h1>Általános Szerződési Feltételek</h1>
+
+    <h3>1. Bevezetés</h3>
+    <p>
+        Kérjük, figyelmesen olvassa el az alábbi Általános Szerződési
+        Feltételeket, mielőtt használná webáruházunkat. Az alábbiakban
+        meghatározott feltételek és feltételek az Ön és a Bútorprojekt közötti
+        szerződés tárgyát képezik az Ön weboldalunkon keresztül történő vásárlásai
+        esetén. Az oldalunk használatával Ön elfogadja ezeket a feltételeket és
+        kötelezettségeket. Kérjük, ne használja oldalunkat, ha nem ért egyet ezen
+        feltételekkel.
+    </p>
+
+    <h3>2. Termékek és Szolgáltatások</h3>
+    <p>
+        Az áruházunkban kínált összes termék és szolgáltatás a legjobb minőségű és
+        a lehető legpontosabb leírással kerül bemutatásra. Minden erőfeszítést
+        megteszünk annak érdekében, hogy a termékek fényképei és leírásai pontosak
+        és naprakészek legyenek. Azonban nem garantáljuk, hogy az általunk
+        nyújtott információk teljesek, pontosak vagy naprakészek lesznek minden
+        esetben.
+    </p>
+
+    <h3>3. Árak és Fizetési Feltételek</h3>
+    <p>
+        Az árak minden terméknél nettó árak, és tartalmazzák az alkalmazandó
+        adókat és illetékeket. A fizetés módját az Ön kényelme és biztonsága
+        érdekében biztosítjuk, és elfogadunk bankkártyákat és más online fizetési
+        módokat. Az árak változtatásának jogát fenntartjuk anélkül, hogy előzetes
+        értesítést küldenénk.
+    </p>
+
+    <h3>4. Szállítás és Kiszállítás</h3>
+    <p>
+        A megrendelt termékek szállításának és kiszállításának részletes
+        feltételei a Szállítási és Kiszállítási feltételek menüpont alatt
+        találhatóak. Kérjük, olvassa el ezeket a feltételeket, mielőtt
+        megrendelést adna fel.
+    </p>
+
+    <h3>5. Visszatérítés és Csere</h3>
+    <p>
+        Az elégedetlenség esetén kérjük, vegye fel velünk a kapcsolatot, és mi
+        megteszünk minden tőlünk telhetőt a probléma megoldása érdekében. További
+        információkért és részletekért tekintse meg a Visszatérítési és Cserés
+        feltételeket.
+    </p>
+
+    <h3>6. Adatvédelem és Biztonság</h3>
+    <p>
+        Adatvédelmi és biztonsági intézkedéseink részletei megtalálhatók az
+        Adatvédelmi Irányelvek menüpont alatt. Az Ön biztonsága és személyes
+        adatai védelme az egyik legfontosabb prioritásunk.
+    </p>
+
+    <h3>7. Felhasználói Jogok és Kötelezettségek</h3>
+    <p>
+        Az oldalunk használatával Ön elfogadja, hogy nem fog olyan tartalmat
+        küldeni vagy megosztani, amely sértő, törvénytelen vagy tisztességtelen
+        módon beavatkozik mások jogaira vagy az oldal működésébe.
+    </p>
+
+    <h3>8. Jogorvoslati intézkedések</h3>
+    <p>
+        Bármely jogi vitás ügyben az adott ország jogrendszerének megfelelően
+        intézkedünk, és igyekszünk az ügyet minél gyorsabban és hatékonyabban
+        rendezni.
+    </p>
+
+    <h3>9. Változtatások a Szerződési Feltételekben</h3>
+    <p>
+        Fenntartjuk a jogot, hogy bármikor módosítsuk vagy frissítsük ezeket az
+        Általános Szerződési Feltételeket. Az ilyen változásokról értesíteni
+        fogjuk Önt az oldalunkon keresztül.
+    </p>
+
+    <h3>10. Kapcsolatfelvétel</h3>
+    <p>
+        Kérdések vagy észrevételek esetén kérjük, vegye fel velünk a kapcsolatot
+        az butorprojekt@gmail.com címen.
+    </p>
+
+    <h1>Köszönjük, hogy vásárolt nálunk!</h1>
+
+    <!-- Filling -->
+    <div class="sectionfilling"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="row">
+            <div class="col d-flex">
+                <h4>Információ</h4>
+                <a href="">About Us</a>
+                <a href="">Contact Us</a>
+                <a href="">Terms</a>
+                <a href="">asd</a>
+            </div>
+            <div class="col d-flex">
+                <h4>Hasznos Linkek</h4>
+                <a href="#header">Kezdőlap</a>
+                <a href="">Contact Us</a>
+                <a href="">Terms</a>
+                <a href="">asd</a>
+            </div>
+            <div class="col d-flex">
+                <span><i class="bx bxl-facebook-square"></i></span>
+                <span><i class="bx bxl-instagram-alt"></i></span>
+                <span><i class="bx bxl-github"></i></span>
+                <span><i class="bx bxl-twitter"></i></span>
+                <span><i class="bx bxl-pinterest"></i></span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- indexjs -->
+    <script src="/js/script.js"></script>
+
+    <!-- dropdownjs -->
+    <script src="/js/dropdown.js"></script>
 </body>
+
 </html>
