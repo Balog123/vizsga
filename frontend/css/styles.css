@@ -183,62 +183,11 @@ li {
   }
 }
 
-/* @media (max-width: 768px) {
-  .nav-list {
-    position: fixed;
-    top: 12%;
-    left: -100%;
-    flex-direction: column;
-    align-items: flex-start;
-    box-shadow: 5px 5px 10p rgba(0, 0, 0, 0.2);
-    background-color: white;
-    height: 100%;
-    max-width: 35rem;
-    width: 0;
-    z-index: 100;
-    transition: all 300ms ease-in-out;
-  }
-
-  .nav-list.open {
-    left: 0;
-    width: 100%;
-  }
-
-  .nav-list .nav-item {
-    margin: 0 0 1rem 0;
-    width: 100%;
-  }
-
-  .nav-list .nav-link {
-    font-size: 2rem;
-    color: var(--black);
-  }
-
-  .nav-center .hamburger {
-    display: block;
-    font-size: 3rem;
-  }
-
-  .icons {
-    display: none;
-  }
-
-  .nav-list .icons {
-    display: flex;
-  }
-
-  .top-nav ul {
-    display: none;
-  }
-
-  .top-nav div {
-    justify-content: center;
-    height: 3rem;
-  }
-} */
+.without-dropdown {
+  display: none;
+}
 
 @media (max-width: 768px) {
-  /* Hamburger menu styles */
   .nav-list {
     position: fixed;
     top: 12%;
@@ -264,41 +213,42 @@ li {
     width: 100%;
   }
 
-  /* Text size for navigation items in the hamburger menu */
   .nav-list.open .nav-item a {
-    font-size: 2rem; /* Adjust the font size as needed */
+    font-size: 2rem;
   }
 
-  /* Text size for icons in the hamburger menu */
   .nav-list.open .icons .icon i {
-    font-size: 2.5rem; /* Adjust the icon size as needed */
+    font-size: 2.5rem;
   }
 
-  /* Hamburger menu icon size */
   .nav-center .hamburger {
     display: block;
     font-size: 3rem;
   }
 
-  /* Hide icons in the default navigation */
   .icons {
     display: none;
   }
 
-  /* Show icons in the hamburger menu */
   .nav-list .icons {
     display: flex;
   }
 
-  /* Hide top nav ul when hamburger menu is open */
   .top-nav ul {
     display: none;
   }
 
-  /* Center top nav div when hamburger menu is open */
   .top-nav div {
     justify-content: center;
     height: 3rem;
+  }
+
+  .with-dropdown {
+    display: none;
+  }
+
+  .without-dropdown {
+    display: contents;
   }
 }
 
@@ -997,9 +947,17 @@ form span {
   z-index: 0;
 }
 
+#sortSelect {
+  width: 20rem;
+}
+
 @media (max-width: 768px) {
   .all-products .top select {
     width: 15rem;
+  }
+
+  #sortSelect {
+    width: 18rem;
   }
 }
 
