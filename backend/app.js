@@ -125,7 +125,6 @@ app.get('/api/products', (req, res, next) => {
     });
 });
 
-
 app.get('/api/products/:id', (req, res) => {
     const productId = req.params.id;
     const db = dbService.getDbServiceInstance();
@@ -288,7 +287,6 @@ app.post('/api/kosar', authenticateUser, async (req, res) => {
         const result = await db.addToCart(productId, termek_nev, termek_ar, darab, userId);
 
         if (result.success) {
-            // After adding the product to the cart, fetch updated cart items
             const updatedCartItems = await db.getCartItemsByUserId(userId);
             
             return res.status(200).json({ success: true, message: "Product added to cart successfully", cartItems: updatedCartItems });
@@ -435,19 +433,6 @@ app.post('/logout', (req, res) => {
     console.log('Sikeres kijelentkezés');
 });
 
-// app.post('/api/save-user-details', authenticateUser, async (req, res) => {
-//     const { felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1 } = req.body;
-    
-//     try {
-//         const result = await saveUserDetails(req.user.id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1); // Corrected function name
-//         res.status(200).json({ success: true, result });
-//     } catch (error) {
-//         console.error("Error saving user details:", error);
-//         res.status(500).json({ success: false, error: "Error saving user details" });
-//     }
-// });
-
-// Define the saveUserDetails function to handle saving user details to the database
 const saveUserDetails = async (felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1) => {
     try {
         const query = "UPDATE Felhasznalo SET felhasznalo_varos=?, felhasznalo_iranyitoszam=?, felhasznalo_cim1=? WHERE felhasznalo_id=?";
@@ -464,16 +449,12 @@ const saveUserDetails = async (felhasznalo_id, felhasznaloVaros, felhasznaloIran
         throw new Error("Error updating user details");
     }
 };
-
-// Route to handle POST request for saving user details
 app.post('/api/save-user-details', authenticateUser, async (req, res) => {
     const { felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1 } = req.body;
     
     try {
-        // Retrieve the user ID from the authenticated user
-        const felhasznalo_id = req.user.id; // Change this line to access the user ID correctly
+        const felhasznalo_id = req.user.id;
 
-        // Call the saveUserDetails function to save user details in the database
         const result = await saveUserDetails(felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1);
         res.status(200).json({ success: true, result });
     } catch (error) {
@@ -481,31 +462,6 @@ app.post('/api/save-user-details', authenticateUser, async (req, res) => {
         res.status(500).json({ success: false, error: "Error saving user details" });
     }
 });
-
-// app.post('/api/order', authenticateUser, async (req, res) => {
-//     try {
-//         const userId = req.user.id;
-//         const db = dbService.getDbServiceInstance();
-
-//         const cartItems = await db.getCartItemsByUserId(userId);
-
-//         if (cartItems.length === 0) {
-//             return res.status(400).json({ success: false, error: "Empty cart, cannot place order" });
-//         }
-
-//         const orderResult = await db.saveOrder(userId, cartItems);
-
-//         if (orderResult.success) {
-//             await db.clearCart(userId);
-//             res.status(200).json({ success: true, message: "Order placed successfully" });
-//         } else {
-//             res.status(500).json({ success: false, error: "Error placing order" });
-//         }
-//     } catch (error) {
-//         console.error("Error placing order:", error);
-//         res.status(500).json({ success: false, error: "Error placing order" });
-//     }
-// });
 
 app.post('/api/order', authenticateUser, async (req, res) => {
     try {

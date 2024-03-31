@@ -8,6 +8,19 @@ if (hamburger) {
   });
 }
 
+window.addEventListener('scroll', function () {
+  var header = document.querySelector('.header');
+  var topNav = document.querySelector('.top-nav');
+  var navigation = document.querySelector('.navigation');
+
+  if (window.scrollY > 50) {
+    topNav.style.display = 'none';
+    navigation.style.display = 'sticky';
+  } else {
+    topNav.style.display = 'block';
+  }
+});
+
 //popup
 const popup = document.querySelector(".popup");
 const closePopup = document.querySelector(".popup-close");
@@ -117,24 +130,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const userIcon = document.getElementById('userIcon');
 
   if (userIcon) {
-      userIcon.addEventListener('click', () => {
-          fetch('http://localhost:8000/check-auth', {
-              method: 'GET',
-              credentials: 'include',
-          })
-              .then(response => response.json())
-              .then(data => {
-                  console.log('Authentication check response:', data);
+    userIcon.addEventListener('click', () => {
+      fetch('http://localhost:8000/check-auth', {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Authentication check response:', data);
 
-                  if (data.success) {
-                      window.location.href = '/profil';
-                  } else {
-                    window.location.href = '/regisztracio';
-                  }
+          if (data.success) {
+            window.location.href = '/profil';
+          } else {
+            window.location.href = '/regisztracio';
+          }
 
-              })
-              .catch(error => console.error('Error checking authentication:', error));
-      });
+        })
+        .catch(error => console.error('Error checking authentication:', error));
+    });
   }
 });
 
