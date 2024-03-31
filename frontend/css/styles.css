@@ -69,6 +69,24 @@ li {
   top: 0;
 }
 
+header.scrolled {
+  background-color: var(--main-color);
+  opacity: 1;
+  transition: all 1ms ease-in-out;
+}
+
+header.scrolled .navigation .nav-link {
+  color: var(--white);
+}
+
+header.scrolled .nav-link-termekek a {
+  color: white;
+}
+
+header.scrolled .icon {
+  color: white;
+}
+
 .top-nav {
   background-color: var(--main-color);
   font-size: 1.3rem;
@@ -89,7 +107,7 @@ li {
 .navigation {
   height: 8rem;
   line-height: 8rem;
-  border-bottom: 1px solid var(--grey2);
+  /* border-bottom: 1px solid var(--grey2); */
 }
 
 .nav-center {

@@ -20,6 +20,16 @@ window.addEventListener('scroll', function () {
     topNav.style.display = 'block';
   }
 });
+  document.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    const home = document.getElementById('home');
+
+    if (window.scrollY > home.offsetTop - header.offsetHeight) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
 
 //popup
 const popup = document.querySelector(".popup");
