@@ -414,10 +414,16 @@ class DbService {
                 door
             } = deliveryDetails;
     
-            const query = "INSERT INTO Rendeles (rendeles_felhasznalo_id, rendeles_szalitasi_keresztnev, rendeles_szalitasi_vezeteknev, rendeles_varos, rendeles_iranyitoszam, rendeles_cim, rendeles_emelet, rendeles_ajto, rendeles_datum) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
+            // Az első kosár elem termék azonosítójának lekérése
+            const firstCartItem = cartItems[0]; // Feltételezzük, hogy a kosár nem üres és csak egy terméket rendelnek egyszerre
+            const productId = firstCartItem.kosar_termek_id;
+
+            console.log(productId)
+    
+            const query = "INSERT INTO Rendeles (rendeles_felhasznalo_id, rendeles_szalitasi_keresztnev, rendeles_szalitasi_vezeteknev, rendeles_varos, rendeles_iranyitoszam, rendeles_cim, rendeles_emelet, rendeles_ajto, rendeles_termek_id, rendeles_datum) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
             
             const result = await new Promise((resolve, reject) => {
-                connection.query(query, [userId, firstName, lastName, city, zipcode, address, floor, door], (err, res) => {
+                connection.query(query, [userId, firstName, lastName, city, zipcode, address, floor, door, productId], (err, res) => {
                     if (err) reject(err)
                     resolve(res);
                 });
@@ -432,6 +438,7 @@ class DbService {
             return { success: false };
         }
     }
+    
     
     async clearCart(userId) {
         try {

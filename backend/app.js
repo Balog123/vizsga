@@ -483,7 +483,10 @@ app.post('/api/order', authenticateUser, async (req, res) => {
             }
         }
 
-        const orderResult = await db.saveOrder(userId, cartItems, deliveryDetails);
+        for (let i = 0; i < cartItems.length; i++) {
+            console.log(cartItems[i])
+        }
+        const orderResult = await db.saveOrder(userId, cartItems, deliveryDetails); // Módosított sor
 
         if (orderResult.success) {
             await db.clearCart(userId);
@@ -496,6 +499,8 @@ app.post('/api/order', authenticateUser, async (req, res) => {
         res.status(500).json({ success: false, error: "Error placing order" });
     }
 });
+
+
 
 
 app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))
