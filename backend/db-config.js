@@ -384,22 +384,22 @@ class DbService {
         }
     }
 
-    // async saveUserDetails(felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1) {
-    //     try {
-    //         const query = "UPDATE Felhasznalo SET felhasznalo_varos=?, felhasznalo_iranyitoszam=?, felhasznalo_cim1=? WHERE felhasznalo_id=?";
-    //         const result = await new Promise((resolve, reject) => {
-    //             connection.query(query, [felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1, felhasznalo_id], (err, res) => {
-    //                 if (err) reject(err)
-    //                 resolve(res)
-    //             });
-    //         });
+    async saveUserDetails(felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1) {
+        try {
+            const query = "UPDATE Felhasznalo SET felhasznalo_varos=?, felhasznalo_iranyitoszam=?, felhasznalo_cim1=? WHERE felhasznalo_id=?";
+            const result = await new Promise((resolve, reject) => {
+                connection.query(query, [felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1, felhasznalo_id], (err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                });
+            });
     
-    //         return result;
-    //     } catch (error) {
-    //         console.error(error);
-    //         throw new Error("Error updating user details");
-    //     }
-    // }
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Error updating user details");
+        }
+    }
     
     
     async saveOrder(userId, cartItems, deliveryDetails) {
