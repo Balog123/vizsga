@@ -1375,18 +1375,32 @@ form span {
 
 .dropdown-content {
   display: none;
-  position: absolute;
+  position: fixed;
   background-color: var(--bg);
   min-width: max-content;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
-  top: 12rem;
+  top: 12.4rem;
+  left: 48rem;
   text-align: center;
   border-radius: 0.5rem;
 }
 
 .dropdown-content a {
   color: black;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  display: block;
+  transition: all 400ms ease-in-out;
+  border-radius: 0.5rem;
+}
+
+.scrolled-dropdown {
+  background-color: var(--main-color);
+}
+
+.scrolled-dropdown a {
+  color: var(--white);
   padding: 1rem 2rem;
   text-decoration: none;
   display: block;
