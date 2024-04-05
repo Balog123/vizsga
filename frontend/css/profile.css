@@ -1,0 +1,65 @@
+.header2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h2 {
+    margin-top: 5rem;
+    font-size: 4rem;
+}
+
+.logoutButton {
+    padding: 1rem;
+    margin-right: 1rem;
+    transition: all 300ms ease;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.logoutButton:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: all 300ms ease;
+    border: 1px red solid;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.buttons button {
+    width: 100%;
+    padding: 1rem 0;
+    margin: 0.5rem 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 300;
+    border-radius: 0.5rem;
+}
+
+.buttons button:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.04);
+    transition: all 300ms ease;
+}
+
+.popup-message {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color:   rgb(68, 227, 68);
+    padding: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+}
+
