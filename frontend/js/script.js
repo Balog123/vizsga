@@ -34,7 +34,6 @@ if (hamburger) {
 const header = document.querySelector('.header');
 const topNav = document.querySelector('.top-nav');
 const navigation = document.querySelector('.navigation');
-const home = document.getElementById('home');
 const dropdownContent = document.querySelector('.dropdown-content');
 const termekLink = document.querySelector('.nav-link-termekek');
 
@@ -61,7 +60,7 @@ window.addEventListener('scroll', function () {
 });
 
 document.addEventListener('scroll', () => {
-  if (window.scrollY > home.offsetTop - header.offsetHeight) {
+  if (window.scrollY > 30) {
     header.classList.add('scrolled');
   } else {
     header.classList.remove('scrolled');
@@ -212,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.getElementById("infoBtn").addEventListener("click", function(event) {
-  event.preventDefault(); // Az alapértelmezett link működés megakadályozása
+  event.preventDefault();
   document.getElementById("infoPopup2").style.display = "block";
 });
 
@@ -220,7 +219,6 @@ document.getElementById("closeBtn").addEventListener("click", function() {
   document.getElementById("infoPopup2").style.display = "none";
 });
 
-// Popup ablak bezárása kattintásra az ablakon kívül
 window.onclick = function(event) {
   if (event.target == document.getElementById("infoPopup2")) {
       document.getElementById("infoPopup2").style.display = "none";
