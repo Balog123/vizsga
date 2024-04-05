@@ -198,9 +198,9 @@ class DbService {
 
             const deleteCartItemsQuery = `DELETE FROM Kosar WHERE kosar_termek_id = ?`;
             await new Promise((resolve, reject) => {
-            connection.query(deleteCartItemsQuery, [id], (err, result) => {
-                if (err) reject(new Error(err.message));
-                resolve();
+                connection.query(deleteCartItemsQuery, [id], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve();
                 });
             });
 
@@ -393,15 +393,15 @@ class DbService {
                     resolve(res)
                 });
             });
-    
+
             return result;
         } catch (error) {
             console.error(error);
             throw new Error("Error updating user details");
         }
     }
-    
-    
+
+
     async saveOrder(userId, cartItems, deliveryDetails) {
         try {
             const {
@@ -409,28 +409,28 @@ class DbService {
                 lastName,
                 city,
                 zipcode,
-                address,    
+                address,
                 floor,
                 door
             } = deliveryDetails;
-    
+
             // Az első kosár elem termék azonosítójának lekérése
             const firstCartItem = cartItems[0]; // Feltételezzük, hogy a kosár nem üres és csak egy terméket rendelnek egyszerre
             const productId = firstCartItem.kosar_termek_id;
 
             console.log(productId)
-    
+
             const query = "INSERT INTO Rendeles (rendeles_felhasznalo_id, rendeles_szalitasi_keresztnev, rendeles_szalitasi_vezeteknev, rendeles_varos, rendeles_iranyitoszam, rendeles_cim, rendeles_emelet, rendeles_ajto, rendeles_termek_id, rendeles_datum) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
-            
+
             const result = await new Promise((resolve, reject) => {
                 connection.query(query, [userId, firstName, lastName, city, zipcode, address, floor, door, productId], (err, res) => {
                     if (err) reject(err)
                     resolve(res);
                 });
             });
-    
+
             //await this.clearCart(userId);
-    
+
             //return result;
             return { success: true }
         } catch (error) {
@@ -438,13 +438,13 @@ class DbService {
             return { success: false };
         }
     }
-    
-    
+
+
     async clearCart(userId) {
         try {
             // Kosár tartalmának törlése
             // Például: DELETE FROM Kosar WHERE kosar_felhasznalo_id = ?
-    
+
             return { success: true };
         } catch (error) {
             console.error("Error clearing cart:", error);
@@ -452,7 +452,27 @@ class DbService {
         }
     }
     
-    
+    async getLatestProducts() {
+        try {
+            const query = `
+            SELECT Termek.*, Kep.kep_url
+            FROM Termek
+            INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+            ORDER BY termek_id DESC
+            LIMIT 8
+        `;
+            const latestProducts = await new Promise((resolve, reject) => {
+                connection.query(query, (error, results) => {
+                    if (error) reject(error);
+                    resolve(results);
+                });
+            });
+            return latestProducts;
+        } catch (error) {
+            console.error('Error fetching latest products:', error);
+            throw new Error('Error fetching latest products');
+        }
+    }
 }
 
 module.exports = DbService
