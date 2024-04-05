@@ -39,7 +39,7 @@ const dropdownContent = document.querySelector('.dropdown-content');
 const termekLink = document.querySelector('.nav-link-termekek');
 
 termekLink.addEventListener("mouseenter", () => {
-  if (window.scrollY > 50) {
+  if (window.scrollY > 30) {
     dropdownContent.classList.add('scrolled-dropdown');
   }
   dropdownContent.style.top = `${header.offsetHeight}px`;
@@ -52,7 +52,7 @@ termekLink.addEventListener("mouseleave", () => {
 });
 
 window.addEventListener('scroll', function () {
-  if (window.scrollY > 50) {
+  if (window.scrollY > 30) {
     topNav.style.display = 'none';
     header.style.display = 'sticky';
   } else {
@@ -60,7 +60,6 @@ window.addEventListener('scroll', function () {
   }
 });
 
-// A fejléc stílusának kezelése görgetéskor
 document.addEventListener('scroll', () => {
   if (window.scrollY > home.offsetTop - header.offsetHeight) {
     header.classList.add('scrolled');
@@ -70,15 +69,14 @@ document.addEventListener('scroll', () => {
 });
 
 window.addEventListener('scroll', function () {
-  const scrolled = window.scrollY > 50; // Ellenőrizzük, hogy le van-e görgetve az oldal
+  const scrolled = window.scrollY > 30;
 
-  // Beállítjuk a .dropdown-content elem top értékét attól függően, hogy le van-e görgetve az oldal vagy sem
   if (scrolled) {
-    dropdownContent.classList.add('scrolled-dropdown'); // Ha le van görgetve az oldal, hozzáadjuk a 'scrolled-dropdown' osztályt
-    dropdownContent.style.top = `${header.offsetHeight}px`; // Beállítjuk a top értéket a header magasságával
+    dropdownContent.classList.add('scrolled-dropdown');
+    dropdownContent.style.top = `${header.offsetHeight}px`;
   } else {
-    dropdownContent.classList.remove('scrolled-dropdown'); // Ha nincs lefelve görgetve az oldal, eltávolítjuk a 'scrolled-dropdown' osztályt
-    dropdownContent.style.top = '11rem'; // Beállítjuk a kezdeti értéket
+    dropdownContent.classList.remove('scrolled-dropdown');
+    dropdownContent.style.top = '11rem';
   }
 });
 
@@ -213,3 +211,66 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+document.getElementById("infoBtn").addEventListener("click", function(event) {
+  event.preventDefault(); // Az alapértelmezett link működés megakadályozása
+  document.getElementById("infoPopup2").style.display = "block";
+});
+
+document.getElementById("closeBtn").addEventListener("click", function() {
+  document.getElementById("infoPopup2").style.display = "none";
+});
+
+// Popup ablak bezárása kattintásra az ablakon kívül
+window.onclick = function(event) {
+  if (event.target == document.getElementById("infoPopup2")) {
+      document.getElementById("infoPopup2").style.display = "none";
+  }
+};
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const popupForm = document.querySelector('.contact form');
+  const emailInput = document.querySelector('.contact form input[type="email"]');
+  const messageDiv = document.createElement('div');
+  messageDiv.id = 'message';
+  document.querySelector('.contact form').appendChild(messageDiv);
+
+  popupForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const email = emailInput.value.trim();
+      if (isValidEmail(email)) {
+          try {
+              const response = await fetch('/api/send-email', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ email })
+              });
+
+              const data = await response.json();
+
+              if (response.ok) {
+                  messageDiv.textContent = 'Email sikeresen elküldve!';
+                  messageDiv.style.color = 'green';
+                  emailInput.value = '';
+              } else {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+          } catch (error) {
+              console.error("Hiba történt az email küldésekor:", error);
+              messageDiv.textContent = 'Hiba történt az email elküldésekor.';
+              messageDiv.style.color = 'red';
+          }
+      } else {
+          messageDiv.textContent = 'Érvénytelen email formátum.';
+          messageDiv.style.color = 'red';
+      }
+  });
+
+  function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+  }
+});
