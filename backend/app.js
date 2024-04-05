@@ -17,22 +17,22 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use((req, res, next) => {
     const token = req.cookies.token;
-  
+
     if (token) {
-      jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) {
-          res.clearCookie('token');
-          next();
-        } else {
-          req.user = user;
-          next();
-        }
-      });
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err) {
+                res.clearCookie('token');
+                next();
+            } else {
+                req.user = user;
+                next();
+            }
+        });
     } else {
-      next();
+        next();
     }
-  });
-  
+});
+
 
 app.use(['/admin', '/admin/*'], authenticateAdmin);
 
@@ -223,7 +223,7 @@ app.post('/bejelentkezes', (request, response) => {
 
     result.then(data => {
         const isAdmin = data.isAdmin;
-        
+
         const token = jwt.sign({ id: data.id, email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
             expiresIn: '4h',
         });
@@ -288,7 +288,7 @@ app.post('/api/kosar', authenticateUser, async (req, res) => {
 
         if (result.success) {
             const updatedCartItems = await db.getCartItemsByUserId(userId);
-            
+
             return res.status(200).json({ success: true, message: "Product added to cart successfully", cartItems: updatedCartItems });
         } else {
             return res.status(500).json({ success: false, error: "Error adding product to cart" });
@@ -452,7 +452,7 @@ const saveUserDetails = async (felhasznalo_id, felhasznaloVaros, felhasznaloIran
 };
 app.post('/api/save-user-details', authenticateUser, async (req, res) => {
     const { felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1 } = req.body;
-    
+
     try {
         const felhasznalo_id = req.user.id;
 
@@ -501,6 +501,15 @@ app.post('/api/order', authenticateUser, async (req, res) => {
     }
 });
 
+app.get('/api/latest-products', async (req, res) => {
+    try {
+        const latestProducts = await dbService.getDbServiceInstance().getLatestProducts();
+        res.json(latestProducts);
+    } catch (error) {
+        console.error('Error fetching latest products:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 
 
