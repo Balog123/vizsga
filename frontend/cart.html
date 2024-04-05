@@ -34,36 +34,43 @@
       <div class="nav-center container d-flex">
         <a href="/">
           <span>
-              <img src="/images/logo.jpg" class="logo" alt="Logo" title="Logo">
+            <img src="/images/logo.jpg" class="logo" alt="Logo" title="Logo">
           </span>
-      </a>
+        </a>
 
         <nav class="navbar">
           <ul class="nav-list d-flex">
+            <!-- Navbar link -->
             <li class="nav-item">
               <a href="/" class="nav-link">Kezdőlap</a>
             </li>
-            <li class="nav-item">
-              <a href="/products" class="nav-link">Termékek</a>
+            <!-- Hamburger menu link -->
+            <li class="without-dropdown nav-item">
+              <div class="nav-link-termekek"><a href="/products">Termékek</a></div>
+            </li>
+            <!-- Navbar link -->
+            <li class="nav-item with-dropdown">
+              <div class="nav-link-termekek nav-link-categories"><a href="/products">Termékek</a></div>
+              <div class="dropdown-content"></div>
             </li>
             <li class="nav-item">
-              <a href="#terms" class="nav-link">Terms</a>
+              <a href="/#galeria2" class="nav-link">Galéria</a>
             </li>
             <li class="nav-item">
-              <a href="#about" class="nav-link">About</a>
+              <a href="/#kapcsolat" class="nav-link">Kapcsolat</a>
             </li>
             <li class="nav-item">
-              <a href="#contact" class="nav-link">Contact</a>
-            </li>
-            <li class="nav-item">
-              <a href="#gallery" class="nav-link">Gallery</a>
+              <a href="/aszf" class="nav-link">ÁSZF</a>
             </li>
 
             <li class="icons d-flex">
               <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
-              <div class="icon">
-                <i class="bx bx-search"></i>
-              </div>
+              <!-- <div class="icon">
+                            <i class="bx bx-search"></i>
+                        </div> -->
+
+              <div class="icon" id="searchIcon2"><i class="bx bx-search"></i></div>
+
               <div class="icon">
                 <i class="bx bx-heart"></i>
                 <span class="d-flex">0</span>
@@ -94,7 +101,7 @@
         </div>
         <!-- Search Bar -->
         <div id="searchBar" class="search-bar-container">
-          <input type="text" id="searchInput" placeholder="Search...">
+          <input type="text" id="searchInput" placeholder="Keresés...">
           <div class="icon" id="searchSubmit"><i class="bx bx-search"></i></div>
         </div>
 
@@ -104,38 +111,39 @@
         </div>
       </div>
     </div>
+  </header>
 
-    <!-- Cart Items -->
-    <div class="container cart">
-      <table id="cart-table">
-        <thead>
-          <tr>
-            <th>Termék neve</th>
-            <th>Kép</th>
-            <th>Ár</th>
-            <th>Mennyiség</th>
-            <th>Módosítás</th>
-          </tr>
-        </thead>
-        <tbody id="cart-items-container">
-          <!-- Cart items will be dynamically added here -->
-        </tbody>
+  <!-- Cart Items -->
+  <div class="container cart">
+    <table id="cart-table">
+      <thead>
+        <tr>
+          <th>Termék neve</th>
+          <th>Kép</th>
+          <th>Ár</th>
+          <th>Mennyiség</th>
+          <th>Módosítás</th>
+        </tr>
+      </thead>
+      <tbody id="cart-items-container">
+        <!-- Cart items will be dynamically added here -->
+      </tbody>
+    </table>
+    <div class="total-price" id="total-price-container">
+      <table>
+        <tr>
+          <td>Összesen</td>
+          <td id="total-price"></td>
+        </tr>
       </table>
-      <div class="total-price" id="total-price-container">
-        <table>
-          <tr>
-            <td>Összesen</td>
-            <td id="total-price"></td>
-          </tr>
-        </table>
-        <a href="/rendeles" class="checkout">Tovább a fizetéshez</a>
-      </div>
+      <a href="/rendeles" class="checkout">Tovább a fizetéshez</a>
     </div>
+  </div>
 
 
 
-    <!-- Latest Products -->
-    <section class="section featured">
+  <!-- Latest Products -->
+  <!-- <section class="section featured">
       <div class="top container">
         <h1>További Termékek</h1>
       </div>
@@ -160,40 +168,43 @@
         </div>
 
       </div>
-    </section>
+    </section> -->
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="row">
-        <div class="col d-flex">
-          <h4>Információ</h4>
-          <a href="">About Us</a>
-          <a href="">Contact Us</a>
-          <a href="">Terms</a>
-          <a href="">asd</a>
-        </div>
-        <div class="col d-flex">
-          <h4>Hasznos Linkek</h4>
-          <a href="#header">Kezdőlap</a>
-          <a href="">Contact Us</a>
-          <a href="">Terms</a>
-          <a href="">asd</a>
-        </div>
-        <div class="col d-flex">
-          <span><i class="bx bxl-facebook-square"></i></span>
-          <span><i class="bx bxl-instagram-alt"></i></span>
-          <span><i class="bx bxl-github"></i></span>
-          <span><i class="bx bxl-twitter"></i></span>
-          <span><i class="bx bxl-pinterest"></i></span>
-        </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="row">
+      <div class="col d-flex">
+        <h4>Hasznos linkek</h4>
+        <a href="/">Kezdőlap</a>
+        <a href="/products">Összes termék</a>
+        <a href="#kategoria">Kategóriák</a>
+        <a href="#gallery">Galéria</a>
+        <a href="/regisztracio">Regisztráció</a>
+        <a href="/bejelentkezes">Bejelentkezés</a>
+        <a href="/kosar">Kosár</a>
       </div>
-    </footer>
+      <div class="col d-flex">
+        <h4>Információ</h4>
+        <a href="#kapcsolat">Kapcsolat</a>
+        <a href="/aszf">ÁSZF</a>
+      </div>
+      <div class="col d-flex">
+        <h4>Közösségi média</h4>
+        <a href="https://facebook.com/" target="_blank"><span><i class="bx bxl-facebook-square"></i></span></a>
+        <a href="https://instagram.com/" target="_blank"><span><i class="bx bxl-instagram-alt"></i></span></a>
+        <a href="https://github.com/Balog123/vizsga" target="_blank"><span><i class="bx bxl-github"></i></span></a>
+      </div>
+    </div>
+  </footer>
 
-    <!-- indexjs -->
-    <script src="/js/script.js"></script>
+  <!-- indexjs -->
+  <script src="/js/script.js"></script>
 
-    <!-- cartjs -->
-    <script src="/js/cart.js"></script>
+  <!-- cartjs -->
+  <script src="/js/cart.js"></script>
+
+  <!-- dropdownjs -->
+  <script src="/js/dropdown.js"></script>
 </body>
 
 </html>
