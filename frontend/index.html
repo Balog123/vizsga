@@ -35,42 +35,53 @@
         <!-- Navigation -->
         <div class="navigation">
             <div class="nav-center container d-flex">
-                <a href="" class="logo">
-                    <h1>hm</h1>
+                <a href="/">
+                    <span>
+                        <img src="/images/logo.jpg" class="logo" alt="Logo" title="Logo">
+                    </span>
                 </a>
 
                 <nav class="navbar">
                     <ul class="nav-list d-flex">
+                        <!-- Navbar link -->
                         <li class="nav-item">
                             <a href="/" class="nav-link">Kezdőlap</a>
                         </li>
+                        <!-- Hamburger menu link -->
+                        <li class="without-dropdown nav-item">
+                            <div class="nav-link-termekek"><a href="/products">Termékek</a></div>
+                        </li>
+                        <!-- Navbar link -->
                         <li class="nav-item with-dropdown">
-                            <div class="nav-link nav-link-categories"><a href="/products">Termékek</a></div>
+                            <div class="nav-link-termekek nav-link-categories"><a href="/products">Termékek</a></div>
                             <div class="dropdown-content"></div>
                         </li>
                         <li class="nav-item">
-                            <a href="#terms" class="nav-link">Terms</a>
+                            <a href="#kategoria" class="nav-link">Kategóriák</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#about" class="nav-link">About</a>
+                            <a href="#gallery" class="nav-link">Galéria</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#contact" class="nav-link">Contact</a>
+                            <a href="#kapcsolat" class="nav-link">Kapcsolat</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#gallery" class="nav-link">Gallery</a>
+                            <a href="/aszf" class="nav-link">ÁSZF</a>
                         </li>
 
                         <li class="icons d-flex">
                             <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
-                            <div class="icon">
+                            <!-- <div class="icon">
                                 <i class="bx bx-search"></i>
-                            </div>
+                            </div> -->
+
+                            <div class="icon" id="searchIcon2"><i class="bx bx-search"></i></div>
+
                             <div class="icon">
                                 <i class="bx bx-heart"></i>
                                 <span class="d-flex">0</span>
                             </div>
-                            <a href="cart.html" class="icon">
+                            <a href="/kosar" class="icon">
                                 <i class="bx bx-cart"></i>
                                 <span class="d-flex">0</span>
                             </a>
@@ -80,16 +91,24 @@
 
                 <!-- Icons -->
                 <div class="icons d-flex">
-                    <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
-                    <div class="icon"><i class="bx bx-search"></i></div>
+                    <a href="#" class="icon" id="userIcon"><i class="bx bx-user"></i></a>
+
+
+                    <div class="icon" id="searchIcon"><i class="bx bx-search"></i></div>
+
                     <div class="icon">
                         <i class="bx bx-heart"></i>
                         <span class="d-flex">0</span>
                     </div>
-                    <a href="cart.html" class="icon">
+                    <a href="/kosar" class="icon">
                         <i class="bx bx-cart"></i>
                         <span class="d-flex">0</span>
                     </a>
+                </div>
+                <!-- Search Bar -->
+                <div id="searchBar" class="search-bar-container">
+                    <input type="text" id="searchInput" placeholder="Keresés...">
+                    <div class="icon" id="searchSubmit"><i class="bx bx-search"></i></div>
                 </div>
 
                 <!-- Hamburger -->
@@ -98,43 +117,45 @@
                 </div>
             </div>
         </div>
-
-        <!-- Hero -->
-        <section class="home" id="home">
-            <div class="content">
-                <h3>Egy üzlet mindenek felett</h3>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit
-                    debitis minus quia alias culpa ab.
-                </p>
-                <a href="#" class="btn">Vásárlás</a>
-            </div>
-        </section>
     </header>
 
+    <!-- Hero -->
+    <section class="home" id="home">
+        <div class="content">
+            <h3>Egy üzlet mindenek felett</h3>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit
+                debitis minus quia alias culpa ab.
+            </p>
+            <a href="#" class="btn">Vásárlás</a>
+        </div>
+    </section>
+
+    <!-- <div class="XD1"></div> -->
+
     <!-- Categories -->
-    <h1 class="heading"><span>Népszerű</span> Kategóriák</h1>
+    <h1 class="heading" id="kategoria"><span>Népszerű</span> Kategóriák</h1>
     <section class="section category">
         <div class="cat-center">
             <div class="cat">
                 <img src="/images/view-room-interior-with-furniture-copy-space.jpg" alt="" />
                 <div>
                     <!-- <p>Nappali</p> -->
-                    <a href="../frontend/admin.html" target="_self">Nappali</a>
+                    <a href="category.html?category=nappali" target="_self">Nappali</a>
                 </div>
             </div>
             <div class="cat">
                 <img src="/images/87460.jpg" alt="" />
                 <div>
                     <!-- <p>Hálószoba</p> -->
-                    <a href="../frontend/admin.html" target="_self">Hálószoba</a>
+                    <a href="category.html?category=haloszoba" target="_self">Hálószoba</a>
                 </div>
             </div>
             <div class="cat">
                 <img src="/images/empty-room-with-chairs-desks.jpg" alt="" />
                 <div>
                     <!-- <p>Iroda</p> -->
-                    <a href="../frontend/admin.html" target="_self">Irodai</a>
+                    <a href="category.html?category=irodai" target="_self">Irodai</a>
                 </div>
             </div>
         </div>
@@ -286,9 +307,9 @@
     <!-- Teszt -->
     <section class="section banner" id="gallery">
         <div class="left">
-            <span class="trend">Trend Design</span>
-            <h1>Tekintsd meg galériánkat</h1>
-            <p>asd</p>
+            <span class="trend">Trend & Design</span>
+            <h1>Tekintse meg galériánkat</h1>
+            <p>Képek egyedi termékekről</p>
             <a href="./gallery.html" class="button btn-2">Érdekel</a>
         </div>
         <div class="right">
@@ -370,26 +391,40 @@
             </div>
     </section>
 
-
     <!-- Contact -->
-    <section class="section contact">
+    <section class="section contact" id="kapcsolat">
         <div class="row">
             <div class="col">
-                <h2>Lorem ipsum dolor sit amet consectetur.</h2>
-                <p>lorem6Lorem ipsum dolor sit amet.</p>
-                <a href="" class="button btn-1">Kapcsolatfelvétel</a>
+                <h2>Kapcsolatfelvétel</h2>
+                <p>Ha bármilyen kérdése vagy észrevétele van, kérjük, vegye fel velünk a kapcsolatot az alábbi
+                    elérhetőségeinken:</p>
+                <a href="#" class="button btn-1" id="infoBtn">Info</a>
             </div>
             <div class="col">
-                <form action="">
+                <h2>Hírlevél</h2>
+                <p>Legyen az elsők között, akik értesülnek kedvezményeinkről! Iratkozzon fel hírlevelünkre, hogy ne
+                    maradjon le!</p>
+                <form action="/api/send-email" method="POST">
                     <div>
-                        <input type="email" placeholder="Email cím" />
-                        <a href="">Küldés</a>
+                        <input type="email" name="email" placeholder="Email cím" />
+                        <button type="submit">Küldés</button>
                     </div>
                 </form>
             </div>
         </div>
     </section>
 
+    <!-- Popup ablak -->
+    <div class="popup2" id="infoPopup2">
+        <div class="popup-content2">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            <h2>Elérhetőségeink:</h2>
+            <p>Telefonszám: (+36) 12 34 56 7</p>
+            <p>Email-cím: butorporjekt@gmail.com</p>
+            <p>Facebook: butorprojekt</p>
+            <p>Instagram: butorprojekt</p>
+        </div>
+    </div>
 
     <!-- Filling -->
     <div class="sectionfilling"></div>
@@ -398,25 +433,25 @@
     <footer class="footer">
         <div class="row">
             <div class="col d-flex">
+                <h4>Hasznos linkek</h4>
+                <a href="/">Kezdőlap</a>
+                <a href="/products">Összes termék</a>
+                <a href="#kategoria">Kategóriák</a>
+                <a href="#gallery">Galéria</a>
+                <a href="/regisztracio">Regisztráció</a>
+                <a href="/bejelentkezes">Bejelentkezés</a>
+                <a href="/kosar">Kosár</a>
+            </div>
+            <div class="col d-flex">
                 <h4>Információ</h4>
-                <a href="">About Us</a>
-                <a href="">Contact Us</a>
-                <a href="">Terms</a>
-                <a href="">asd</a>
+                <a href="#kapcsolat">Kapcsolat</a>
+                <a href="/aszf">ÁSZF</a>
             </div>
             <div class="col d-flex">
-                <h4>Hasznos Linkek</h4>
-                <a href="#header">Kezdőlap</a>
-                <a href="">Contact Us</a>
-                <a href="">Terms</a>
-                <a href="">asd</a>
-            </div>
-            <div class="col d-flex">
-                <span><i class="bx bxl-facebook-square"></i></span>
-                <span><i class="bx bxl-instagram-alt"></i></span>
-                <span><i class="bx bxl-github"></i></span>
-                <span><i class="bx bxl-twitter"></i></span>
-                <span><i class="bx bxl-pinterest"></i></span>
+                <h4>Közösségi média</h4>
+                <a href="https://facebook.com/" target="_blank"><span><i class="bx bxl-facebook-square"></i></span></a>
+                <a href="https://instagram.com/" target="_blank"><span><i class="bx bxl-instagram-alt"></i></span></a>
+                <a href="https://github.com/Balog123/vizsga" target="_blank"><span><i class="bx bxl-github"></i></span></a>
             </div>
         </div>
     </footer>
@@ -436,16 +471,19 @@
                 <div class="right-content">
                     <h1>Légy naprakész!</h1>
                     <p>
-                        Szeretnél kapni új termékekről értesítést? Iratkozz fel hírlevelünkre és rendszeresen küldünk értékes ajánlatokat!
+                        Szeretnél kapni új termékekről értesítést? Iratkozz fel hírlevelünkre és rendszeresen küldünk
+                        értékes ajánlatokat!
                     </p>
-                    <form action="#">
-                        <input type="email" placeholder="Adja meg az e-mail címét..." class="popup-form">
-                        <a href="#">Feliratkozás</a>
+                    <form action="#" id="popupForm">
+                        <input type="email" placeholder="Adja meg az e-mail címét..." class="popup-form"
+                            id="emailInput">
+                        <button class="feliratkozasGomb" type="button" id="subscribeBtn">Feliratkozás</button>
                     </form>
                 </div>
             </div>
         </div>
     </div> -->
+
 
 
     <!-- Glidejs -->

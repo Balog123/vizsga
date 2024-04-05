@@ -8,11 +8,31 @@ const dbService = require('./db-config')
 const connection = dbService.getDbServiceInstance().getConnection();
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
+const nodemailer = require('nodemailer');
 
 app.use(cors())
 app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }))
+
+app.use((req, res, next) => {
+    const token = req.cookies.token;
+  
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+          res.clearCookie('token');
+          next();
+        } else {
+          req.user = user;
+          next();
+        }
+      });
+    } else {
+      next();
+    }
+  });
+  
 
 app.use(['/admin', '/admin/*'], authenticateAdmin);
 
@@ -33,6 +53,18 @@ app.get('/bejelentkezes', function (req, res) {
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'login.html'));
 })
 
+app.get('/kosar', function (req, res) {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'cart.html'));
+})
+
+app.get('/profil', function (req, res) {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'profile.html'));
+})
+
+app.get('/aszf', function (req, res) {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'aszf.html'));
+})
+
 app.get('/products', (req, res) => {
     const { category } = req.query;
 
@@ -49,35 +81,48 @@ app.get('/products/:id', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'singleproduct.html'));
 });
 
+app.get('/rendeles', function (req, res) {
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'order.html'))
+})
+
 app.get('/api/products', (req, res, next) => {
-    const { category } = req.query;
+    const { category, sortOrder } = req.query;
+
+    let query;
 
     if (category) {
-        const query = `
+        query = `
             SELECT Termek.*, Kep.kep_url
             FROM Termek
             INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
             WHERE Termek.termek_kategoria = ?
         `;
-        connection.query(query, [category], (error, results) => {
-            if (error) {
-                console.error("Error fetching products by category:", error);
-                res.status(500).json({ error: "Error fetching products by category" });
-                return;
-            }
-            res.json({ products: results });
-        });
     } else {
-        const query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
-        connection.query(query, (error, results) => {
-            if (error) {
-                console.error("Error fetching products:", error);
-                res.status(500).json({ error: "Error fetching products" });
-                return;
-            }
-            res.json({ products: results });
-        });
+        query = 'SELECT Termek.*, Kep.kep_url FROM Termek INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id';
     }
+
+    if (sortOrder) {
+        switch (sortOrder) {
+            case '1':
+                query += ' ORDER BY termek_nev ASC';
+                break;
+            case '2':
+                query += ' ORDER BY termek_ar DESC';
+                break;
+            case '3':
+                query += ' ORDER BY termek_ar ASC';
+                break;
+        }
+    }
+
+    connection.query(query, category ? [category] : [], (error, results) => {
+        if (error) {
+            console.error("Error fetching products:", error);
+            res.status(500).json({ error: "Error fetching products" });
+            return;
+        }
+        res.json({ products: results });
+    });
 });
 
 app.get('/api/products/:id', (req, res) => {
@@ -178,9 +223,9 @@ app.post('/bejelentkezes', (request, response) => {
 
     result.then(data => {
         const isAdmin = data.isAdmin;
-
-        const token = jwt.sign({id: data.id, email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
-            expiresIn: '1h',
+        
+        const token = jwt.sign({ id: data.id, email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
+            expiresIn: '4h',
         });
 
         response.cookie('token', token, { httpOnly: true });
@@ -191,6 +236,68 @@ app.post('/bejelentkezes', (request, response) => {
             response.status(500).json({ success: false, error: error.message });
         });
 })
+
+function authenticateUser(req, res, next) {
+    if (req.cookies && req.cookies.token) {
+        const token = req.cookies.token;
+
+        jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+            if (err) {
+                console.error('Hiba a token decodolása során:', err)
+                res.status(401).json({ success: false, error: 'Érvénytelen token' })
+            } else {
+                req.user = decodedToken
+                next();
+            }
+        });
+    } else {
+        console.log('Nem talált tokent')
+        res.status(401).json({ success: false, error: 'Nincs hitelesíthető token' })
+    }
+}
+
+app.get('/api/kosar', authenticateUser, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const db = dbService.getDbServiceInstance();
+
+        const cartItems = await db.getCartItemsByUserId(userId);
+
+        res.status(200).json({ success: true, cartItems });
+    } catch (error) {
+        console.error("Error fetching cart items:", error);
+        res.status(500).json({ success: false, error: "Error fetching cart items" });
+    }
+});
+
+app.post('/api/kosar', authenticateUser, async (req, res) => {
+    try {
+        const { productId, darab } = req.body;
+        const userId = req.user.id;
+        const db = dbService.getDbServiceInstance();
+
+        const productDetails = await db.getProductById(productId);
+
+        if (!productDetails) {
+            return res.status(404).json({ success: false, error: "Product not found" });
+        }
+
+        const { termek_nev, termek_ar } = productDetails;
+
+        const result = await db.addToCart(productId, termek_nev, termek_ar, darab, userId);
+
+        if (result.success) {
+            const updatedCartItems = await db.getCartItemsByUserId(userId);
+            
+            return res.status(200).json({ success: true, message: "Product added to cart successfully", cartItems: updatedCartItems });
+        } else {
+            return res.status(500).json({ success: false, error: "Error adding product to cart" });
+        }
+    } catch (error) {
+        console.error("Error adding product to cart:", error);
+        res.status(500).json({ success: false, error: "Error adding product to cart" });
+    }
+});
 
 app.post('/admin/feltoltes', (req, res) => {
     const { kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron } = req.body
@@ -224,10 +331,10 @@ app.patch('/admin/modositas', (request, response) => {
     const db = dbService.getDbServiceInstance();
 
     const result = db.termekArModositas(id, ar);
-    
+
     result
-    .then(data => response.json({success : data}))
-    .catch(err => console.log(err));
+        .then(data => response.json({ success: data }))
+        .catch(err => console.log(err));
 });
 
 app.delete('/api/products/:id', (req, res) => {
@@ -247,6 +354,154 @@ app.delete('/api/products/:id', (req, res) => {
             res.status(500).json({ success: false, error: "Error deleting product" });
         });
 });
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'butorprojekt@gmail.com',
+        pass: 'gykc kjhj ajrn nbfo' //Qwertzuiop123456789
+    }
+});
+
+app.post('/api/send-email', (req, res) => {
+    //const { email } = req.query;
+    const { email } = req.body;
+
+    const mailOptions = {
+        from: 'butorprojekt@gmail.com',
+        to: email,
+        subject: 'Köszönjük az érdeklődését',
+        text: 'Üdvözöljük feliratkozóink között!'
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).json({ error: 'Error sending email' });
+        } else {
+            console.log('Email sent:', info.response);
+            res.json({ success: true, message: 'Email sent successfully' });
+        }
+    });
+});
+
+app.delete('/api/removeCartItem', authenticateUser, async (req, res) => {
+    const db = dbService.getDbServiceInstance();
+    const { kosar_id } = req.body;
+
+    try {
+        const result = await db.removeCartItem(kosar_id);
+
+        if (result.success) {
+            const updatedCartItems = await db.getCartItemsByUserId(req.user.id);
+
+            res.json({ success: true, message: "Cart item removed successfully", cartItems: updatedCartItems });
+        } else {
+            res.status(500).json({ success: false, error: "Error removing cart item" });
+        }
+    } catch (error) {
+        console.error("Error removing cart item:", error);
+        res.status(500).json({ success: false, error: "Error removing cart item" });
+    }
+});
+
+
+app.get('/search', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'frontend', 'search.html'));
+});
+
+app.get('/api/search', async (req, res) => {
+    const db = dbService.getDbServiceInstance();
+    const query = req.query.query;
+
+    try {
+        const searchResults = await db.searchProducts(query);
+        res.json({ success: true, searchResults });
+    } catch (error) {
+        console.error("Error in search query:", error);
+        res.status(500).json({ success: false, error: "Error in search query" });
+    }
+});
+
+app.get('/check-auth', authenticateUser, (req, res) => {
+    console.log('User is authenticated:', req.user);
+    res.json({ success: true, data: req.user });
+});
+
+app.post('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.json({ success: true, message: 'Logout successful' });
+    console.log('Sikeres kijelentkezés');
+});
+
+const saveUserDetails = async (felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1) => {
+    try {
+        const query = "UPDATE Felhasznalo SET felhasznalo_varos=?, felhasznalo_iranyitoszam=?, felhasznalo_cim1=? WHERE felhasznalo_id=?";
+        const result = await new Promise((resolve, reject) => {
+            connection.query(query, [felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1, felhasznalo_id], (err, res) => {
+                if (err) reject(err);
+                resolve(res);
+            });
+        });
+
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw new Error("Error updating user details");
+    }
+};
+app.post('/api/save-user-details', authenticateUser, async (req, res) => {
+    const { felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1 } = req.body;
+    
+    try {
+        const felhasznalo_id = req.user.id;
+
+        const result = await saveUserDetails(felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1);
+        res.status(200).json({ success: true, result });
+    } catch (error) {
+        console.error("Error saving user details:", error);
+        res.status(500).json({ success: false, error: "Error saving user details" });
+    }
+});
+
+app.post('/api/order', authenticateUser, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const db = dbService.getDbServiceInstance();
+
+        const cartItems = await db.getCartItemsByUserId(userId);
+
+        if (cartItems.length === 0) {
+            return res.status(400).json({ success: false, error: "Empty cart, cannot place order" });
+        }
+
+        const deliveryDetails = req.body;
+
+        const requiredFields = ['firstName', 'lastName', 'city', 'zipcode', 'address'];
+        for (const field of requiredFields) {
+            if (!deliveryDetails[field]) {
+                return res.status(400).json({ success: false, error: `Missing field: ${field}` });
+            }
+        }
+
+        for (let i = 0; i < cartItems.length; i++) {
+            console.log(cartItems[i])
+        }
+        const orderResult = await db.saveOrder(userId, cartItems, deliveryDetails); // Módosított sor
+
+        if (orderResult.success) {
+            await db.clearCart(userId);
+            res.status(200).json({ success: true, message: "Order placed successfully" });
+        } else {
+            res.status(500).json({ success: false, error: "Error placing order" });
+        }
+    } catch (error) {
+        console.error("Error placing order:", error);
+        res.status(500).json({ success: false, error: "Error placing order" });
+    }
+});
+
+
 
 
 app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))

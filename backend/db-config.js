@@ -15,11 +15,11 @@ const connection = sql.createConnection({
 
 connection.connect((error) => {
     if (error) {
-      console.error('Error connecting to database:', error);
+        console.error('Error connecting to database:', error);
     } else {
-      console.log('db connected');
+        console.log('db connected');
     }
-  });
+});
 
 
 class DbService {
@@ -31,27 +31,27 @@ class DbService {
         try {
             const hashJelszo = await bcrypt.hash(jelszo, 8);
             const emailEllenorzes = "SELECT felhasznalo_email FROM felhasznalo WHERE felhasznalo_email = ?"
-            
+
             const result = await new Promise((resolve, reject) => {
                 connection.query(emailEllenorzes, [email], (error, result) => {
                     if (error) reject(error)
                     resolve(result)
                 });
             });
-    
+
             if (result.length > 0) {
                 console.log('Ez az email már foglalt')
                 return null
             } else {
                 const query = "INSERT INTO felhasznalo (felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_email, felhasznalo_jelszo) VALUES (?,?,?,?)"
-                
+
                 await new Promise((resolve, reject) => {
                     connection.query(query, [keresztnev, vezeteknev, email, hashJelszo], (err, res) => {
                         if (err) reject(err)
                         resolve(res)
                     });
                 });
-    
+
                 return {
                     keresztnev: keresztnev,
                     vezeteknev: vezeteknev,
@@ -77,17 +77,17 @@ class DbService {
                     resolve(result[0]);
                 });
             });
-    
+
             if (!felhasznalo) throw new Error('Rossz email vagy jelszó');
-    
+
             const helyesJelszo = await bcrypt.compare(jelszo, felhasznalo.felhasznalo_jelszo);
-    
+
             if (!helyesJelszo) throw new Error('Rossz jelszó');
-            
+
             const isAdmin = felhasznalo.felhasznalo_admin === 1;
-    
+
             console.log('Sikeres bejelentkezes');
-    
+
             return {
                 id: felhasznalo.felhasznalo_id,
                 keresztnev: felhasznalo.felhasznalo_keresztnev,
@@ -102,29 +102,68 @@ class DbService {
         }
     }
 
+    async getProductById(productId) {
+        try {
+            const query = `
+                SELECT termek_nev, termek_ar
+                FROM Termek
+                WHERE termek_id = ?
+            `;
+            const result = await new Promise((resolve, reject) => {
+                this.getConnection().query(query, [productId], (error, results) => {
+                    if (error) reject(error);
+                    resolve(results[0]);
+                });
+            });
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error fetching product details');
+        }
+    }
+
+    async addToCart(productId, termek_nev, termek_ar, darab, userId) {
+        try {
+            const insertQuery = `
+                INSERT INTO Kosar (kosar_termek_id, kosar_nev, kosar_ar, kosar_darab, kosar_felhasznalo_id)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+            const result = await new Promise((resolve, reject) => {
+                this.getConnection().query(insertQuery, [productId, termek_nev, termek_ar, darab, userId], (error, result) => {
+                    if (error) reject(error);
+                    resolve(result);
+                });
+            });
+            return { success: true };
+        } catch (error) {
+            console.error(error);
+            return { success: false };
+        }
+    }
+
     async termekFeltoltes(kategoria, kep_url, nev, ar, leiras, szelesseg, magassag, hossz, raktaron) {
         try {
             const queryKep = "INSERT INTO Kep (kep_url) VALUES (?)"
-          
+
             const resultKep = await new Promise((resolve, reject) => {
                 connection.query(queryKep, [kep_url], (error, result) => {
                     if (error) reject(error)
-                resolve(result)
-              });
+                    resolve(result)
+                });
             });
-          
+
             const kepId = resultKep.insertId
-          
+
             const queryTermek = "INSERT INTO Termek (termek_nev, termek_ar, termek_leiras, termek_szelesseg, termek_magassag, termek_hossz, termek_kategoria, termek_raktaron, termek_kep_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
             const resultTermek = await new Promise((resolve, reject) => {
                 connection.query(queryTermek, [nev, ar, leiras, szelesseg, magassag, hossz, kategoria, raktaron, kepId], (error, result) => {
                     if (error) reject(error)
-                resolve(result)
-              })
+                    resolve(result)
+                })
             })
-          
+
             return resultTermek
-        }   
+        }
         catch (error) {
             console.error(error)
             throw new Error('Hiba az adatok feltöltésekor')
@@ -138,14 +177,14 @@ class DbService {
                 FROM Termek
                 INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
             `;
-    
+
             const result = await new Promise((resolve, reject) => {
                 connection.query(query, (error, result) => {
                     if (error) reject(error);
                     resolve(result);
                 });
             });
-    
+
             return result;
         } catch (error) {
             console.error(error);
@@ -156,7 +195,14 @@ class DbService {
     async termekAdminTorles(id) {
         try {
             id = parseInt(id, 10);
-    
+
+            const deleteCartItemsQuery = `DELETE FROM Kosar WHERE kosar_termek_id = ?`;
+            await new Promise((resolve, reject) => {
+            connection.query(deleteCartItemsQuery, [id], (err, result) => {
+                if (err) reject(new Error(err.message));
+                resolve();
+                });
+            });
 
             const deleteImagesQuery = `DELETE FROM Kep WHERE kep_id IN (SELECT termek_kep_id FROM Termek WHERE termek_id = ?)`;
             await new Promise((resolve, reject) => {
@@ -165,7 +211,7 @@ class DbService {
                     resolve();
                 });
             });
-    
+
             const deleteProductQuery = `DELETE FROM Termek WHERE termek_id = ?`;
             const response = await new Promise((resolve, reject) => {
                 connection.query(deleteProductQuery, [id], (err, result) => {
@@ -173,7 +219,7 @@ class DbService {
                     resolve(result.affectedRows);
                 });
             });
-    
+
             return response === 1 ? true : false;
         } catch (error) {
             console.log(error);
@@ -183,17 +229,17 @@ class DbService {
 
     async termekArModositas(id, ar) {
         try {
-            id = parseInt(id, 10); 
+            id = parseInt(id, 10);
             console.log(id)
             const response = await new Promise((resolve, reject) => {
                 const query = "UPDATE Termek SET termek_ar = ? WHERE termek_id = ?";
-    
-                connection.query(query, [ar, id] , (err, result) => {
+
+                connection.query(query, [ar, id], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.affectedRows);
                 })
             });
-    
+
             return response === 1 ? true : false;
         } catch (error) {
             console.log(error);
@@ -221,14 +267,20 @@ class DbService {
             FROM Termek
             INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
             WHERE termek_id = ?`;
-        
+
         return new Promise((resolve, reject) => {
             connection.query(query, [productId], (error, results) => {
-                if (error) reject(error);
-                resolve(results[0]);
+                if (error) {
+                    console.error("Error in getProductById query:", error);
+                    reject(error);
+                } else {
+                    console.log("Results in getProductById:", results);
+                    resolve(results[0]);
+                }
             });
         });
     }
+
 
     getRelatedProducts(productId) {
         const query = `
@@ -239,7 +291,7 @@ class DbService {
             AND t1.termek_id != ?
             ORDER BY RAND()
             LIMIT 4`;
-    
+
         return new Promise((resolve, reject) => {
             connection.query(query, [productId, productId], (error, results) => {
                 if (error) reject(error);
@@ -247,7 +299,7 @@ class DbService {
             });
         });
     }
-    
+
     async getCategories() {
         try {
             const query = 'SELECT DISTINCT termek_kategoria AS category_name FROM Termek';
@@ -261,6 +313,142 @@ class DbService {
         } catch (error) {
             console.error(error);
             throw new Error('Error fetching categories');
+        }
+    }
+
+    async getCartItemsByUserId(userId) {
+        try {
+            const query = `
+                SELECT Kosar.*, Termek.*, Kep.kep_url
+                FROM Kosar
+                INNER JOIN Termek ON Kosar.kosar_termek_id = Termek.termek_id
+                INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+                WHERE kosar_felhasznalo_id = ?
+            `;
+            const cartItems = await new Promise((resolve, reject) => {
+                this.getConnection().query(query, [userId], (error, results) => {
+                    if (error) reject(error);
+                    resolve(results);
+                });
+            });
+            return cartItems;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error fetching cart items by user ID');
+        }
+    }
+
+    async removeCartItem(kosarId) {
+        try {
+            const deleteQuery = 'DELETE FROM Kosar WHERE kosar_id = ?';
+            const result = await new Promise((resolve, reject) => {
+                this.getConnection().query(deleteQuery, [kosarId], (error, result) => {
+                    if (error) {
+                        console.error("Error in removeCartItem query:", error);
+                        reject(error);
+                    }
+                    resolve(result);
+                });
+            });
+
+            return { success: result.affectedRows > 0 };
+        } catch (error) {
+            console.error("Error in removeCartItem:", error);
+            return { success: false };
+        }
+    }
+
+    async searchProducts(query) {
+        try {
+            const searchQuery = `
+                SELECT Termek.*, Kep.kep_url 
+                FROM Termek 
+                INNER JOIN Kep ON Termek.termek_kep_id = Kep.kep_id
+                WHERE CONCAT(' ', termek_nev, ' ') LIKE CONCAT('%', ?, '%')`;
+
+
+            const result = await new Promise((resolve, reject) => {
+                this.getConnection().query(searchQuery, [`%${query}%`], (error, results) => {
+                    if (error) {
+                        console.error("Error in searchProducts query:", error);
+                        reject(error);
+                    }
+                    resolve(results);
+                });
+            });
+
+            return result;
+        } catch (error) {
+            console.error("Error in searchProducts:", error);
+            return [];
+        }
+    }
+
+    async saveUserDetails(felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1) {
+        try {
+            const query = "UPDATE Felhasznalo SET felhasznalo_varos=?, felhasznalo_iranyitoszam=?, felhasznalo_cim1=? WHERE felhasznalo_id=?";
+            const result = await new Promise((resolve, reject) => {
+                connection.query(query, [felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1, felhasznalo_id], (err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                });
+            });
+    
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Error updating user details");
+        }
+    }
+    
+    
+    async saveOrder(userId, cartItems, deliveryDetails) {
+        try {
+            const {
+                firstName,
+                lastName,
+                city,
+                zipcode,
+                address,    
+                floor,
+                door
+            } = deliveryDetails;
+    
+            // Az első kosár elem termék azonosítójának lekérése
+            const firstCartItem = cartItems[0]; // Feltételezzük, hogy a kosár nem üres és csak egy terméket rendelnek egyszerre
+            const productId = firstCartItem.kosar_termek_id;
+
+            console.log(productId)
+    
+            const query = "INSERT INTO Rendeles (rendeles_felhasznalo_id, rendeles_szalitasi_keresztnev, rendeles_szalitasi_vezeteknev, rendeles_varos, rendeles_iranyitoszam, rendeles_cim, rendeles_emelet, rendeles_ajto, rendeles_termek_id, rendeles_datum) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
+            
+            const result = await new Promise((resolve, reject) => {
+                connection.query(query, [userId, firstName, lastName, city, zipcode, address, floor, door, productId], (err, res) => {
+                    if (err) reject(err)
+                    resolve(res);
+                });
+            });
+    
+            //await this.clearCart(userId);
+    
+            //return result;
+            return { success: true }
+        } catch (error) {
+            console.error("Error saving order:", error);
+            return { success: false };
+        }
+    }
+    
+    
+    async clearCart(userId) {
+        try {
+            // Kosár tartalmának törlése
+            // Például: DELETE FROM Kosar WHERE kosar_felhasznalo_id = ?
+    
+            return { success: true };
+        } catch (error) {
+            console.error("Error clearing cart:", error);
+            return { success: false };
         }
     }
     

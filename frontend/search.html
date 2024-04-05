@@ -2,15 +2,15 @@
 <html lang="hu">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Box icons -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="/css/styles.css" />
-    <title>Termékek</title>
+    <title>Keresett termékek</title>
 </head>
 
 <body>
@@ -44,7 +44,7 @@
                             <a href="/" class="nav-link">Kezdőlap</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/products" class="nav-link">Termékek</a>
+                            <a href="" class="nav-link">Termékek</a>
                         </li>
                         <li class="nav-item">
                             <a href="#terms" class="nav-link">Terms</a>
@@ -78,11 +78,8 @@
 
                 <!-- Icons -->
                 <div class="icons d-flex">
-                    <a href="#" class="icon" id="userIcon"><i class="bx bx-user"></i></a>
-
-                    
-                    <div class="icon" id="searchIcon"><i class="bx bx-search"></i></div>
-
+                    <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
+                    <div class="icon"><i class="bx bx-search"></i></div>
                     <div class="icon">
                         <i class="bx bx-heart"></i>
                         <span class="d-flex">0</span>
@@ -92,42 +89,28 @@
                         <span class="d-flex">0</span>
                     </a>
                 </div>
-                <!-- Search Bar -->
-                <div id="searchBar" class="search-bar-container">
-                    <input type="text" id="searchInput" placeholder="Search...">
-                    <div class="icon" id="searchSubmit"><i class="bx bx-search"></i></div>
-                </div>
 
                 <!-- Hamburger -->
                 <div class="hamburger">
                     <i class="bx bx-menu-alt-left"></i>
                 </div>
-
             </div>
         </div>
     </header>
 
-    <!-- All Products -->
+    <!-- keresett termékek -->
     <section class="section all-products" id="products">
         <div class="top container">
-            <h1>Összes termék</h1>
-            <form id="sortForm">
-                <select id="sortSelect" name="sortOrder">
-                    <option value="0" disabled selected hidden>Rendezés módosítása</option>
-                    <option value="1">Név szerint</option>
-                    <option value="2">Ár szerint csökkenő</option>
-                    <option value="3">Ár szerint növekvő</option>
-                </select>
-                <span><i class="bx bx-chevron-down"></i></span>
-            </form>
+            <h1 id="keresettTermek">Keresett termékek</h1>
         </div>
-        <div class="product-center container">
+        <!-- <div class="product-center container" id="searchResults">
             
-        </div>
+        </div> -->
+        <div id="searchResults"></div>
     </section>
 
     <!-- Filling -->
-    <div class="sectionfilling"></div>
+    <div class="sectionfillingSearch"></div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -156,13 +139,11 @@
         </div>
     </footer>
 
-
-    <!-- termek -->
-    <script src="/js/allproducts.js"></script>
+    <!-- kereses -->
+    <script src="/js/search.js"></script>
 
     <!-- indexjs -->
     <script src="/js/script.js"></script>
-
 </body>
 
 </html>
