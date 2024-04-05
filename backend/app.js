@@ -364,7 +364,8 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post('/api/send-email', (req, res) => {
-    const { email } = req.query;
+    //const { email } = req.query;
+    const { email } = req.body;
 
     const mailOptions = {
         from: 'butorprojekt@gmail.com',
