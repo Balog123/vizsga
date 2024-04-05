@@ -10,11 +10,11 @@
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/profile.css" />
     <title>Profil</title>
 </head>
 
 <body>
-
     <!-- Header -->
     <header class="header" id="header">
         <!-- top nav -->
@@ -34,43 +34,49 @@
             <div class="nav-center container d-flex">
                 <a href="/">
                     <span>
-                        <img src="/images/logo.jpg" class="logo" alt="Logo" title="Logo">
+                        <img src="/images/logo.jpg" class="logo" alt="Logo" title="Logo" />
                     </span>
                 </a>
 
                 <nav class="navbar">
                     <ul class="nav-list d-flex">
+                        <!-- Navbar link -->
                         <li class="nav-item">
                             <a href="/" class="nav-link">Kezdőlap</a>
                         </li>
-
-                        <!-- <li class="nav-item with-dropdown">
-                            <div class="nav-link nav-link-categories"><a href="/products">Termékek</a></div>
+                        <!-- Hamburger menu link -->
+                        <li class="without-dropdown nav-item">
+                            <div class="nav-link-termekek">
+                                <a href="/products">Termékek</a>
+                            </div>
+                        </li>
+                        <!-- Navbar link -->
+                        <li class="nav-item with-dropdown">
+                            <div class="nav-link-termekek nav-link-categories">
+                                <a href="/products">Termékek</a>
+                            </div>
                             <div class="dropdown-content"></div>
-                        </li> -->
-
-                        <li class="nav-item">
-                            <a href="/products" class="nav-link">Termékek</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#terms" class="nav-link">Terms</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#about" class="nav-link">About</a>
+                            <a href="/#galeria2" class="nav-link">Galéria</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#contact" class="nav-link">Contact</a>
+                            <a href="/#kapcsolat" class="nav-link">Kapcsolat</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#gallery" class="nav-link">Gallery</a>
+                            <a href="/aszf" class="nav-link">ÁSZF</a>
                         </li>
 
                         <li class="icons d-flex">
                             <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
-                            <div class="icon">
+                            <!-- <div class="icon">
+                                <i class="bx bx-search"></i>
+                            </div> -->
+
+                            <div class="icon" id="searchIcon2">
                                 <i class="bx bx-search"></i>
                             </div>
+
                             <div class="icon">
                                 <i class="bx bx-heart"></i>
                                 <span class="d-flex">0</span>
@@ -85,9 +91,7 @@
 
                 <!-- Icons -->
                 <div class="icons d-flex">
-                    <!-- <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a> -->
                     <a href="#" class="icon" id="userIcon"><i class="bx bx-user"></i></a>
-
 
                     <div class="icon" id="searchIcon"><i class="bx bx-search"></i></div>
 
@@ -102,8 +106,10 @@
                 </div>
                 <!-- Search Bar -->
                 <div id="searchBar" class="search-bar-container">
-                    <input type="text" id="searchInput" placeholder="Search...">
-                    <div class="icon" id="searchSubmit"><i class="bx bx-search"></i></div>
+                    <input type="text" id="searchInput" placeholder="Keresés..." />
+                    <div class="icon" id="searchSubmit">
+                        <i class="bx bx-search"></i>
+                    </div>
                 </div>
 
                 <!-- Hamburger -->
@@ -116,16 +122,15 @@
 
     <!-- Main Content -->
     <div class="container">
-        <h2>Profil</h2>
-
-        <button id="logoutButton">Kijelentkezés</button>
+        <div class="header2">
+            <h2>Profil</h2>
+            <button class="logoutButton" id="logoutButton">Kijelentkezés</button>
+        </div>
 
         <div class="login-form">
             <form id="userDetailsForm">
                 <h1>Felhasználói adatok módosítása</h1>
-                <p>
-                    Adja meg felhasználói adatait alább:
-                </p>
+                <p>Adja meg felhasználói adatait alább:</p>
 
                 <label for="felhasznaloVaros">Város:</label>
                 <input type="text" id="felhasznaloVaros" name="felhasznaloVaros" placeholder="Város" required />
@@ -138,17 +143,55 @@
                 <input type="text" id="felhasznaloCim1" name="felhasznaloCim1" placeholder="Cím" required />
 
                 <div class="buttons">
-                    <button type="button" class="cancelbtn" id="cancelbtn">Mégsem</button>
-                    <button type="button" id="saveChangesButton" class="signupbtn">Változtatások Mentése</button>
+                    <button type="button" class="cancelbtn" id="cancelbtn">
+                        Mégsem
+                    </button>
+                    <button type="button" id="saveChangesButton" class="signupbtn">
+                        Változtatások Mentése
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
+    <div id="popupMessage" class="popup-message">Adatok elmentve!</div>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="row">
+            <div class="col d-flex">
+                <h4>Hasznos linkek</h4>
+                <a href="/">Kezdőlap</a>
+                <a href="/products">Összes termék</a>
+                <a href="#kategoria">Kategóriák</a>
+                <a href="#gallery">Galéria</a>
+                <a href="/regisztracio">Regisztráció</a>
+                <a href="/bejelentkezes">Bejelentkezés</a>
+                <a href="/kosar">Kosár</a>
+            </div>
+            <div class="col d-flex">
+                <h4>Információ</h4>
+                <a href="#kapcsolat">Kapcsolat</a>
+                <a href="/aszf">ÁSZF</a>
+            </div>
+            <div class="col d-flex">
+                <h4>Közösségi média</h4>
+                <a href="https://facebook.com/" target="_blank"><span><i class="bx bxl-facebook-square"></i></span></a>
+                <a href="https://instagram.com/" target="_blank"><span><i class="bx bxl-instagram-alt"></i></span></a>
+                <a href="https://github.com/Balog123/vizsga" target="_blank"><span><i
+                            class="bx bxl-github"></i></span></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- indexjs -->
     <script src="/js/script.js"></script>
+
+    <!-- profilejs -->
     <script src="/js/profile.js"></script>
 
+    <!-- dropdownjs -->
+    <script src="/js/dropdown.js"></script>
 </body>
 
 </html>
