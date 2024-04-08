@@ -44,6 +44,11 @@ window.addEventListener("DOMContentLoaded", () => {
                         console.error("Érvénytelen darabszám!");
                         return;
                     }
+
+                    if (darab > product.termek_raktaron) {
+                        console.error("Nincs elegendő készlet a kosárba helyezéshez!");
+                        return;
+                    }
                     
                     fetch('http://localhost:8000/api/kosar', {
                         method: 'POST',
