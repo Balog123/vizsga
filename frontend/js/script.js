@@ -8,29 +8,6 @@ if (hamburger) {
   });
 }
 
-// window.addEventListener('scroll', function () {
-//   var header = document.querySelector('.header');
-//   var topNav = document.querySelector('.top-nav');
-//   var navigation = document.querySelector('.navigation');
-
-//   if (window.scrollY > 50) {
-//     topNav.style.display = 'none';
-//     header.style.display = 'sticky';
-//   } else {
-//     topNav.style.display = 'block';
-//   }
-// });
-//   document.addEventListener('scroll', () => {
-//     const header = document.querySelector('header');
-//     const home = document.getElementById('home');
-
-//     if (window.scrollY > home.offsetTop - header.offsetHeight) {
-//         header.classList.add('scrolled');
-//     } else {
-//         header.classList.remove('scrolled');
-//     }
-// });
-
 const header = document.querySelector('.header');
 const topNav = document.querySelector('.top-nav');
 const navigation = document.querySelector('.navigation');
