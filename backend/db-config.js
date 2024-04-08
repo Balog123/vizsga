@@ -402,7 +402,7 @@ class DbService {
     }
 
 
-    async saveOrder(userId, cartItems, deliveryDetails) {
+    /*async saveOrder(userId, cartItems, deliveryDetails) {
         try {
             const {
                 firstName,
@@ -429,6 +429,41 @@ class DbService {
             });
 
             return { success: true }
+        } catch (error) {
+            console.error("Error saving order:", error);
+            return { success: false };
+        }
+    }*/
+
+    async saveOrder(userId, cartItems, deliveryDetails) {
+        try {
+            const {
+                firstName,
+                lastName,
+                city,
+                zipcode,
+                address,
+                floor,
+                door
+            } = deliveryDetails;
+    
+            // Létrehozunk egy Promise tömböt, amelyben minden rendelést mentünk
+            const saveOrderPromises = cartItems.map(async (item) => {
+                const productId = item.kosar_termek_id;
+                const query = "INSERT INTO Rendeles (rendeles_felhasznalo_id, rendeles_szalitasi_keresztnev, rendeles_szalitasi_vezeteknev, rendeles_varos, rendeles_iranyitoszam, rendeles_cim, rendeles_emelet, rendeles_ajto, rendeles_termek_id, rendeles_datum) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
+                const result = await new Promise((resolve, reject) => {
+                    connection.query(query, [userId, firstName, lastName, city, zipcode, address, floor, door, productId], (err, res) => {
+                        if (err) reject(err)
+                        resolve(res);
+                    });
+                });
+                return result;
+            });
+    
+            // Várunk az összes rendelés mentésére
+            await Promise.all(saveOrderPromises);
+    
+            return { success: true };
         } catch (error) {
             console.error("Error saving order:", error);
             return { success: false };

@@ -486,7 +486,7 @@ app.post('/api/order', authenticateUser, async (req, res) => {
         const orderResult = await db.saveOrder(userId, cartItems, deliveryDetails);
 
         if (orderResult.success) {
-            await db.clearCart(userId);
+            //await db.clearCart(userId);
             res.status(200).json({ success: true, message: "Order placed successfully" });
         } else {
             res.status(500).json({ success: false, error: "Error placing order" });
