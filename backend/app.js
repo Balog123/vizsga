@@ -192,16 +192,13 @@ app.post('/regisztracio', function (request, response) {
 })
 
 function authenticateAdmin(req, res, next) {
-    //console.log("authenticateAdmin middleware called");
     if (req.cookies && req.cookies.token) {
-        //console.log("Token found in cookies:", req.cookies.token);
         const token = req.cookies.token;
 
         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
             if (err) {
                 console.error('Token decoding failed:', err);
             } else {
-                //console.log('Decoded token:', decodedToken);
                 if (decodedToken.isAdmin) {
                     next();
                 } else {
@@ -359,12 +356,11 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'butorprojekt@gmail.com',
-        pass: 'gykc kjhj ajrn nbfo' //Qwertzuiop123456789
+        pass: 'gykc kjhj ajrn nbfo'
     }
 });
 
 app.post('/api/send-email', (req, res) => {
-    //const { email } = req.query;
     const { email } = req.body;
 
     const mailOptions = {
@@ -487,7 +483,7 @@ app.post('/api/order', authenticateUser, async (req, res) => {
         for (let i = 0; i < cartItems.length; i++) {
             console.log(cartItems[i])
         }
-        const orderResult = await db.saveOrder(userId, cartItems, deliveryDetails); // Módosított sor
+        const orderResult = await db.saveOrder(userId, cartItems, deliveryDetails);
 
         if (orderResult.success) {
             await db.clearCart(userId);

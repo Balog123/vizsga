@@ -414,8 +414,7 @@ class DbService {
                 door
             } = deliveryDetails;
 
-            // Az első kosár elem termék azonosítójának lekérése
-            const firstCartItem = cartItems[0]; // Feltételezzük, hogy a kosár nem üres és csak egy terméket rendelnek egyszerre
+            const firstCartItem = cartItems[0];
             const productId = firstCartItem.kosar_termek_id;
 
             console.log(productId)
@@ -429,25 +428,9 @@ class DbService {
                 });
             });
 
-            //await this.clearCart(userId);
-
-            //return result;
             return { success: true }
         } catch (error) {
             console.error("Error saving order:", error);
-            return { success: false };
-        }
-    }
-
-
-    async clearCart(userId) {
-        try {
-            // Kosár tartalmának törlése
-            // Például: DELETE FROM Kosar WHERE kosar_felhasznalo_id = ?
-
-            return { success: true };
-        } catch (error) {
-            console.error("Error clearing cart:", error);
             return { success: false };
         }
     }

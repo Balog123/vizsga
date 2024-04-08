@@ -138,7 +138,8 @@ feltoltes.onclick = function () {
 const updateBtn = document.querySelector('#update-row-btn');
 
 updateBtn.onclick = function() {
-    const modositas_input = document.querySelector('#modositas-input');
+    const modositas_input = document.querySelector('#modositas-input')
+    document.querySelector('#modositas-input').value = ""
 
 
     console.log(modositas_input);
