@@ -460,6 +460,25 @@ app.post('/api/save-user-details', authenticateUser, async (req, res) => {
     }
 });
 
+const sendEmail = async (to, subject, text) => {
+    try {
+        const mailOptions = {
+            from: 'butorprojekt@gmail.com',
+            to: to,
+            subject: subject,
+            text: text
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent:', info.response);
+
+        return { success: true };
+    } catch (error) {
+        console.error('Error sending email:', error);
+        return { success: false, error: 'Error sending email' };
+    }
+};
+
 app.post('/api/order', authenticateUser, async (req, res) => {
     try {
         const userId = req.user.id;
@@ -486,7 +505,14 @@ app.post('/api/order', authenticateUser, async (req, res) => {
         const orderResult = await db.saveOrder(userId, cartItems, deliveryDetails);
 
         if (orderResult.success) {
-            //await db.clearCart(userId);
+            await db.clearCart(userId);
+            const userEmail = req.user.email;
+            const emailResult = await sendEmail(userEmail, 'Megrendelés visszaigazolása', 'Köszönjük a megrendelést!');
+            if (emailResult.success) {
+                console.log('Email sent successfully.');
+            } else {
+                console.error('Failed to send email.');
+            }
             res.status(200).json({ success: true, message: "Order placed successfully" });
         } else {
             res.status(500).json({ success: false, error: "Error placing order" });
