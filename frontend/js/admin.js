@@ -98,6 +98,12 @@ feltoltes.onclick = function () {
         document.querySelector('#hossz').value = ""
         document.querySelector('#raktaron').value = ""
 
+        if (!kategoria || !kep_url || !nev || !ar || !leiras || !szelesseg || !magassag || !hossz || !raktaron) {
+            document.getElementById('sikertelen-feltoltes').style.display = "block"
+            document.getElementById('sikertelen-feltoltes').innerHTML = 'Valahol nem adtál meg adatot.'
+            return;
+        }
+
         fetch('http://localhost:8000/admin/feltoltes', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
@@ -139,10 +145,6 @@ const updateBtn = document.querySelector('#update-row-btn');
 
 updateBtn.onclick = function() {
     const modositas_input = document.querySelector('#modositas-input')
-    document.querySelector('#modositas-input').value = ""
-
-
-    console.log(modositas_input);
 
     fetch('http://localhost:8000/admin/modositas', {
         method: 'PATCH',
@@ -158,6 +160,7 @@ updateBtn.onclick = function() {
     .then(data => {
         if (data.success) {
             location.reload();
+            document.querySelector('#modositas-input').value = ""
         }
     })
 }
