@@ -555,6 +555,4 @@ app.get('/api/latest-products', async (req, res) => {
     }
 });
 
-
-
 app.listen(process.env.PORT, () => console.log(`Alkalmazás ${process.env.PORT} porton fut`))
