@@ -524,6 +524,27 @@ app.post('/api/order', authenticateUser, async (req, res) => {
     }
 });
 
+app.get('/api/user', authenticateUser, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const db = dbService.getDbServiceInstance();
+
+        const userDetails = await db.getUserDetailsById(userId);
+
+        console.log('app: ', userDetails)
+
+        if (userDetails) {
+            res.status(200).json({ success: true, userDetails });
+        } else {
+            res.status(404).json({ success: false, error: "User details not found" });
+        }
+    } catch (error) {
+        console.error("Error fetching user details:", error);
+        res.status(500).json({ success: false, error: "Error fetching user details" });
+    }
+});
+
+
 app.get('/api/latest-products', async (req, res) => {
     try {
         const latestProducts = await dbService.getDbServiceInstance().getLatestProducts();

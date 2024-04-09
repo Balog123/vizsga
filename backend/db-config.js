@@ -358,6 +358,27 @@ class DbService {
         }
     }
 
+    async getUserDetailsById(userId) {
+        try {
+            const query = `
+                SELECT felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_iranyitoszam, felhasznalo_cim1, felhasznalo_varos
+                FROM Felhasznalo
+                WHERE felhasznalo_id = ?
+            `;
+            const userDetails = await new Promise((resolve, reject) => {
+                this.getConnection().query(query, [userId], (error, results) => {
+                    if (error) reject(error);
+                    resolve(results[0]);
+                });
+            });
+            console.log(userDetails)
+            return userDetails;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error fetching user details');
+        }
+    }
+
     async removeCartItem(kosarId) {
         try {
             const deleteQuery = 'DELETE FROM Kosar WHERE kosar_id = ?';

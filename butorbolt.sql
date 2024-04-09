@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS Felhasznalo (
     felhasznalo_varos VARCHAR(100),
     felhasznalo_iranyitoszam VARCHAR(4),
     felhasznalo_cim1 VARCHAR(100),
-    felhasznalo_cim2 VARCHAR(100),
     felhasznalo_admin TINYINT(1) DEFAULT 0
 );
 
