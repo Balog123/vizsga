@@ -110,8 +110,6 @@ async function removeCartItem(item, row) {
 }
 
 function updateCartUI(cartData) {
-    //console.log('Updated cart data:', cartData);
-
     const totalPriceElement = document.getElementById('total-price');
     totalPriceElement.textContent = calculateTotalPrice(cartData.cartItems);
 }

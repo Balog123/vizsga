@@ -1,3 +1,29 @@
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/api/user', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            const userDetails = data.userDetails;
+            console.log(userDetails)
+            document.getElementById('felhasznaloVaros').value = userDetails.felhasznalo_varos;
+            document.getElementById('felhasznaloIranyitoszam').value = userDetails.felhasznalo_iranyitoszam;
+            document.getElementById('felhasznaloCim1').value = userDetails.felhasznalo_cim1;
+        } else {
+            console.error('Error fetching user details:', data.error);
+        }
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const saveChangesButton = document.getElementById('saveChangesButton');
 
