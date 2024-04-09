@@ -6,3 +6,7 @@ backend/.env
 node_modules
 package-lock.json
 package.json
+
+cypress.config.js
+frontend/cypress/fixtures
+frontend/cypress/support
