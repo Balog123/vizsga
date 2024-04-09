@@ -21,21 +21,22 @@ window.addEventListener("DOMContentLoaded", () => {
                         </div>
                     </div>
                     <div class="right">
-                        <span>${product.termek_kategoria}</span>
+                        <span>Termékek -> ${product.termek_kategoria}</span>
                         <h1>${product.termek_nev}</h1>
-                        <div class="price">${product.termek_ar} Ft</div>
+                        <div class="price">Ár: ${product.termek_ar} Ft</div>
                         <form class="form">
                             <input type="text" id="darab" value="1" />
                             <button type="submit" id="addToCartBtn" class="addCart">Kosárba</button>
                             </form>
-                        <h3>Termék részletei</h3>
+                        <h4>Raktáron: ${product.termek_raktaron} db</h4>
+                        <h2>Termék részletei</h2>
                         <p>${product.termek_leiras}</p>
                     </div>
                 `;
 
                 productDetails.innerHTML = productHTML;
 
-                document.getElementById("addToCartBtn").addEventListener("click", function(event) {
+                document.getElementById("addToCartBtn").addEventListener("click", function (event) {
                     event.preventDefault();
 
                     const darab = document.getElementById('darab').value
@@ -49,7 +50,7 @@ window.addEventListener("DOMContentLoaded", () => {
                         console.error("Nincs elegendő készlet a kosárba helyezéshez!");
                         return;
                     }
-                    
+
                     fetch('http://localhost:8000/api/kosar', {
                         method: 'POST',
                         headers: {
@@ -61,18 +62,18 @@ window.addEventListener("DOMContentLoaded", () => {
                             userId: getUserId()
                         }),
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Termék sikeresen hozzáadva a kosárhoz:', data);
-                    })
-                    .catch(error => {
-                        console.error('Hiba történt a kosár API hívásakor:', error);
-                    });
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Termék sikeresen hozzáadva a kosárhoz:', data);
+                        })
+                        .catch(error => {
+                            console.error('Hiba történt a kosár API hívásakor:', error);
+                        });
                 });
 
                 fetch(`http://localhost:8000/api/related-products/${productId}`)
@@ -115,11 +116,11 @@ window.addEventListener("DOMContentLoaded", () => {
                         }
 
                         document.querySelectorAll(".addToCartBtn").forEach(button => {
-                            button.addEventListener("click", function(event) {
+                            button.addEventListener("click", function (event) {
                                 event.preventDefault();
-                                
+
                                 const productId = this.getAttribute("data-product-id");
-        
+
                                 fetch('http://localhost:8000/api/kosar', {
                                     method: 'POST',
                                     headers: {
@@ -130,18 +131,18 @@ window.addEventListener("DOMContentLoaded", () => {
                                         darab: 1
                                     }),
                                 })
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error(`HTTP error! Status: ${response.status}`);
-                                    }
-                                    return response.json();
-                                })
-                                .then(data => {
-                                    console.log('Termék sikeresen hozzáadva a kosárhoz:', data);
-                                })
-                                .catch(error => {
-                                    console.error('Hiba történt a kosár API hívásakor:', error);
-                                });
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(`HTTP error! Status: ${response.status}`);
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        console.log('Termék sikeresen hozzáadva a kosárhoz:', data);
+                                    })
+                                    .catch(error => {
+                                        console.error('Hiba történt a kosár API hívásakor:', error);
+                                    });
                             });
                         });
                     })

@@ -26,8 +26,7 @@ window.addEventListener("DOMContentLoaded", () => {
                         </div>
                         <div class="product-info">
                             <span><a href="/products/${product.termek_id}">${product.termek_nev}</a></span>
-                            <a>${product.termek_leiras}</a>
-                            <h4>${product.termek_ar}</h4>
+                            <h4>${product.termek_ar} Ft</h4>
                         </div>
                         <ul class="icons">
                             <li><i class="bx bx-heart"></i></li>

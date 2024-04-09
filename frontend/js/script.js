@@ -161,7 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-
 document.addEventListener('DOMContentLoaded', () => {
   const userIcon = document.getElementById('userIcon');
 
@@ -201,7 +200,6 @@ window.onclick = function(event) {
       document.getElementById("infoPopup2").style.display = "none";
   }
 };
-
 
 document.addEventListener("DOMContentLoaded", function () {
   const popupForm = document.querySelector('.contact form');
