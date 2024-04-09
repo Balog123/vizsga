@@ -255,6 +255,7 @@ function authenticateUser(req, res, next) {
 
 app.get('/api/kosar', authenticateUser, async (req, res) => {
     try {
+        const { kosar_termek_id, kosar_darab } = req.body;
         const userId = req.user.id;
         const db = dbService.getDbServiceInstance();
 
@@ -284,8 +285,8 @@ app.post('/api/kosar', authenticateUser, async (req, res) => {
         const result = await db.addToCart(productId, termek_nev, termek_ar, darab, userId);
 
         if (result.success) {
+            await db.updateProductStock(productId, darab);
             const updatedCartItems = await db.getCartItemsByUserId(userId);
-
             return res.status(200).json({ success: true, message: "Product added to cart successfully", cartItems: updatedCartItems });
         } else {
             return res.status(500).json({ success: false, error: "Error adding product to cart" });

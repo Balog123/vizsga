@@ -338,6 +338,26 @@ class DbService {
         }
     }
 
+    async updateProductStock(productId, quantity) {
+        try {
+            const query = `
+                UPDATE Termek
+                SET termek_raktaron = (termek_raktaron - ?)
+                WHERE termek_id = ?
+            `;
+            await new Promise((resolve, reject) => {
+                this.getConnection().query(query, [quantity, productId], (error, results) => {
+                    if (error) reject(error);
+                    resolve(results);
+                });
+            });
+            return true;
+        } catch (error) {
+            console.error(error);
+            throw new Error('Error updating product stock');
+        }
+    }
+
     async removeCartItem(kosarId) {
         try {
             const deleteQuery = 'DELETE FROM Kosar WHERE kosar_id = ?';
