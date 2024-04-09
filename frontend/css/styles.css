@@ -1,7 +1,5 @@
-/* Betűtípos */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-/* Alap reset */
 *,
 *::after,
 *::before {
@@ -58,10 +56,8 @@ li {
   align-items: center;
 }
 
-/* Header */
 .header {
   position: sticky;
-  /* néhány oldal lehet hogy elcsúsztat */
   /* min-height: 100vh;   */
   min-height: 10vh;
   overflow-x: hidden;
@@ -121,7 +117,6 @@ header.scrolled .icon {
   color: var(--white);
 }
 
-/* Navigation */
 .navigation {
   height: 8rem;
   line-height: 8rem;
@@ -161,7 +156,6 @@ header.scrolled .navigation {
   border-radius: 100%;
 }
 
-/* Icons */
 .icon {
   cursor: pointer;
   font-size: 2.5rem;
@@ -366,7 +360,6 @@ header.scrolled .navigation {
   transition: all 0.5s ease-in-out;
 }
 
-/* Login Form */
 .login-form {
   padding: 5rem 0;
   max-width: 50rem;
@@ -424,7 +417,6 @@ header.scrolled .navigation {
   color: dodgerblue;
 }
 
-/* Categories */
 .section {
   padding: 10rem 0 5rem 0;
   overflow: hidden;
@@ -525,10 +517,6 @@ header.scrolled .navigation {
 }
 
 @media (max-width: 768px) {
-  /* .section {
-    padding: 5rem 0;
-  } */
-
   .cat-center {
     flex-direction: column;
     padding: 3rem;
@@ -551,7 +539,6 @@ header.scrolled .navigation {
   }
 } 
 
-/* New Arrivals */
 .sectionarrival {
   padding: 2rem 0 10rem 0;
 }
@@ -587,16 +574,18 @@ header.scrolled .navigation {
 
 .product-info span {
   display: inline-block;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
+  font-weight: 500;
   color: var(--black);
-  margin-bottom: 1rem;
+   margin-bottom: 0.2rem;
 }
 
 .product-info a {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   margin-bottom: 1rem;
   transition: all 300ms linear;
+  word-break: break-all;
 }
 
 .product-info a:hover {
@@ -704,7 +693,6 @@ header.scrolled .navigation {
   }
 }
 
-/* Banner */
 .banner {
   position: relative;
   background-color: rgba(233, 215, 211, 0.5);
@@ -847,7 +835,6 @@ header.scrolled .navigation {
   }
 }
 
-/* Contact */
 .contact {
   background: var(--black);
   color: white;
@@ -945,7 +932,6 @@ header.scrolled .navigation {
   }
 }
 
-/* Popup */
 .close-btn {
   position: absolute;
   top: 10px;
@@ -998,13 +984,11 @@ header.scrolled .navigation {
   }
 }
 
-/* Filling */
 .sectionfilling {
   padding: 6rem;
   background-color: var(--bg);
 }
 
-/* Footer */
 .footer {
   padding: 7rem 1rem;
   background-color: var(--main-color);
@@ -1066,8 +1050,6 @@ footer .row {
   }
 }
 
-
-/* All Products */
 .section .top {
   display: flex;
   align-items: center;
@@ -1113,7 +1095,6 @@ form span {
   }
 }
 
-/* Product Details */
 .product-detail .details {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
@@ -1147,12 +1128,13 @@ form span {
 .product-detail .right h1 {
   font-size: 4rem;
   line-height: 1.2;
-  margin-bottom: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
 }
 
 .product-detail .right .price {
-  font-size: 600;
   font-size: 2rem;
+  font-weight: 600;
   color: var(--black);
   margin-bottom: 2rem;
 }
@@ -1215,10 +1197,20 @@ form span {
   transition: all 0.2s ease-in-out;
 }
 
-.product-detail h3 {
-  text-transform: uppercase;
+.product-detail h4 {
   margin-bottom: 2rem;
 }
+
+.product-detail h2 {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.product-detail .right p {
+  text-align: center;
+  word-break: break-all;
+}
+
 
 @media (max-width: 996px) {
   .product-detail .left {
@@ -1250,7 +1242,6 @@ form span {
   }
 }
 
-/* Popup */
 .popup {
   position: fixed;
   top: 0;
@@ -1499,8 +1490,6 @@ form span {
   }
 }
 
-
-/* Style for dropdown */
 .nav-item.with-dropdown:hover .dropdown-content {
   display: block;
 }
@@ -1548,9 +1537,9 @@ form span {
   border-radius: 0.5rem;
 }
 
-/* Cart Items */
 .cart {
   margin: 10rem auto;
+  margin-bottom: 20rem;
 }
 
 table {
