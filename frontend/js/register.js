@@ -12,7 +12,7 @@ registerBtn.onclick = function () {
         document.querySelector('#registerEmail').value = ""
         document.querySelector('#registerPsw').value = ""
         
-        fetch('http://localhost:8000/regisztracio', {
+        fetch('http://localhost:8000/api/registration', {
             method: 'POST',
             headers: { 'Content-type' : 'application/json' },
             body: JSON.stringify({

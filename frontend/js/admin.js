@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost:8000/admin/megjelenites')
+    fetch('http://localhost:8000/api/admin/megjelenites')
     .then(response => response.json())
     .then(data => loadHTMLTable(data['data']))
     .catch(error => console.error('Hiba történt:', error));
@@ -55,16 +55,13 @@ function handleEditRow(id) {
 }
 
 function deleteRow(termekId) {
-    fetch(`http://localhost:8000/api/products/${termekId}`, {
+    fetch(`http://localhost:8000/api/admin/${termekId}`, {
         method: 'DELETE'
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            fetch('http://localhost:8000/admin/megjelenites')
-            .then(response => response.json())
-            .then(data => loadHTMLTable(data['data']))
-            .catch(error => console.error('Hiba történt:', error));
+            location.reload();
         } else {
             console.error(data.error);
         }
@@ -104,7 +101,7 @@ feltoltes.onclick = function () {
             return;
         }
 
-        fetch('http://localhost:8000/admin/feltoltes', {
+        fetch('http://localhost:8000/api/admin/feltoltes', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
@@ -125,6 +122,7 @@ feltoltes.onclick = function () {
         .then(data => {
             console.log(data)
             if (data.success === true) {
+                location.reload();
                 document.getElementById('sikeres-feltoltes').style.display = "block"
                 document.getElementById('sikeres-feltoltes').innerHTML = 'Sikeresen feltöltötte az adatokat.'
             } else {
@@ -146,7 +144,7 @@ const updateBtn = document.querySelector('#update-row-btn');
 updateBtn.onclick = function() {
     const modositas_input = document.querySelector('#modositas-input')
 
-    fetch('http://localhost:8000/admin/modositas', {
+    fetch('http://localhost:8000/api/admin/modositas', {
         method: 'PATCH',
         headers: {
             'Content-type' : 'application/json'

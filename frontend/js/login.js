@@ -4,7 +4,7 @@ loginBtn.onclick = function () {
     const email = document.getElementById('loginEmail').value;
     const jelszo = document.getElementById('loginPsw').value;
 
-    fetch('http://localhost:8000/bejelentkezes', {
+    fetch('http://localhost:8000/api/login', {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         credentials: 'include',

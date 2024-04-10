@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
-            fetch('http://localhost:8000/logout', {
+            fetch('http://localhost:8000/api/logout', {
                 method: 'POST',
                 credentials: 'include',
             })
