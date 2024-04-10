@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log(userDetails)
             document.getElementById('felhasznaloVaros').value = userDetails.felhasznalo_varos;
             document.getElementById('felhasznaloIranyitoszam').value = userDetails.felhasznalo_iranyitoszam;
-            document.getElementById('felhasznaloCim1').value = userDetails.felhasznalo_cim1;
+            document.getElementById('felhasznaloCim').value = userDetails.felhasznalo_cim;
         } else {
             console.error('Error fetching user details:', data.error);
         }

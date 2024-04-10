@@ -87,11 +87,11 @@ class UserService {
         }
     }
 
-    async saveUserDetails(felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1) {
+    async saveUserDetails(felhasznalo_id, felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim) {
         try {
-            const query = "UPDATE Felhasznalo SET felhasznalo_varos=?, felhasznalo_iranyitoszam=?, felhasznalo_cim1=? WHERE felhasznalo_id=?";
+            const query = "UPDATE Felhasznalo SET felhasznalo_varos=?, felhasznalo_iranyitoszam=?, felhasznalo_cim=? WHERE felhasznalo_id=?";
             const result = await new Promise((resolve, reject) => {
-                connection.query(query, [felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1, felhasznalo_id], (err, res) => {
+                connection.query(query, [felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim, felhasznalo_id], (err, res) => {
                     if (err) reject(err);
                     resolve(res);
                 });
@@ -107,7 +107,7 @@ class UserService {
     async getUserDetailsById(userId) {
         try {
             const query = `
-                SELECT felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_iranyitoszam, felhasznalo_cim1, felhasznalo_varos
+                SELECT felhasznalo_keresztnev, felhasznalo_vezeteknev, felhasznalo_iranyitoszam, felhasznalo_cim, felhasznalo_varos
                 FROM Felhasznalo
                 WHERE felhasznalo_id = ?
             `;

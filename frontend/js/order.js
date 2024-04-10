@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('lastName').value = userDetails.felhasznalo_keresztnev;
             document.getElementById('city').value = userDetails.felhasznalo_varos;
             document.getElementById('zipcode').value = userDetails.felhasznalo_iranyitoszam;
-            document.getElementById('address').value = userDetails.felhasznalo_cim1;
+            document.getElementById('address').value = userDetails.felhasznalo_cim;
         } else {
             console.error('Error fetching user details:', data.error);
         }

@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS Felhasznalo (
     felhasznalo_vezeteknev VARCHAR(50),
     felhasznalo_varos VARCHAR(100),
     felhasznalo_iranyitoszam VARCHAR(4),
-    felhasznalo_cim1 VARCHAR(100),
+    felhasznalo_cim VARCHAR(100),
     felhasznalo_admin TINYINT(1) DEFAULT 0
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS Rendeles (
     rendeles_cim VARCHAR(100),
     rendeles_emelet INT(11),
     rendeles_ajto INT(11),
-    rendeles_termek_id INT(11), -- Új oszlop a termék azonosítójának tárolására
+    rendeles_termek_id INT(11),
     rendeles_datum TIMESTAMP,
     FOREIGN KEY (rendeles_felhasznalo_id) REFERENCES Felhasznalo(felhasznalo_id)
 );
