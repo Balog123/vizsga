@@ -14,48 +14,37 @@ const navigation = document.querySelector('.navigation');
 const dropdownContent = document.querySelector('.dropdown-content');
 const termekLink = document.querySelector('.nav-link-termekek');
 
-termekLink.addEventListener("mouseenter", () => {
-  if (window.scrollY > 30) {
-    dropdownContent.classList.add('scrolled-dropdown');
-  }
-  dropdownContent.style.top = `${header.offsetHeight}px`;
-  dropdownContent.style.display = 'block';
-});
+function debounce(func, delay) {
+  let timeout;
+  return function () {
+    const context = this,
+      args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func.apply(context, args);
+    }, delay);
+  };
+}
 
-termekLink.addEventListener("mouseleave", () => {
-  dropdownContent.style.display = 'none';
-  dropdownContent.classList.remove('scrolled-dropdown');
-});
-
-window.addEventListener('scroll', function () {
-  if (window.scrollY > 30) {
-    topNav.style.display = 'none';
-    header.style.display = 'sticky';
-  } else {
-    topNav.style.display = 'block';
-  }
-});
-
-document.addEventListener('scroll', () => {
-  if (window.scrollY > 30) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
-});
-
-window.addEventListener('scroll', function () {
+const handleScroll = debounce(() => {
   const scrolled = window.scrollY > 30;
+  const header = document.querySelector('.header');
+  const topNav = document.querySelector('.top-nav');
+  const dropdownContent = document.querySelector('.dropdown-content');
 
   if (scrolled) {
+    header.classList.add('scrolled');
     dropdownContent.classList.add('scrolled-dropdown');
     dropdownContent.style.top = `${header.offsetHeight}px`;
+    topNav.style.display = 'none';
   } else {
+    header.classList.remove('scrolled');
     dropdownContent.classList.remove('scrolled-dropdown');
     dropdownContent.style.top = '11rem';
+    topNav.style.display = 'block';
   }
-});
-
+}, 1);
+window.addEventListener('scroll', handleScroll);
 
 //popup
 const popup = document.querySelector(".popup");

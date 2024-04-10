@@ -101,7 +101,6 @@ window.addEventListener("DOMContentLoaded", () => {
                                     </div>
                                     <div class="product-info">
                                         <span><a href="/products/${relatedProduct.termek_id}">${relatedProduct.termek_nev}</a></span>
-                                        <a>${relatedProduct.termek_leiras}</a>
                                         <h4>${relatedProduct.termek_ar} Ft</h4>
                                     </div>
                                     <ul class="icons">
