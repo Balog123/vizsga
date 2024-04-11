@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         saveChangesButton.addEventListener('click', () => {
             const felhasznaloVaros = document.getElementById('felhasznaloVaros').value;
             const felhasznaloIranyitoszam = document.getElementById('felhasznaloIranyitoszam').value;
-            const felhasznaloCim1 = document.getElementById('felhasznaloCim1').value;
+            const felhasznaloCim1 = document.getElementById('felhasznaloCim').value;
 
             const userDetails = {
                 felhasznaloVaros,
