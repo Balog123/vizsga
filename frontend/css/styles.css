@@ -1707,8 +1707,8 @@ th:last-child {
 
 .search-bar-container {
   position: fixed;
-  top: 17%;
-  left: 80%;
+  top: 20%;
+  left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--bg);
   display: none;
@@ -1738,7 +1738,7 @@ th:last-child {
 }
 
 header.scrolled .search-bar-container {
-  top: 13.5%;
+  top: 15%;
   background-color: var(--main-color);
   border-color: var(--main-color);
 }
