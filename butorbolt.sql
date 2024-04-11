@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS Rendeles (
     rendeles_ajto INT(11),
     rendeles_termek_id INT(11),
     rendeles_datum TIMESTAMP,
-    FOREIGN KEY (rendeles_felhasznalo_id) REFERENCES Felhasznalo(felhasznalo_id)
+    FOREIGN KEY (rendeles_felhasznalo_id) REFERENCES Felhasznalo(felhasznalo_id),
+    FOREIGN KEY (rendeles_termek_id) REFERENCES Termek(termek_id)
 );
 
 
