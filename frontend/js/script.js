@@ -113,41 +113,58 @@ if (popup) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const searchIcon = document.getElementById('searchIcon');
+  const searchIcon2 = document.getElementById('searchIcon2');
   const searchBar = document.getElementById('searchBar');
+  const searchBar2 = document.getElementById('searchBar2');
   const searchInput = document.getElementById('searchInput');
+  const searchInput2 = document.getElementById('searchInput2');
   const searchSubmit = document.getElementById('searchSubmit');
+  const searchSubmit2 = document.getElementById('searchSubmit2');
+
+  function showSearchBar() {
+    searchBar.style.display = 'flex';
+    searchInput.focus();
+  }
+
+  function showSearchBar2() {
+    searchBar2.style.display = 'flex';
+    searchInput2.focus();
+  }
 
   searchIcon.addEventListener('click', (event) => {
     event.stopPropagation();
-    searchBar.style.display = 'flex';
-    searchInput.focus();
+    showSearchBar();
   });
 
-  searchSubmit.addEventListener('click', (event) => {
+  searchIcon2.addEventListener('click', (event) => {
     event.stopPropagation();
-    performSearch();
+    showSearchBar2();
   });
 
   document.addEventListener('click', (event) => {
-    if (!searchBar.contains(event.target) && event.target !== searchIcon) {
+    if (!searchBar.contains(event.target) && !searchBar2.contains(event.target) && event.target !== searchIcon && event.target !== searchIcon2) {
       searchBar.style.display = 'none';
+      searchBar2.style.display = 'none';
     }
   });
 
   searchInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-      performSearch();
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm !== '') {
+        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+      }
     }
   });
 
-  function performSearch() {
-    const searchTerm = searchInput.value.trim();
-    if (searchTerm !== '') {
-      console.log('Performing search:', searchTerm);
-
-      window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+  searchInput2.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      const searchTerm = searchInput2.value.trim();
+      if (searchTerm !== '') {
+        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+      }
     }
-  }
+  });
 });
 
 document.addEventListener('DOMContentLoaded', () => {
