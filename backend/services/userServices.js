@@ -75,7 +75,7 @@ class UserService {
                     });
                 });
     
-                return { success: true, message: 'Registration successful' };
+                return { success: true, message: 'Regisztráció sikeres' };
             }
         } catch (error) {
             console.error(error);
@@ -96,17 +96,10 @@ class UserService {
                     resolve(result[0]);
                 });
             });
-
-            if (!felhasznalo) throw new Error('Rossz email vagy jelszó');
-
-            const helyesJelszo = await bcrypt.compare(jelszo, felhasznalo.felhasznalo_jelszo);
-
-            if (!helyesJelszo) throw new Error('Rossz jelszó');
-
-            const isAdmin = felhasznalo.felhasznalo_admin === 1;
-
-            console.log('Sikeres bejelentkezes');
-
+            if (!felhasznalo) {
+                return { success: false, error: 'Rossz email vagy jelszó!' };
+            }
+            const isAdmin = felhasznalo.felhasznalo_admin === 1
             return {
                 id: felhasznalo.felhasznalo_id,
                 keresztnev: felhasznalo.felhasznalo_keresztnev,
