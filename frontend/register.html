@@ -11,6 +11,7 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="./css/styles.css" />
     <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/reglog.css" />
     <title>Regisztráció</title>
 </head>
 
@@ -115,7 +116,6 @@
         </div>
     </header>
 
-    <!-- Register -->
     <div class="container">
         <div class="login-form">
             <form action="/regisztracio" method="POST">
@@ -125,17 +125,26 @@
                     <a href="/bejelentkezes">Jelentkezzen be</a>
                 </p>
 
-                <label for="registerFirstName">Keresztnév</label>
-                <input type="text" placeholder="Keresztnév" name="firstname" id="registerFirstName" required />
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="firstname"
+                        id="registerFirstName">
+                    <label class="label" for="registerFirstName">Keresztnév</label>
+                </div>
 
-                <label for="registerLastName">Vezetéknév</label>
-                <input type="text" placeholder="Vezetéknév" name="lastname" id="registerLastName" required />
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="lastname" id="registerLastName">
+                    <label class="label" for="registerLastName">Vezetéknév</label>
+                </div>
 
-                <label for="registerEmail">Email cím</label>
-                <input type="email" placeholder="Email cím" name="email" id="registerEmail" required />
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="email" name="email" id="registerEmail">
+                    <label class="label" for="registerEmail">Email cím</label>
+                </div>
 
-                <label for="registerPsw">Jelszó</label>
-                <input type="password" placeholder="Jelszó" name="psw" id="registerPsw" required />
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="password" name="psw" id="registerPsw">
+                    <label class="label" for="registerPsw">Jelszó</label>
+                </div>
 
                 <div id="sikertelen-reg"></div>
 
@@ -147,8 +156,9 @@
         </div>
     </div>
 
+    <!-- registerjs -->
     <script src="/js/register.js"></script>
-
+    <!-- scriptjs -->
     <script src="/js/script.js"></script>
 
 </body>

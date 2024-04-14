@@ -336,7 +336,6 @@ header.scrolled .navigation {
   }
 }
 
-
 .home {
   min-height: 100vh;
   display: flex;
@@ -397,90 +396,6 @@ header.scrolled .navigation {
 .btn:hover {
   transform: scale(1.1);
   transition: all 0.5s ease-in-out;
-}
-
-.login-form {
-  padding: 5rem 0;
-  max-width: 50rem;
-  margin: 5rem auto;
-}
-
-.login-form form {
-  display: flex;
-  flex-direction: column;
-}
-
-.login-form form h1 {
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.login-form form p {
-  padding: 1rem;
-  text-align: center;
-}
-
-.login-form form label {
-  margin-bottom: 1rem;
-}
-
-.login-form form input {
-  border: 1px solid var(--main-color);
-  outline: none;
-  padding: 1.5rem 0;
-  text-indent: 1rem;
-  font-size: 1.6rem;
-  margin-bottom: 2rem;
-  border-radius: 0.5rem;
-}
-
-.login-form form input::placeholder {
-  font-size: 1.6rem;
-  color: #222;
-}
-
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  justify-content: center;
-  padding: 0.5rem;
-}
-
-#sikertelen-reg {
-  text-align: center;
-  padding: 0.5rem;
-  color: rgb(193, 41, 41);
-  font-size: 2rem;
-  font-weight: 500;
-  transition: all 200ms ease;
-}
-
-#sikeres-bejelentkezes-uzenet {
-  text-align: center;
-  padding: 0.5rem;
-  color: rgb(193, 41, 41);
-  font-size: 2rem;
-  font-weight: 500;
-  transition: all 200ms ease;
-}
-
-.login-form form button {
-  outline: none;
-  border: none;
-  font-size: 1.6rem;
-  padding: 1rem 3rem;
-  margin-right: 1.5rem;
-  background-color: var(--white);
-  color: var(--black);
-  cursor: pointer;
-}
-
-.login-form form p a {
-  display: block;
-  color: dodgerblue;
-  text-align: center;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
 }
 
 .section {
@@ -1702,6 +1617,7 @@ th:last-child {
   cursor: pointer;
   transition: all 300ms ease-in-out;
   border-radius: 0.5rem;
+  border: 1px solid var(--black);
 }
 
 .checkout:hover {
