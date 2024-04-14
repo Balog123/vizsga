@@ -806,6 +806,11 @@ header.scrolled .navigation {
   .banner .right img {
     right: 3rem;
     width: 70rem;
+    z-index: -1;
+  }
+
+  .banner .left h1 {
+    z-index: 1;
   }
 }
 
