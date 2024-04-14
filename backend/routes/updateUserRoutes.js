@@ -3,7 +3,7 @@ const router = express.Router();
 const dbService = require('../services/userServices');
 const authenticateUser = require('../auth/authUser')
 
-router.post('/', authenticateUser, async (req, res) => {
+router.patch('/', authenticateUser, async (req, res) => {
     const { felhasznaloVaros, felhasznaloIranyitoszam, felhasznaloCim1 } = req.body;
     const db = dbService.getDbServiceInstance()
 

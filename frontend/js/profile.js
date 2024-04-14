@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             fetch('http://localhost:8000/api/save-user-details', {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
