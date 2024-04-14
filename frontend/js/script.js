@@ -134,22 +134,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  function performSearch(input) {
+    const searchTerm = input.value.trim();
+    if (searchTerm !== '') {
+      window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+    }
+  }
+
   searchInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-      const searchTerm = searchInput.value.trim();
-      if (searchTerm !== '') {
-        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
-      }
+      performSearch(searchInput);
     }
   });
 
   searchInput2.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-      const searchTerm = searchInput2.value.trim();
-      if (searchTerm !== '') {
-        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
-      }
+      performSearch(searchInput2);
     }
+  });
+
+  searchSubmit.addEventListener('click', () => {
+    performSearch(searchInput);
+  });
+
+  searchSubmit2.addEventListener('click', () => {
+    performSearch(searchInput2);
   });
 });
 
