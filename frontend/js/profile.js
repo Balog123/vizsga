@@ -26,12 +26,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     const saveChangesButton = document.getElementById('saveChangesButton');
+    const iranyitoszamRegex = /^\d{4}$/;
 
     if (saveChangesButton) {
         saveChangesButton.addEventListener('click', () => {
             const felhasznaloVaros = document.getElementById('felhasznaloVaros').value;
             const felhasznaloIranyitoszam = document.getElementById('felhasznaloIranyitoszam').value;
             const felhasznaloCim1 = document.getElementById('felhasznaloCim').value;
+
+            if (!felhasznaloVaros && !felhasznaloIranyitoszam && !felhasznaloCim1) {
+                showHibaMessage('Töltsön ki legalább egy mezőt!');
+                return;
+            }
+
+            if (felhasznaloIranyitoszam && !iranyitoszamRegex.test(felhasznaloIranyitoszam)) {
+                showIszMessage('Az Irányítószám 4 számjegyből kell álljon!');
+                return;
+            }
 
             const userDetails = {
                 felhasznaloVaros,
@@ -50,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     if (data.success) {
                         console.log('User details saved successfully:', data.result);
-                        showPopupMessage();
+                        showSikerMessage('Felhasználói adatok mentése megtörtént');
                     } else {
                         console.error('Error saving user details:', data.error);
                     }
@@ -75,15 +86,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function showPopupMessage() {
-    const popupMessage = document.getElementById('popupMessage');
-    popupMessage.style.display = 'block';
-
-    setTimeout(() => {
-        popupMessage.style.display = 'none';
-    }, 5000);
-}
-
 document.getElementById("cancelbtn").addEventListener("click", function () {
     window.location.href = "/";
 });
+
+function showHibaMessage(message) {
+    const hiba = document.getElementById('adatmodositasHiba');
+    hiba.innerText = message;
+    hiba.style.display = 'block';
+
+    setTimeout(() => {
+        hiba.style.display = 'none';
+    }, 5000 );
+}
+
+function showSikerMessage(message) {
+    const siker = document.getElementById('adatmodositasSiker');
+    siker.innerText = message;
+    siker.style.display = 'block';
+
+    setTimeout(() => {
+        siker.style.display = 'none';
+    }, 5000 );
+}
+
+function showIszMessage(message) {
+    const isz = document.getElementById('adatmodositasIsz');
+    isz.innerText = message;
+    isz.style.display = 'block';
+
+    setTimeout(() => {
+        isz.style.display = 'none';
+    }, 5000);
+}

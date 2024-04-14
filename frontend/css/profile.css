@@ -55,7 +55,7 @@ h2 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color:   rgb(68, 227, 68);
+    background-color: rgb(68, 227, 68);
     padding: 50px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -63,3 +63,29 @@ h2 {
     z-index: 9999;
 }
 
+#adatmodositasHiba {
+    text-align: center;
+    padding: 0.5rem;
+    color: rgb(193, 41, 41);
+    font-size: 2rem;
+    font-weight: 500;
+    transition: all 200ms ease;
+}
+
+#adatmodositasSiker {
+    text-align: center;
+    padding: 0.5rem;
+    color: rgb(43, 138, 29);
+    font-size: 2rem;
+    font-weight: 500;
+    transition: all 200ms ease;
+}
+
+#adatmodositasIsz {
+    text-align: center;
+    padding: 0.5rem;
+    color: rgb(193, 41, 41);
+    font-size: 2rem;
+    font-weight: 500;
+    transition: all 200ms ease;
+}
