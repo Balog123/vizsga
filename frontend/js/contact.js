@@ -1,3 +1,19 @@
+//popup
+const popup = document.querySelector(".popup");
+const closePopup = document.querySelector(".popup-close");
+
+if (popup) {
+  closePopup.addEventListener("click", () => {
+    popup.classList.add("hide-popup");
+  });
+
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      popup.classList.remove("hide-popup");
+    }, 1000);
+  });
+}
+
 document.getElementById("infoBtn").addEventListener("click", function(event) {
     event.preventDefault();
     document.getElementById("infoPopup2").style.display = "block";
