@@ -1273,6 +1273,25 @@ form span {
   transition: all 0.2s ease-in-out;
 }
 
+#termek_nincs_raktaron {
+  color: red;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+#cartMessage {
+  color: #6ebe02;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.visible {
+  visibility: visible;
+}
+
+
 .product-detail h4 {
   margin-bottom: 2rem;
 }

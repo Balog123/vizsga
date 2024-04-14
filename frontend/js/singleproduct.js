@@ -27,8 +27,8 @@ window.addEventListener("DOMContentLoaded", () => {
                         <form class="form">
                             <input type="text" id="darab" value="1" />
                             <button type="submit" id="addToCartBtn" class="addCart">Kosárba</button>
-                            </form>
-                        <h4>Raktáron: ${product.termek_raktaron} db</h4>
+                        </form>
+                        <h4>Raktáron: ${product.termek_raktaron} db <span id="termek_nincs_raktaron"></span><span id="cartMessage"></span></h4>
                         <h2>Termék részletei</h2>
                         <p>${product.termek_leiras}</p>
                     </div>
@@ -36,21 +36,28 @@ window.addEventListener("DOMContentLoaded", () => {
 
                 productDetails.innerHTML = productHTML;
 
+                const errorMessageElement = document.getElementById("termek_nincs_raktaron");
+                const cartMessageElement = document.getElementById("cartMessage");
+
                 document.getElementById("addToCartBtn").addEventListener("click", function (event) {
                     event.preventDefault();
 
-                    const darab = document.getElementById('darab').value
+                    const darab = document.getElementById('darab').value;
 
                     if (!darab || darab <= 0) {
-                        console.error("Érvénytelen darabszám!");
+                        errorMessageElement.textContent = "Érvénytelen darabszám!";
                         return;
                     }
 
                     if (darab > product.termek_raktaron) {
-                        console.error("Nincs elegendő készlet a kosárba helyezéshez!");
+                        errorMessageElement.textContent = "Nincs elegendő darab a kosárba helyezéshez!";
                         return;
                     }
 
+                    addToCart(productId, darab);
+                });
+
+                function addToCart(productId, darab) {
                     fetch('http://localhost:8000/api/kosar', {
                         method: 'POST',
                         headers: {
@@ -69,12 +76,14 @@ window.addEventListener("DOMContentLoaded", () => {
                             return response.json();
                         })
                         .then(data => {
+                            cartMessageElement.textContent = "Termék sikeresen hozzáadva a kosárhoz!";
+                            cartMessageElement.classList.add("visible");
                             console.log('Termék sikeresen hozzáadva a kosárhoz:', data);
                         })
                         .catch(error => {
                             console.error('Hiba történt a kosár API hívásakor:', error);
                         });
-                });
+                }
 
                 fetch(`http://localhost:8000/api/related-products/${productId}`)
                     .then(response => {
@@ -145,11 +154,11 @@ window.addEventListener("DOMContentLoaded", () => {
                             });
                         });
                     })
-                    .catch(error => console.error("Error fetching related products:", error));
+                    .catch(error => console.error("Related prodcuts fetch hiba:", error));
             })
-            .catch(error => console.error("Error fetching product details:", error));
+            .catch(error => console.error("Product details fetch hiba:", error));
     } else {
-        console.error("Product ID not found in the URL");
+        console.error("Nem található ID");
     }
 });
 
