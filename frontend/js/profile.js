@@ -84,7 +84,6 @@ function showPopupMessage() {
     }, 5000);
 }
 
-
-document.getElementById("cancelbtn").addEventListener("click", function() {
+document.getElementById("cancelbtn").addEventListener("click", function () {
     window.location.href = "/";
 });

@@ -412,10 +412,12 @@ header.scrolled .navigation {
 
 .login-form form h1 {
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .login-form form p {
-  margin-bottom: 2rem;
+  padding: 1rem;
+  text-align: center;
 }
 
 .login-form form label {
@@ -437,8 +439,29 @@ header.scrolled .navigation {
   color: #222;
 }
 
-.login-form form .buttons {
-  margin-top: 1rem;
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+#sikertelen-reg {
+  text-align: center;
+  padding: 0.5rem;
+  color: rgb(193, 41, 41);
+  font-size: 2rem;
+  font-weight: 500;
+  transition: all 200ms ease;
+}
+
+#sikeres-bejelentkezes-uzenet {
+  text-align: center;
+  padding: 0.5rem;
+  color: rgb(193, 41, 41);
+  font-size: 2rem;
+  font-weight: 500;
+  transition: all 200ms ease;
 }
 
 .login-form form button {
@@ -453,7 +476,11 @@ header.scrolled .navigation {
 }
 
 .login-form form p a {
+  display: block;
   color: dodgerblue;
+  text-align: center;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .section {
