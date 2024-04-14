@@ -83,7 +83,7 @@ const calculateTotalPrice = (cartItems) => {
 
 async function removeCartItem(item, row) {
     try {
-        const response = await fetch('/api/removeCartItem', {
+        const response = await fetch('/api/kosar/remove', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -110,8 +110,6 @@ async function removeCartItem(item, row) {
 }
 
 function updateCartUI(cartData) {
-    //console.log('Updated cart data:', cartData);
-
     const totalPriceElement = document.getElementById('total-price');
     totalPriceElement.textContent = calculateTotalPrice(cartData.cartItems);
 }

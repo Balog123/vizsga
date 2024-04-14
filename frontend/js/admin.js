@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost:8000/admin/megjelenites')
+    fetch('http://localhost:8000/api/admin/megjelenites')
     .then(response => response.json())
     .then(data => loadHTMLTable(data['data']))
     .catch(error => console.error('Hiba történt:', error));
@@ -55,16 +55,13 @@ function handleEditRow(id) {
 }
 
 function deleteRow(termekId) {
-    fetch(`http://localhost:8000/api/products/${termekId}`, {
+    fetch(`http://localhost:8000/api/admin/${termekId}`, {
         method: 'DELETE'
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            fetch('http://localhost:8000/admin/megjelenites')
-            .then(response => response.json())
-            .then(data => loadHTMLTable(data['data']))
-            .catch(error => console.error('Hiba történt:', error));
+            location.reload();
         } else {
             console.error(data.error);
         }
@@ -98,7 +95,13 @@ feltoltes.onclick = function () {
         document.querySelector('#hossz').value = ""
         document.querySelector('#raktaron').value = ""
 
-        fetch('http://localhost:8000/admin/feltoltes', {
+        if (!kategoria || !kep_url || !nev || !ar || !leiras || !szelesseg || !magassag || !hossz || !raktaron) {
+            document.getElementById('sikertelen-feltoltes').style.display = "block"
+            document.getElementById('sikertelen-feltoltes').innerHTML = 'Valahol nem adtál meg adatot.'
+            return;
+        }
+
+        fetch('http://localhost:8000/api/admin/feltoltes', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
@@ -119,6 +122,7 @@ feltoltes.onclick = function () {
         .then(data => {
             console.log(data)
             if (data.success === true) {
+                location.reload();
                 document.getElementById('sikeres-feltoltes').style.display = "block"
                 document.getElementById('sikeres-feltoltes').innerHTML = 'Sikeresen feltöltötte az adatokat.'
             } else {
@@ -138,12 +142,9 @@ feltoltes.onclick = function () {
 const updateBtn = document.querySelector('#update-row-btn');
 
 updateBtn.onclick = function() {
-    const modositas_input = document.querySelector('#modositas-input');
+    const modositas_input = document.querySelector('#modositas-input')
 
-
-    console.log(modositas_input);
-
-    fetch('http://localhost:8000/admin/modositas', {
+    fetch('http://localhost:8000/api/admin/modositas', {
         method: 'PATCH',
         headers: {
             'Content-type' : 'application/json'
@@ -157,6 +158,7 @@ updateBtn.onclick = function() {
     .then(data => {
         if (data.success) {
             location.reload();
+            document.querySelector('#modositas-input').value = ""
         }
     })
 }

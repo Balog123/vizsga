@@ -44,8 +44,7 @@ function displaySearchResults(searchResults) {
                 </div>
                 <div class="product-info">
                     <span><a href="/products/${result.termek_id}">${result.termek_nev}</a></span>
-                    <a>${result.termek_leiras}</a>
-                    <h4>${result.termek_ar}</h4>
+                    <h4>${result.termek_ar} Ft</h4>
                 </div>
                 <ul class="icons">
                     <li><i class="bx bx-heart"></i></li>

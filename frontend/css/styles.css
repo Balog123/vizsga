@@ -1,7 +1,5 @@
-/* Betűtípos */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-/* Alap reset */
 *,
 *::after,
 *::before {
@@ -58,10 +56,8 @@ li {
   align-items: center;
 }
 
-/* Header */
 .header {
   position: sticky;
-  /* néhány oldal lehet hogy elcsúsztat */
   /* min-height: 100vh;   */
   min-height: 10vh;
   overflow-x: hidden;
@@ -121,11 +117,14 @@ header.scrolled .icon {
   color: var(--white);
 }
 
-/* Navigation */
 .navigation {
   height: 8rem;
   line-height: 8rem;
-  /* border-bottom: 1px solid var(--grey2); */
+  border-bottom: 1px solid var(--black);
+}
+
+header.scrolled .navigation {
+  border-bottom: none;
 }
 
 .nav-center {
@@ -157,7 +156,6 @@ header.scrolled .icon {
   border-radius: 100%;
 }
 
-/* Icons */
 .icon {
   cursor: pointer;
   font-size: 2.5rem;
@@ -194,13 +192,52 @@ header.scrolled .icon {
   cursor: pointer;
 }
 
+@media (max-width: 932px) {
+  .nav-list .nav-item a {
+    padding: 0.8rem;
+  }
+
+  .icons .icon i {
+    font-size: 2.5rem;
+  }
+
+  .icon span {
+    position: absolute;
+    top: 20px;
+    right: -3px;
+    background-color: var(--black);
+    color: var(--white);
+    border-radius: 50%;
+    font-size: 1.3rem;
+    height: 1.6rem;
+    width: 1.6rem;
+    justify-content: center;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 852px) {
+  .icons .icon i {
+    padding: 0.1rem;
+  }
+  .nav-list .nav-item a {
+    padding: 0.5rem;
+  }
+}
+
 @media (max-width: 812px) {
   .nav-list .nav-item a {
     font-size: 1.6rem;
+    padding: 0.5rem;
   }
 
   .icons .icon i {
     font-size: 2rem;
+    padding: 0 0.1rem;
   }
 
   .icon span {
@@ -236,7 +273,7 @@ header.scrolled .icon {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
     background-color: white;
     height: 100%;
-    max-width: 35rem;
+    max-width: 30rem;
     width: 0;
     z-index: 100;
     transition: all 300ms ease-in-out;
@@ -250,6 +287,14 @@ header.scrolled .icon {
   .nav-list .nav-item {
     margin: 0 0 1rem 0;
     width: 100%;
+  }
+
+  .nav-list.open {
+    top: 11rem;
+  }
+
+  header.scrolled .nav-list.open {
+    top: 8.5rem;
   }
 
   .nav-list.open .nav-item a {
@@ -307,7 +352,7 @@ header.scrolled .icon {
 
 .home::before {
   content: "";
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   position: absolute;
   top: 0;
   left: 0;
@@ -318,8 +363,6 @@ header.scrolled .icon {
 
 .home .content {
   max-width: 60rem;
-
-
   z-index: 2;
   text-align: center;
 }
@@ -327,7 +370,7 @@ header.scrolled .icon {
 .home .content h3 {
   font-size: 6rem;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--white);
 }
 
 .home .content p {
@@ -343,18 +386,19 @@ header.scrolled .icon {
   display: inline-block;
   padding: .9rem 3rem;
   font-size: 1.7rem;
-  color: #fff;
+  font-weight: 400;
+  color: var(--white);
   background: var(--main-color);
   cursor: pointer;
   transition: all 0.5s ease-in-out;
+  border-radius: 0.5rem;
 }
 
 .btn:hover {
-  letter-spacing: .1rem;
+  transform: scale(1.1);
   transition: all 0.5s ease-in-out;
 }
 
-/* Login Form */
 .login-form {
   padding: 5rem 0;
   max-width: 50rem;
@@ -368,10 +412,12 @@ header.scrolled .icon {
 
 .login-form form h1 {
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .login-form form p {
-  margin-bottom: 2rem;
+  padding: 1rem;
+  text-align: center;
 }
 
 .login-form form label {
@@ -393,8 +439,29 @@ header.scrolled .icon {
   color: #222;
 }
 
-.login-form form .buttons {
-  margin-top: 1rem;
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+#sikertelen-reg {
+  text-align: center;
+  padding: 0.5rem;
+  color: rgb(193, 41, 41);
+  font-size: 2rem;
+  font-weight: 500;
+  transition: all 200ms ease;
+}
+
+#sikeres-bejelentkezes-uzenet {
+  text-align: center;
+  padding: 0.5rem;
+  color: rgb(193, 41, 41);
+  font-size: 2rem;
+  font-weight: 500;
+  transition: all 200ms ease;
 }
 
 .login-form form button {
@@ -409,10 +476,13 @@ header.scrolled .icon {
 }
 
 .login-form form p a {
+  display: block;
   color: dodgerblue;
+  text-align: center;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-/* Categories */
 .section {
   padding: 10rem 0 5rem 0;
   overflow: hidden;
@@ -490,6 +560,11 @@ header.scrolled .icon {
   background-color: rgba(233, 215, 211, 0.5);
 }
 
+#kategoria {
+  scroll-margin-top: 120px;
+}
+
+
 @media (max-width: 1200px) {
   .cat-center .cat img {
     width: 30rem;
@@ -508,10 +583,6 @@ header.scrolled .icon {
 }
 
 @media (max-width: 768px) {
-  /* .section {
-    padding: 5rem 0;
-  } */
-
   .cat-center {
     flex-direction: column;
     padding: 3rem;
@@ -534,7 +605,6 @@ header.scrolled .icon {
   }
 } 
 
-/* New Arrivals */
 .sectionarrival {
   padding: 2rem 0 10rem 0;
 }
@@ -570,16 +640,18 @@ header.scrolled .icon {
 
 .product-info span {
   display: inline-block;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
+  font-weight: 500;
   color: var(--black);
-  margin-bottom: 1rem;
+  margin-bottom: 0.2rem;
 }
 
 .product-info a {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   margin-bottom: 1rem;
   transition: all 300ms linear;
+  word-break: break-all;
 }
 
 .product-info a:hover {
@@ -631,6 +703,11 @@ header.scrolled .icon {
 
 .product-item .icons li:hover {
   background-color: var(--main-color);
+  color: var(--white);
+  transition: all 600ms ease-in-out;
+}
+
+.product-item .icons li:nth-child(2):hover a i {
   color: var(--white);
   transition: all 600ms ease-in-out;
 }
@@ -687,7 +764,6 @@ header.scrolled .icon {
   }
 }
 
-/* Banner */
 .banner {
   position: relative;
   background-color: rgba(233, 215, 211, 0.5);
@@ -728,6 +804,27 @@ header.scrolled .icon {
   padding: 1.5rem;
 }
 
+#galeria {
+  scroll-margin-top: 80px;
+}
+
+.galeriacim {
+  background-color: rgba(233, 215, 211, 0.5);
+}
+
+.heading2 {
+  text-align: center;
+  color: var(--black);
+  text-transform: uppercase;
+  font-size: 4rem;
+  padding: 2rem;
+}
+
+.heading2 span {
+  color: var(--main-color);
+  text-transform: uppercase;
+}
+
 @media (max-width: 1500px) {
   .banner {
     padding: 14rem;
@@ -736,6 +833,11 @@ header.scrolled .icon {
   .banner .right img {
     right: 3rem;
     width: 70rem;
+    z-index: -1;
+  }
+
+  .banner .left h1 {
+    z-index: 1;
   }
 }
 
@@ -809,7 +911,6 @@ header.scrolled .icon {
   }
 }
 
-/* Contact */
 .contact {
   background: var(--black);
   color: white;
@@ -838,6 +939,12 @@ header.scrolled .icon {
   display: inline-block;
   border-radius: 1rem;
   padding: 1rem 2rem;
+}
+
+.btn-1:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+  transition: all 200ms ease-in-out;
 }
 
 .contact form div {
@@ -874,6 +981,10 @@ header.scrolled .icon {
   transition: all 200ms ease-in-out;
 }
 
+#kapcsolat {
+  scroll-margin-top: 100px;
+}
+
 @media (max-width: 996px) {
   .contact {
     padding: 8rem;
@@ -897,7 +1008,6 @@ header.scrolled .icon {
   }
 }
 
-/* Popup */
 .close-btn {
   position: absolute;
   top: 10px;
@@ -905,11 +1015,11 @@ header.scrolled .icon {
   font-size: 30px;
   cursor: pointer;
   color: white;
-  transition: color 0.3s ease; /* Sima áttűnés a színváltozáshoz */
+  transition: color 0.3s ease;
 }
 
 .close-btn:hover {
-  color: #ccc; /* Fehér szín áttűnés */
+  color: red;
 }
 
 .popup2 {
@@ -950,27 +1060,11 @@ header.scrolled .icon {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Filling */
 .sectionfilling {
-  padding: 5rem;
+  padding: 6rem;
   background-color: var(--bg);
 }
 
-/* Footer */
 .footer {
   padding: 7rem 1rem;
   background-color: var(--main-color);
@@ -1032,8 +1126,6 @@ footer .row {
   }
 }
 
-
-/* All Products */
 .section .top {
   display: flex;
   align-items: center;
@@ -1079,7 +1171,6 @@ form span {
   }
 }
 
-/* Product Details */
 .product-detail .details {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
@@ -1113,12 +1204,13 @@ form span {
 .product-detail .right h1 {
   font-size: 4rem;
   line-height: 1.2;
-  margin-bottom: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
 }
 
 .product-detail .right .price {
-  font-size: 600;
   font-size: 2rem;
+  font-weight: 600;
   color: var(--black);
   margin-bottom: 2rem;
 }
@@ -1181,10 +1273,39 @@ form span {
   transition: all 0.2s ease-in-out;
 }
 
-.product-detail h3 {
-  text-transform: uppercase;
+#termek_nincs_raktaron {
+  color: red;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+#cartMessage {
+  color: #6ebe02;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.visible {
+  visibility: visible;
+}
+
+
+.product-detail h4 {
   margin-bottom: 2rem;
 }
+
+.product-detail h2 {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.product-detail .right p {
+  text-align: center;
+  word-break: break-all;
+}
+
 
 @media (max-width: 996px) {
   .product-detail .left {
@@ -1216,7 +1337,6 @@ form span {
   }
 }
 
-/* Popup */
 .popup {
   position: fixed;
   top: 0;
@@ -1465,8 +1585,6 @@ form span {
   }
 }
 
-
-/* Style for dropdown */
 .nav-item.with-dropdown:hover .dropdown-content {
   display: block;
 }
@@ -1514,9 +1632,9 @@ form span {
   border-radius: 0.5rem;
 }
 
-/* Cart Items */
 .cart {
   margin: 10rem auto;
+  margin-bottom: 20rem;
 }
 
 table {
@@ -1641,55 +1759,6 @@ th:last-child {
   #total-price-container a {
     font-size: 12px;
   }
-}
-
-.search-bar-container {
-  position: fixed;
-  top: 17%;
-  left: 80%;
-  transform: translate(-50%, -50%);
-  background-color: var(--bg);
-  display: none;
-  border-radius: 0.5rem;
-  z-index: 999;
-  width: 400px;
-  height: 50px;
-  padding: 1px;
-  align-items: center;
-  justify-content: center;
-}
-
-
-#searchInput {
-  width: 100%;
-  height: 100%;
-  padding-left: 5px;
-  margin-right: 5px;
-  border-radius: 0.5rem;
-  border-color: var(--bg);
-  background-color: var(--bg);
-}
-
-#searchSubmit {
-  cursor: pointer;
-  color: black;
-}
-
-header.scrolled .search-bar-container {
-  top: 13.5%;
-  background-color: var(--main-color);
-  border-color: var(--main-color);
-}
-
-header.scrolled #searchSubmit.icon {
-  color: var(--white);
-}
-
-header.scrolled #searchInput {
-  background-color: var(--main-color);
-  color: var(--white);
-  border-radius: 0.5rem;
-  border-color: var(--main-color);
 }
 
 .noProductFound {

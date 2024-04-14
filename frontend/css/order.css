@@ -1,0 +1,57 @@
+#orderForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#orderForm h1 {
+    text-align: center;
+    padding: 5rem;
+}
+
+.form-columns {
+    display: flex;
+    justify-content: space-between;
+    max-width: 600px;
+}
+
+.form-column {
+    flex: 0 0 calc(50% - 10px); 
+    margin: 0 5px;
+}
+
+#orderForm label {
+    font-size: 18px;
+}
+
+#orderForm input[type="text"],
+#orderForm input[type="number"] {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    box-sizing: border-box;
+}
+
+#orderForm button {
+    width: 40%;
+    padding: 1rem;
+    font-size: 2rem;
+    background-color: #161616;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+
+#orderForm button:hover {
+    background-color: #fff;
+    color: #161616;
+    transform: scale(1.05);
+    transition: all 300ms ease;
+}

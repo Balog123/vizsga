@@ -8,94 +8,45 @@ if (hamburger) {
   });
 }
 
-// window.addEventListener('scroll', function () {
-//   var header = document.querySelector('.header');
-//   var topNav = document.querySelector('.top-nav');
-//   var navigation = document.querySelector('.navigation');
-
-//   if (window.scrollY > 50) {
-//     topNav.style.display = 'none';
-//     header.style.display = 'sticky';
-//   } else {
-//     topNav.style.display = 'block';
-//   }
-// });
-//   document.addEventListener('scroll', () => {
-//     const header = document.querySelector('header');
-//     const home = document.getElementById('home');
-
-//     if (window.scrollY > home.offsetTop - header.offsetHeight) {
-//         header.classList.add('scrolled');
-//     } else {
-//         header.classList.remove('scrolled');
-//     }
-// });
-
 const header = document.querySelector('.header');
 const topNav = document.querySelector('.top-nav');
 const navigation = document.querySelector('.navigation');
-const home = document.getElementById('home');
 const dropdownContent = document.querySelector('.dropdown-content');
 const termekLink = document.querySelector('.nav-link-termekek');
 
-termekLink.addEventListener("mouseenter", () => {
-  if (window.scrollY > 30) {
-    dropdownContent.classList.add('scrolled-dropdown');
-  }
-  dropdownContent.style.top = `${header.offsetHeight}px`;
-  dropdownContent.style.display = 'block';
-});
+function debounce(func, delay) {
+  let timeout;
+  return function () {
+    const context = this,
+      args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func.apply(context, args);
+    }, delay);
+  };
+}
 
-termekLink.addEventListener("mouseleave", () => {
-  dropdownContent.style.display = 'none';
-  dropdownContent.classList.remove('scrolled-dropdown');
-});
-
-window.addEventListener('scroll', function () {
-  if (window.scrollY > 30) {
-    topNav.style.display = 'none';
-    header.style.display = 'sticky';
-  } else {
-    topNav.style.display = 'block';
-  }
-});
-
-document.addEventListener('scroll', () => {
-  if (window.scrollY > home.offsetTop - header.offsetHeight) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
-});
-
-window.addEventListener('scroll', function () {
+const handleScroll = debounce(() => {
   const scrolled = window.scrollY > 30;
+  const header = document.querySelector('.header');
+  const topNav = document.querySelector('.top-nav');
+  const dropdownContent = document.querySelector('.dropdown-content');
 
   if (scrolled) {
+    header.classList.add('scrolled');
     dropdownContent.classList.add('scrolled-dropdown');
     dropdownContent.style.top = `${header.offsetHeight}px`;
+    topNav.style.display = 'none';
   } else {
+    header.classList.remove('scrolled');
     dropdownContent.classList.remove('scrolled-dropdown');
     dropdownContent.style.top = '11rem';
+    topNav.style.display = 'block';
   }
-});
+}, 1);
+window.addEventListener('scroll', handleScroll);
 
 
-//popup
-const popup = document.querySelector(".popup");
-const closePopup = document.querySelector(".popup-close");
-
-if (popup) {
-  closePopup.addEventListener("click", () => {
-    popup.classList.add("hide-popup");
-  });
-
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      popup.classList.remove("hide-popup");
-    }, 1000);
-  });
-}
 // Popup email fetch
 // document.addEventListener("DOMContentLoaded", function () {
 //   const popupForm = document.getElementById("popupForm");
@@ -148,43 +99,59 @@ if (popup) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const searchIcon = document.getElementById('searchIcon');
+  const searchIcon2 = document.getElementById('searchIcon2');
   const searchBar = document.getElementById('searchBar');
+  const searchBar2 = document.getElementById('searchBar2');
   const searchInput = document.getElementById('searchInput');
+  const searchInput2 = document.getElementById('searchInput2');
   const searchSubmit = document.getElementById('searchSubmit');
+  const searchSubmit2 = document.getElementById('searchSubmit2');
+
+  function showSearchBar() {
+    searchBar.style.display = 'flex';
+    searchInput.focus();
+  }
+
+  function showSearchBar2() {
+    searchBar2.style.display = 'flex';
+    searchInput2.focus();
+  }
 
   searchIcon.addEventListener('click', (event) => {
     event.stopPropagation();
-    searchBar.style.display = 'flex';
-    searchInput.focus();
+    showSearchBar();
   });
 
-  searchSubmit.addEventListener('click', (event) => {
+  searchIcon2.addEventListener('click', (event) => {
     event.stopPropagation();
-    performSearch();
+    showSearchBar2();
   });
 
   document.addEventListener('click', (event) => {
-    if (!searchBar.contains(event.target) && event.target !== searchIcon) {
+    if (!searchBar.contains(event.target) && !searchBar2.contains(event.target) && event.target !== searchIcon && event.target !== searchIcon2) {
       searchBar.style.display = 'none';
+      searchBar2.style.display = 'none';
     }
   });
 
   searchInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-      performSearch();
+      const searchTerm = searchInput.value.trim();
+      if (searchTerm !== '') {
+        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+      }
     }
   });
 
-  function performSearch() {
-    const searchTerm = searchInput.value.trim();
-    if (searchTerm !== '') {
-      console.log('Performing search:', searchTerm);
-
-      window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+  searchInput2.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      const searchTerm = searchInput2.value.trim();
+      if (searchTerm !== '') {
+        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+      }
     }
-  }
+  });
 });
-
 
 document.addEventListener('DOMContentLoaded', () => {
   const userIcon = document.getElementById('userIcon');
@@ -208,69 +175,5 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error checking authentication:', error));
     });
-  }
-});
-
-document.getElementById("infoBtn").addEventListener("click", function(event) {
-  event.preventDefault(); // Az alapértelmezett link működés megakadályozása
-  document.getElementById("infoPopup2").style.display = "block";
-});
-
-document.getElementById("closeBtn").addEventListener("click", function() {
-  document.getElementById("infoPopup2").style.display = "none";
-});
-
-// Popup ablak bezárása kattintásra az ablakon kívül
-window.onclick = function(event) {
-  if (event.target == document.getElementById("infoPopup2")) {
-      document.getElementById("infoPopup2").style.display = "none";
-  }
-};
-
-
-document.addEventListener("DOMContentLoaded", function () {
-  const popupForm = document.querySelector('.contact form');
-  const emailInput = document.querySelector('.contact form input[type="email"]');
-  const messageDiv = document.createElement('div');
-  messageDiv.id = 'message';
-  document.querySelector('.contact form').appendChild(messageDiv);
-
-  popupForm.addEventListener('submit', async function (event) {
-      event.preventDefault();
-
-      const email = emailInput.value.trim();
-      if (isValidEmail(email)) {
-          try {
-              const response = await fetch('/api/send-email', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({ email })
-              });
-
-              const data = await response.json();
-
-              if (response.ok) {
-                  messageDiv.textContent = 'Email sikeresen elküldve!';
-                  messageDiv.style.color = 'green';
-                  emailInput.value = '';
-              } else {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-          } catch (error) {
-              console.error("Hiba történt az email küldésekor:", error);
-              messageDiv.textContent = 'Hiba történt az email elküldésekor.';
-              messageDiv.style.color = 'red';
-          }
-      } else {
-          messageDiv.textContent = 'Érvénytelen email formátum.';
-          messageDiv.style.color = 'red';
-      }
-  });
-
-  function isValidEmail(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
   }
 });
