@@ -33,7 +33,7 @@ describe('Regisztráció', () => {
     cy.url().should('eq', 'http://localhost:8000/bejelentkezes');
   });
 
-  it('A "Mégsem" gomb visszavisz az alapoldalra', () => {
+  it('A "Mégsem" gombra kattintás', () => {
     cy.get('#cancelbtn').click();
     cy.url().should('eq', 'http://localhost:8000/');
   });
