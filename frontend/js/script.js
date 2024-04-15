@@ -186,3 +186,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const userIcon2 = document.getElementById('userIcon2');
+
+  if (userIcon2) {
+    userIcon2.addEventListener('click', () => {
+      fetch('http://localhost:8000/check-auth', {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Authentication check response:', data);
+
+          if (data.success) {
+            window.location.href = '/profil';
+          } else {
+            window.location.href = '/regisztracio';
+          }
+
+        })
+        .catch(error => console.error('Error checking authentication:', error));
+    });
+  }
+});

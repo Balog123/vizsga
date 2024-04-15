@@ -155,3 +155,9 @@
   color: var(--white);
   transition: all 200ms ease
 }
+
+@media screen and (max-width: 567px) {
+  .input {
+    width: 100%;
+  }
+}

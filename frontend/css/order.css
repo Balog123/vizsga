@@ -55,3 +55,16 @@
     transition: all 300ms ease-in-out;
     transform: scaleX(1.02);
 }
+
+@media screen and (max-width: 527px) {
+    .form-columns {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .form-column {
+      flex: 1 1 100%;
+      margin: 0;
+    }
+  }
+  
