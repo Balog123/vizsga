@@ -162,3 +162,7 @@ updateBtn.onclick = function() {
         }
     })
 }
+
+document.getElementById("vissza").addEventListener("click", function() {
+    window.location.href = "/";
+  });
