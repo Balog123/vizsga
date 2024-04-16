@@ -134,22 +134,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  function performSearch(input) {
+    const searchTerm = input.value.trim();
+    if (searchTerm !== '') {
+      window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
+    }
+  }
+
   searchInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-      const searchTerm = searchInput.value.trim();
-      if (searchTerm !== '') {
-        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
-      }
+      performSearch(searchInput);
     }
   });
 
   searchInput2.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-      const searchTerm = searchInput2.value.trim();
-      if (searchTerm !== '') {
-        window.location.href = `/search.html?query=${encodeURIComponent(searchTerm)}`;
-      }
+      performSearch(searchInput2);
     }
+  });
+
+  searchSubmit.addEventListener('click', () => {
+    performSearch(searchInput);
+  });
+
+  searchSubmit2.addEventListener('click', () => {
+    performSearch(searchInput2);
   });
 });
 
@@ -158,6 +167,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (userIcon) {
     userIcon.addEventListener('click', () => {
+      fetch('http://localhost:8000/check-auth', {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Authentication check response:', data);
+
+          if (data.success) {
+            window.location.href = '/profil';
+          } else {
+            window.location.href = '/regisztracio';
+          }
+
+        })
+        .catch(error => console.error('Error checking authentication:', error));
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const userIcon2 = document.getElementById('userIcon2');
+
+  if (userIcon2) {
+    userIcon2.addEventListener('click', () => {
       fetch('http://localhost:8000/check-auth', {
         method: 'GET',
         credentials: 'include',

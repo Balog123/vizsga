@@ -11,6 +11,8 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="./css/styles.css" />
     <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/reglog.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
     <title>Bejelentkezés</title>
 </head>
 
@@ -64,7 +66,7 @@
                         </li>
 
                         <li class="icons d-flex">
-                            <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
+                            <a href="#" class="icon" id="userIcon2"><i class="bx bx-user"></i></a>
 
                             <div class="icon" id="searchIcon2"><i class="bx bx-search"></i></div>
 
@@ -125,11 +127,15 @@
                     <a href="/regisztracio" id="reg">Regisztráljon be</a>
                 </p>
 
-                <label for="loginEmail">Email cím</label>
-                <input type="email" placeholder="Email cím" name="email" id="loginEmail" required />
-
-                <label for="loginPsw">Jelszó</label>
-                <input type="password" placeholder="Jelszó" name="jelszo" id="loginPsw" required />
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="email" name="email" id="loginEmail">
+                    <label class="label" for="loginEmail">Email cím</label>
+                </div>
+                
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="password" name="psw" id="loginPsw">
+                    <label class="label" for="loginPsw">Jelszó</label>
+                </div>
 
                 <label>
                     <input type="checkbox" checked="checked" name="remember" style="margin-bottom: 15px" />

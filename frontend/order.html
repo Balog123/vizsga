@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/order.css" />
     <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/reglog.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
     <title>Rendelés</title>
 </head>
 
@@ -69,7 +71,7 @@
                         </li>
 
                         <li class="icons d-flex">
-                            <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
+                            <a href="#" class="icon" id="userIcon2"><i class="bx bx-user"></i></a>
 
                             <div class="icon" id="searchIcon2"><i class="bx bx-search"></i></div>
 
@@ -125,33 +127,46 @@
 
         <div class="form-columns">
             <div class="form-column">
-                <label for="firstName">Keresztnév:</label>
-                <input type="text" id="firstName" name="firstName" required>
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="firstName" id="firstName">
+                    <label class="label" for="firstName">Keresztnév</label>
+                </div>
 
-                <label for="city">Város:</label>
-                <input type="text" id="city" name="city" required>
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="city" id="city">
+                    <label class="label" for="city">Város</label>
+                </div>
 
-                <label for="address">Szállítási cím:</label>
-                <input type="text" id="address" name="address" required>
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="address" id="address">
+                    <label class="label" for="address">Szállítási cím</label>
+                </div>
 
-                <label for="floor">Emelet:</label>
-                <input type="number" id="floor" name="floor" min="0">
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="number" name="floor" id="floor" min="0">
+                    <label class="label" for="floor">Emelet</label>
+                </div>
             </div>
             <div class="form-column">
-                <label for="lastName">Vezetéknév:</label>
-                <input type="text" id="lastName" name="lastName" required>
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="lastName" id="lastName">
+                    <label class="label" for="lastName">Vezetéknév</label>
+                </div>
 
-                <label for="zipcode">Irányítószám:</label>
-                <input type="text" id="zipcode" name="zipcode" required>
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="zipcode" id="zipcode">
+                    <label class="label" for="zipcode">Irányítószám</label>
+                </div>
 
-                <label for="door">Ajtó:</label>
-                <input type="number" id="door" name="door" min="0">
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="number" name="door" id="door">
+                    <label class="label" for="door">Ajtó</label>
+                </div>
             </div>
         </div>
 
         <button type="submit">Rendelés véglegesítése</button>
     </form>
-
 
     <!-- Filling -->
     <div class="sectionfilling"></div>

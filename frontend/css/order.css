@@ -18,12 +18,12 @@
 }
 
 .form-column {
-    flex: 0 0 calc(50% - 10px); 
+    flex: 0 0 calc(50% - 10px);
     margin: 0 5px;
 }
 
 #orderForm label {
-    font-size: 18px;
+    font-size: 1.8rem;
 }
 
 #orderForm input[type="text"],
@@ -31,27 +31,40 @@
     width: 100%;
     padding: 1rem;
     margin-bottom: 2rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--black);
     border-radius: 0.5rem;
     font-size: 1.6rem;
     box-sizing: border-box;
 }
 
 #orderForm button {
-    width: 40%;
+    display: inline-block;
+    background-color: var(--main-color);
+    color: var(--white);
     padding: 1rem;
-    font-size: 2rem;
-    background-color: #161616;
-    color: #fff;
-    border: none;
-    border-radius: 0.5rem;
+    margin-top: 1rem;
+    font-size: 1.7rem;
     cursor: pointer;
-    transition: all 300ms ease;
+    transition: all 300ms ease-in-out;
+    border-radius: 0.5rem;
 }
 
 #orderForm button:hover {
-    background-color: #fff;
-    color: #161616;
-    transform: scale(1.05);
-    transition: all 300ms ease;
+    color: var(--main-color);
+    background-color: var(--white);
+    transition: all 300ms ease-in-out;
+    transform: scaleX(1.02);
 }
+
+@media screen and (max-width: 527px) {
+    .form-columns {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .form-column {
+      flex: 1 1 100%;
+      margin: 0;
+    }
+  }
+  

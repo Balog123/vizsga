@@ -53,12 +53,12 @@ document.getElementById('orderForm').addEventListener('submit', async (event) =>
         const data = await response.json();
 
         if (data.success) {
-            alert('Order placed successfully');
+            alert('Megrendelés sikeresen leadva!');
         } else {
-            alert('Error placing order');
+            alert('Megrendelés leadása sikertelen...');
         }
     } catch (error) {
-        console.error('Error placing order:', error);
-        alert('Error placing order');
+        console.error('Hiba:', error);
+        alert('Hiba:', error);
     }
 });

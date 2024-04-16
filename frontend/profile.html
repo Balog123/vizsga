@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/profile.css" />
     <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/reglog.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
     <title>Profil</title>
 </head>
 
@@ -69,7 +71,7 @@
                         </li>
 
                         <li class="icons d-flex">
-                            <a href="/regisztracio" class="icon"><i class="bx bx-user"></i></a>
+                            <a href="#" class="icon" id="userIcon2"><i class="bx bx-user"></i></a>
 
                             <div class="icon" id="searchIcon2">
                                 <i class="bx bx-search"></i>
@@ -133,27 +135,28 @@
                 <h1>Felhasználói adatok módosítása</h1>
                 <p>Adja meg felhasználói adatait alább:</p>
 
-                <label for="felhasznaloVaros">Város:</label>
-                <input type="text" id="felhasznaloVaros" name="felhasznaloVaros" placeholder="Város" required />
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="felhasznaloVaros" id="felhasznaloVaros">
+                    <label class="label" for="felhasznaloVaros">Város</label>
+                </div>
 
-                <label for="felhasznaloIranyitoszam">Irányítószám:</label>
-                <input type="text" id="felhasznaloIranyitoszam" name="felhasznaloIranyitoszam"
-                    placeholder="Irányítószám" required />
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="felhasznaloIranyitoszam" id="felhasznaloIranyitoszam">
+                    <label class="label" for="felhasznaloIranyitoszam">Irányítószám</label>
+                </div>
 
-                <label for="felhasznaloCim1">Cím:</label>
-                <input type="text" id="felhasznaloCim" name="felhasznaloCim" placeholder="Cím" required />
+                <div class="input-group">
+                    <input class="input" required autocomplete="off" type="text" name="felhasznaloCim" id="felhasznaloCim">
+                    <label class="label" for="felhasznaloCim1">Cím</label>
+                </div>
 
                 <div class="adatmodositas" id="adatmodositasHiba"></div>
                 <div class="adatmodositas" id="adatmodositasSiker"></div>
                 <div class="adatmodositas" id="adatmodositasIsz"></div>
-
+                
                 <div class="buttons">
-                    <button type="button" class="cancelbtn" id="cancelbtn">
-                        Mégsem
-                    </button>
-                    <button type="button" id="saveChangesButton" class="signupbtn">
-                        Változtatások Mentése
-                    </button>
+                    <button type="button" class="cancelbtn" id="cancelbtn">Mégsem</button>
+                    <button type="button" class="signupbtn" id="saveChangesButton">Változtatások Mentése</button>
                 </div>
             </form>
         </div>
