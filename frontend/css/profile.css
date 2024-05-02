@@ -22,7 +22,9 @@ h2 {
     cursor: pointer;
     transform: scale(1.1);
     transition: all 300ms ease;
-    border: 1px red solid;
+    background-color: rgb(255, 255, 255);
+    color: var(--black);
+    transition: all 200ms ease
 }
 
 .popup-message {
